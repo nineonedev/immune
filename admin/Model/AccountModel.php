@@ -3,28 +3,101 @@
 class AccountModel {
     
     public static function insert($data) {
-    $db = DB::getInstance();
+        $db = DB::getInstance();
 
-    global $NO_SITE_UNIQUE_KEY;
+        global $NO_SITE_UNIQUE_KEY;
 
-    $sql = "
-        INSERT INTO nb_admin (uid, upwd, uname, email, phone, active_status, sitekey, created_at)
-        VALUES (:uid, :upwd, :uname, :email, :phone, :active_status, :sitekey, :created_at)
-    ";
+        $sql = "
+            INSERT INTO nb_admin (uid, upwd, uname, email, phone, active_status, sitekey, created_at)
+            VALUES (:uid, :upwd, :uname, :email, :phone, :active_status, :sitekey, :created_at)
+        ";
 
-    $stmt = $db->prepare($sql);
-    $stmt->execute([
-        ':uid' => $data['uid'],
-        ':upwd' => $data['upwd'],
-        ':uname' => $data['uname'],
-        ':email' => $data['email'],
-        ':phone' => $data['phone'],
-        ':active_status' => $data['active_status'] ?? 'Y',
-        ':sitekey' => $NO_SITE_UNIQUE_KEY,
-        ':created_at' => date('Y-m-d H:i:s'),
-    ]);
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':uid' => $data['uid'],
+            ':upwd' => $data['upwd'],
+            ':uname' => $data['uname'],
+            ':email' => $data['email'],
+            ':phone' => $data['phone'],
+            ':active_status' => $data['active_status'] ?? 'Y',
+            ':sitekey' => $NO_SITE_UNIQUE_KEY,
+            ':created_at' => date('Y-m-d H:i:s'),
+        ]);
 
-    return $db->lastInsertId();
-}
+        return $db->lastInsertId();
+    }
+    
+    public static function delete($id) 
+    {
+        $db = DB::getInstance();
+        $sql = "DELETE FROM nb_admin WHERE no = :no";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([':no' => $id]);
+    }
+
+    public static function update($id, $data) 
+    {
+        $db = DB::getInstance();
+
+        $fields = [
+            'uname' => $data['uname'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'active_status' => $data['active_status'] ?? 'Y',
+        ];
+
+        // 비밀번호 입력이 있는 경우에만 변경
+        if (!empty($data['upwd'])) {
+            $fields['upwd'] = $data['upwd'];
+        }
+
+        // SET 절 동적 생성
+        $set = implode(', ', array_map(fn($key) => "$key = :$key", array_keys($fields)));
+        $fields['no'] = $id;
+
+        $sql = "UPDATE nb_admin SET $set WHERE no = :no";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute($fields);
+    }
+
+    public static function exists(array $conditions): bool
+    {
+        $db = DB::getInstance();
+        
+        $clauses = [];
+        foreach ($conditions as $key => $val) {
+            $clauses[] = "$key = :$key";
+        }
+
+        $where = implode(" AND ", $clauses);
+        $sql = "SELECT COUNT(*) FROM nb_admin WHERE $where";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute($conditions);
+        
+        return $stmt->fetchColumn() > 0;
+    }
+
+    public static function existsExceptSelf(array $conditions, int $excludeId): bool
+    {
+        $db = DB::getInstance();
+
+        $clauses = [];
+        foreach ($conditions as $key => $val) {
+            $clauses[] = "$key = :$key";
+        }
+
+        $where = implode(" AND ", $clauses);
+        $sql = "SELECT COUNT(*) FROM nb_admin WHERE $where AND no != :no";
+
+        $params = $conditions;
+        $params['no'] = $excludeId;
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchColumn() > 0;
+    }
+
 
 }

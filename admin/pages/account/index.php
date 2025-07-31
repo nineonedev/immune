@@ -8,6 +8,15 @@ $Page = $Page ?? 1;
 $listCurPage = $listCurPage ?? 1;
 $pageBlock = $pageBlock ?? 2;
 
+$db = DB::getInstance();
+
+$sql = "SELECT no, uid, uname, email, phone, active_status, role_id, created_at 
+        FROM nb_admin 
+        ORDER BY no DESC";
+
+$stmt = $db->prepare($sql);
+$stmt->execute();
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -77,7 +86,8 @@ $pageBlock = $pageBlock ?? 2;
                                                 <th class="no-width-25 no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
-                                                            <input type="checkbox" />
+                                                            <input type="checkbox"
+                                                                onClick="doCheckUnCheck('no-chk', this.checked ? 'check' : 'uncheck')" />
                                                             <span><i class="bx bxs-check-square"></i></span>
                                                         </label>
                                                     </div>
@@ -93,37 +103,58 @@ $pageBlock = $pageBlock ?? 2;
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php if (!empty($rows)): ?>
+                                            <?php foreach ($rows as $row): ?>
                                             <tr>
                                                 <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
-                                                            <input type="checkbox" />
+                                                            <input type="checkbox" name="chk[]"
+                                                                value="<?= $row['no'] ?>" class="no-chk" />
                                                             <span><i class="bx bxs-check-square"></i></span>
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td>1</td>
-                                                <td>admin</td>
-                                                <td>최관리자</td>
-                                                <td>admin@example.com</td>
-                                                <td>관리자</td>
-                                                <td>2024-07-01</td>
-                                                <td><span class="no-badge no-badge--success">활성</span></td>
+                                                <td><?= $row['no'] ?></td>
+                                                <td><?= htmlspecialchars($row['uid']) ?></td>
+                                                <td><?= htmlspecialchars($row['uname']) ?></td>
+                                                <td><?= htmlspecialchars($row['email']) ?></td>
+                                                <td><?= htmlspecialchars($row['role_id']) ?></td>
+                                                <td><?= htmlspecialchars($row['created_at']) ?></td>
+                                                <td>
+                                                    <span
+                                                        class="no-badge <?= $row['active_status'] === 'Y' ? 'no-badge--success' : 'no-badge--gray' ?>">
+                                                        <?= $row['active_status'] === 'Y' ? '활성' : '비활성' ?>
+                                                    </span>
+                                                </td>
                                                 <td>
                                                     <div class="no-table-role">
                                                         <span class="no-role-btn"><i
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
-                                                            <a href="#" class="no-btn no-btn--sm no-btn--normal">수정</a>
-                                                            <a href="#"
-                                                                class="no-btn no-btn--sm no-btn--delete-outline">삭제</a>
+                                                            <a href="edit.php?no=<?= $row['no'] ?>"
+                                                                class="no-btn no-btn--sm no-btn--normal">수정</a>
+                                                            <a href="edit.php?no=<?= $row['no'] ?>"
+                                                                class="no-btn no-btn--sm no-btn--normal">권한 관리</a>
+                                                            <button type="button"
+                                                                class="no-btn no-btn--sm no-btn--delete-outline delete-btn"
+                                                                data-id="<?= $row['no'] ?>">
+                                                                삭제
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <?php endforeach; ?>
+                                            <?php else: ?>
+                                            <tr>
+                                                <td colspan="9">등록된 계정이 없습니다.</td>
+                                            </tr>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
+
 
                             </div>
                         </div>
@@ -132,6 +163,5 @@ $pageBlock = $pageBlock ?? 2;
                 </section>
             </form>
         </main>
-        <script type="text/javascript" src="./js/board.process.js?v=<?= date('YmdHis') ?>"></script>
     </div>
     <?php include_once "../../inc/admin.footer.php"; ?>

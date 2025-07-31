@@ -110,7 +110,7 @@ $board_title = $board_info[0]['title'] ?? '';
 <?php include_once $STATIC_ROOT . '/inc/layouts/header.php'; ?>
 
 <main>
-    <form id="frm" name="frm" method="get" autocomplete='off'>    
+    <form id="frm" name="frm" method="get" autocomplete='off'>
         <input type="hidden" id="board_no" name="board_no" value="<?= htmlspecialchars($board_no) ?>">
         <input type="hidden" id="category_no" name="category_no" value="<?= htmlspecialchars($category_no) ?>">
         <input type="hidden" id="mode" name="mode" value="">
@@ -126,5 +126,5 @@ $board_title = $board_info[0]['title'] ?? '';
 
 <?php include_once $STATIC_ROOT . '/inc/layouts/footer.php'; ?>
 
-<script type="text/javascript" src="<?=$NO_IS_SUBDIR?>/pages/board/js/board.js?v=<?=$STATIC_FRONT_JS_MODIFY_DATE?>"></script>
-<?php include_once $STATIC_ROOT . '/inc/layouts/end.php'; ?>
+<script type="text/javascript" src="<?=$NO_IS_SUBDIR?>/pages/board/js/board.js?v=<?=$STATIC_FRONT_JS_MODIFY_DATE?>">
+</script>

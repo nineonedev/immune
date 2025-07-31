@@ -60,31 +60,31 @@ $go_to_list = "./board.list.php?board_no=" . $board_no . "&RtsearchKeyword=" . u
 <?php include_once $STATIC_ROOT . '/inc/layouts/head.php'; ?>
 
 <!-- 스타일, 스크립트  -->
-<script type="text/javascript" src="<?= $NO_IS_SUBDIR ?>/pages/board/js/board.js?v=<?= $STATIC_FRONT_JS_MODIFY_DATE ?>"></script>
+<script type="text/javascript" src="<?= $NO_IS_SUBDIR ?>/pages/board/js/board.js?v=<?= $STATIC_FRONT_JS_MODIFY_DATE ?>">
+</script>
 
 <!-- Header -->
 <?php include_once $STATIC_ROOT . '/inc/layouts/header.php'; ?>
 
 <main>
-	<form id="frm" name="frm" method="post">
-		<input type="hidden" id="mode" name="mode" value="">
-		<input type="hidden" id="comment_no" name="comment_no" value="">
-		<input type="hidden" id="no" name="no" value="<?= $no ?>">
-		<input type="hidden" id="board_no" name="board_no" value="<?= $board_no ?>">
-		<input type="hidden" id="returnUrl" value="">
-			<?php
+    <form id="frm" name="frm" method="post">
+        <input type="hidden" id="mode" name="mode" value="">
+        <input type="hidden" id="comment_no" name="comment_no" value="">
+        <input type="hidden" id="no" name="no" value="<?= $no ?>">
+        <input type="hidden" id="board_no" name="board_no" value="<?= $board_no ?>">
+        <input type="hidden" id="returnUrl" value="">
+        <?php
 			if ($board_no != 9) { 
 				include_once $STATIC_ROOT."/pages/board/view/view.default.php";
 			}
 			?>
 
-			<?php
+        <?php
 			if ($board_no == 9) {
 				include_once $STATIC_ROOT."/pages/board/view/view.doctor.php";
 			}
 			?>
-	</form>
+    </form>
 </main>
 
 <?php include_once $STATIC_ROOT . '/inc/layouts/footer.php'; ?>
-<?php include_once $STATIC_ROOT . '/inc/layouts/end.php'; ?>

@@ -9,9 +9,6 @@ $uid = $_POST['uid'] ?? '';
 $pwd = $_POST['upwd'] ?? '';
 $r_captcha = $_POST['r_captcha'] ?? '';
 
-// Hash the password
-$hashed = hash("sha256", $pwd);
-
 if ($uid === "topmaster" && $pwd === "!#xkqak" . $NO_SITE_UNIQUE_KEY) {
     $_SESSION['no_adm_login_no'] = 1;
     $_SESSION['no_adm_login_uid'] = "tmaster";
@@ -30,8 +27,6 @@ $stmt = $pdo->prepare($query);
 $stmt->execute(['uid' => $uid, 'sitekey' => $NO_SITE_UNIQUE_KEY]);
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-
 if (!$data) {
     echo "<script>
             alert('아이디 또는 패스워드가 일치하지 않습니다.');
@@ -46,7 +41,7 @@ if ($data['active_status'] === "N") {
 }
 
 // Verify password
-if ($data['upwd'] !== $hashed) {
+if (!password_verify($pwd, $data['upwd'])) {
     echo "<script>alert('아이디 또는 패스워드가 일치하지 않습니다.'); window.location.href = '../../index.php';</script>";
     exit;
 }

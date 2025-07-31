@@ -1,0 +1,301 @@
+{
+  "site_name": "면력한방병원-강서",
+  "pages": [
+    {
+      "title": "암면역센터",
+      "dirname": "cancer",
+      "pages": [
+        {
+          "title": "홈",
+          "filename": "home"
+        },
+        {
+          "title": "유방/자궁/난소암",
+          "filename": "female",
+          "pages": [
+            {
+              "title": "수술전후",
+              "filename": "female-1"
+            },
+            {
+              "title": "항암방사선",
+              "filename": "female-2"
+            },
+            {
+              "title": "전이재발관리",
+              "filename": "female-3"
+            },
+            {
+              "title": "항암식이",
+              "filename": "female-4"
+            },
+            {
+              "title": "프로그램",
+              "filename": "female-5"
+            }
+          ]
+        },
+        {
+          "title": "대장/위암",
+          "filename": "digest",
+          "pages": [
+            {
+              "title": "수술전후",
+              "filename": "digest-1"
+            },
+            {
+              "title": "항암방사선",
+              "filename": "digest-2"
+            },
+            {
+              "title": "전이재발관리",
+              "filename": "digest-3"
+            },
+            {
+              "title": "항암식이",
+              "filename": "digest-4"
+            },
+            {
+              "title": "프로그램",
+              "filename": "digest-5"
+            }
+          ]
+        },
+        {
+          "title": "간/담도/췌장암",
+          "filename": "liver",
+          "pages": [
+            {
+              "title": "수술전후",
+              "filename": "liver-1"
+            },
+            {
+              "title": "항암방사선",
+              "filename": "liver-2"
+            },
+            {
+              "title": "전이재발관리",
+              "filename": "liver-3"
+            },
+            {
+              "title": "항암식이",
+              "filename": "liver-4"
+            },
+            {
+              "title": "프로그램",
+              "filename": "liver-5"
+            }
+          ]
+        },
+        {
+          "title": "폐암",
+          "filename": "lung",
+          "pages": [
+            {
+              "title": "수술전후",
+              "filename": "lung-1"
+            },
+            {
+              "title": "항암방사선",
+              "filename": "lung-2"
+            },
+            {
+              "title": "전이재발관리",
+              "filename": "lung-3"
+            },
+            {
+              "title": "항암식이",
+              "filename": "lung-4"
+            },
+            {
+              "title": "프로그램",
+              "filename": "lung-5"
+            }
+          ]
+        },
+        {
+          "title": "갑상선암",
+          "filename": "thyroid",
+          "pages": [
+            {
+              "title": "수술전후",
+              "filename": "thyroid-1"
+            },
+            {
+              "title": "방사성치료",
+              "filename": "thyroid-2"
+            },
+            {
+              "title": "면역관리",
+              "filename": "thyroid-3"
+            },
+            {
+              "title": "항암식이",
+              "filename": "thyroid-4"
+            },
+            {
+              "title": "프로그램",
+              "filename": "thyroid-5"
+            }
+          ]
+        },
+        {
+          "title": "기타암",
+          "filename": "etc",
+          "pages": [
+            {
+              "title": "수술전후",
+              "filename": "etc-1"
+            },
+            {
+              "title": "항암방사선",
+              "filename": "etc-2"
+            },
+            {
+              "title": "전이재발관리",
+              "filename": "etc-3"
+            },
+            {
+              "title": "항암식이",
+              "filename": "etc-4"
+            },
+            {
+              "title": "프로그램",
+              "filename": "etc-5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "신경면역센터",
+      "dirname": "neuro",
+      "pages": [
+        {
+          "title": "홈",
+          "filename": "home"
+        },
+        {
+          "title": "대상포진",
+          "filename": "shingles",
+          "pages": [
+            {
+              "title": "초기치료",
+              "filename": "shingles-1"
+            },
+            {
+              "title": "후유증",
+              "filename": "shingles-2"
+            }
+          ]
+        },
+        {
+          "title": "안면마비",
+          "filename": "facial"
+        }
+      ]
+    },
+    {
+      "title": "재활센터",
+      "dirname": "rehab",
+      "pages": [
+        {
+          "title": "홈",
+          "filename": "home"
+        },
+        {
+          "title": "부인과 수술 후 회복",
+          "filename": "gyn"
+        },
+        {
+          "title": "교통사고 후유증",
+          "filename": "accident"
+        },
+        {
+          "title": "수술 후 재활",
+          "filename": "postop"
+        }
+      ]
+    },
+    {
+      "title": "병원소개",
+      "dirname": "hospital",
+      "pages": [
+        {
+          "title": "병원소개",
+          "filename": "about"
+        },
+        {
+          "title": "의료진안내",
+          "board_no": "9"
+        },
+        {
+          "title": "시설안내",
+          "board_no": "10"
+        },
+        {
+          "title": "위치안내",
+          "filename": "location"
+        },
+        {
+          "title": "치료후기",
+          "board_no": "11"
+        },
+        {
+          "title": "면역채널",
+          "board_no": "12"
+        },
+        {
+          "title": "면역소식",
+          "board_no": "13"
+        },
+        {
+          "title": "비급여안내",
+          "filename": "nonpayment"
+        },
+        {
+          "title": "서류발급",
+          "filename": "documents"
+        },
+        {
+          "title": "빠른문의",
+          "filename": "inquiry"
+        },
+        {
+          "title": "FAQ",
+          "board_no": "16"
+        }
+      ]
+    },
+    {
+      "title": "로그인",
+      "dirname": "member",
+      "pages": [
+        {
+          "title": "로그인",
+          "filename": "login"
+        },
+        {
+          "title": "회원가입",
+          "filename": "signup"
+        },
+        {
+          "title": "아이디찾기",
+          "filename": "find_id"
+        },
+        {
+          "title": "비밀번호찾기",
+          "filename": "find_pw"
+        },
+        {
+          "title": "프로필",
+          "filename": "profile"
+        },
+        {
+          "title": "비밀번호변경",
+          "filename": "pwd_change"
+        }
+      ]
+    }
+  ]
+}

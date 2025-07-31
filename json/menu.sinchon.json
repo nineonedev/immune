@@ -1,0 +1,55 @@
+{
+  "site_name": "The Finest",
+  "pages": [
+    {
+      "title": "About",
+      "dirname": "about",
+      "pages": [
+        {
+          "title": "about",
+          "filename": "a_1"
+        }
+      ]
+    },
+    {
+      "title": "Works",
+      "dirname": "works",
+      "pages": [
+        {
+          "title": "works",
+          "filename": "w_1"
+        }
+      ]
+    },
+    {
+      "title": "Process",
+      "dirname": "process",
+      "pages": [
+        {
+          "title": "Process",
+          "filename": "p_1"
+        }
+      ]
+    },
+    {
+      "title": "Insight",
+      "dirname": "insight",
+      "pages": [
+        {
+          "title": "insight",
+          "filename": "i_1"
+        }
+      ]
+    },
+    {
+      "title": "Contact",
+      "dirname": "contact",
+      "pages": [
+        {
+          "title": "contact",
+          "filename": "c_1"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "site_name": "면력한방병원",
+  "pages": [
+    {
+      "title": "한약",
+      "dirname": "herb",
+      "pages": [
+        {
+          "title": "공진단",
+          "filename": "gongjin"
+        },
+        {
+          "title": "경옥고",
+          "filename": "gyeongok"
+        },
+        {
+          "title": "관절고",
+          "filename": "joint"
+        }
+      ]
+    }
+  ]
+}

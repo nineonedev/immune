@@ -4,7 +4,7 @@
 
     <header>
         <div class="no-header">
-           <?php
+            <?php
 			$uri = $_SERVER['REQUEST_URI'];
 			$segments = explode('/', trim($uri, '/'));
 			$area = isset($segments[0]) && $segments[0] !== '' ? $segments[0] : '';
@@ -44,10 +44,10 @@
             <div class="left-grup">
                 <h1 class="no-header__logo">
                     <a href="/<?= htmlspecialchars($area) ?>">
-                         <img src="<?=$UPLOAD_SITEINFO_WDIR_LOGO?>/<?=$SITEINFO_LOGO_FOOTER?>" alt="<?=$SITEINFO_TITLE?>" class="white"/>
-                         <img src="<?= $UPLOAD_SITEINFO_WDIR_LOGO ?>/<?= $SITEINFO_LOGO_TOP ?>" 
-							 alt="<?= $SITEINFO_TITLE ?>" 
-							 class="color"/>
+                        <img src="<?=$UPLOAD_SITEINFO_WDIR_LOGO?>/<?=$SITEINFO_LOGO_FOOTER?>" alt="<?=$SITEINFO_TITLE?>"
+                            class="white" />
+                        <img src="<?= $UPLOAD_SITEINFO_WDIR_LOGO ?>/<?= $SITEINFO_LOGO_TOP ?>"
+                            alt="<?= $SITEINFO_TITLE ?>" class="color" />
                     </a>
                 </h1>
 
@@ -87,6 +87,39 @@
                 <i class="i-30 no-header__btn">
                     <i class="fa-regular fa-bars"></i>
                 </i>
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                <!-- 로그인되지 않은 경우 -->
+                <a href="pages/member/login.php">
+                    <i class="i-30 no-header__login">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </i>
+                </a>
+                <?php else: ?>
+                <!-- 로그인된 경우 -->
+                <?php if (isset($_SESSION['kakao_id']) && !empty($_SESSION['profile_img'])): ?>
+                <!-- 카카오 로그인 사용자 -->
+                <a href="pages/member/profile.php" class="profile-thumb">
+                    <img src="<?= htmlspecialchars($_SESSION['profile_img']) ?>" alt="프로필 이미지"
+                        style="width:30px; height:30px; border-radius:50%;">
+                </a>
+                <?php else: ?>
+                <!-- 일반 사용자 -->
+                <a href="pages/member/profile.php" class="profile-thumb">
+                    <i class="i-30 no-header__login">
+                        <i class="fa-solid fa-user"></i>
+                    </i>
+                </a>
+                <?php endif; ?>
+
+                <!-- 로그아웃 버튼 -->
+                <a href="/auth/logout.php" class="logout-btn" style="margin-left: 8px;">
+                    <i class="i-30">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </i>
+                </a>
+                <?php endif; ?>
+
+
             </div>
         </div>
     </header>
@@ -143,22 +176,22 @@
         <nav class="no-header__m-menu">
             <ul class="no-header__m-gnb">
                 <?php foreach ($gnbItems as $di => $depth) : ?>
-                    <?php $depth_active = $di === $activeIndex ? 'active' : ''; ?>
-                    <li>
-                        <a class="no-header__m--gnb no-body-lg fw600 <?= $depth_active ?>" href="#none">
-                            <?= $depth['title'] ?>
-                        </a>
-                    </li>
+                <?php $depth_active = $di === $activeIndex ? 'active' : ''; ?>
+                <li>
+                    <a class="no-header__m--gnb no-body-lg fw600 <?= $depth_active ?>" href="#none">
+                        <?= $depth['title'] ?>
+                    </a>
+                </li>
                 <?php endforeach; ?>
             </ul>
 
             <ul class="no-header__m-lnb">
                 <?php foreach ($gnbItems as $di => $depth) : ?>
-                    <?php if (isset($depth['pages']) && is_array($depth['pages']) && count($depth['pages']) > 0) : ?>
-                        <li class="<?= $di === $activeIndex ? 'active' : '' ?>">
-                            <ul class="no-header__m-lnb-list disable">
-                                <?php foreach ($depth['pages'] as $page) : ?>
-                                    <?php
+                <?php if (isset($depth['pages']) && is_array($depth['pages']) && count($depth['pages']) > 0) : ?>
+                <li class="<?= $di === $activeIndex ? 'active' : '' ?>">
+                    <ul class="no-header__m-lnb-list disable">
+                        <?php foreach ($depth['pages'] as $page) : ?>
+                        <?php
                                     if (isset($page['pages']) && count($page['pages']) > 0) {
                                         $target = $page['pages'][0];
                                         $page_path = '/' . $area . '/pages/' . $depth['dirname'] . '/' . $target['filename'] . '.php';
@@ -166,27 +199,27 @@
                                         $page_path = '/' . $area . '/pages/' . $depth['dirname'] . '/' . $page['filename'] . '.php';
                                     }
                                     ?>
-                                    <li>
-                                        <a href="<?= $page_path ?>" class="no-body-lg fw300"><?= $page['title'] ?></a>
-                                    </li>
-                                <?php endforeach; ?>
+                        <li>
+                            <a href="<?= $page_path ?>" class="no-body-lg fw300"><?= $page['title'] ?></a>
+                        </li>
+                        <?php endforeach; ?>
 
-                                <li>
-                                    <?php
+                        <li>
+                            <?php
                                     $home_path = '/' . $area . '/pages/' . $depth['dirname'] . '/home.php';
                                     ?>
-                                    <a class="no-body-lg fw300" href="<?= $home_path ?>">
-                                        <?= $depth['title'] ?> 홈으로
-                                    </a>
-                                </li>
-                            </ul>
+                            <a class="no-body-lg fw300" href="<?= $home_path ?>">
+                                <?= $depth['title'] ?> 홈으로
+                            </a>
                         </li>
-                    <?php endif; ?>
+                    </ul>
+                </li>
+                <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
         </nav>
 
-		<?php
+        <?php
 		$uri = $_SERVER['REQUEST_URI'];
 		$segments = explode('/', trim($uri, '/'));
 		$area = isset($segments[0]) && $segments[0] !== '' ? $segments[0] : '';
@@ -234,43 +267,44 @@
 		}
 		?>
 
-		<div class="no-header__m-common">
-			<ul class="no-header__m-lnb-list">
-				<?php foreach ($HOSPITAL_MENU_ITEMS as $PAGE) : ?>
-					<li>
-						<?php if (isset($PAGE['filename'])) : ?>
-							<a href="/<?= $area ?>/pages/hospital/<?= $PAGE['filename'] ?>.php" class="no-body-lg fw300">
-								<?= $PAGE['title'] ?>
-							</a>
-						<?php elseif (isset($PAGE['board_no'])) : ?>
-							<a href="/pages/board/board.list.php?board_no=<?= $PAGE['board_no'] ?>" class="no-body-lg fw300">
-								<?= $PAGE['title'] ?>
-							</a>
-						<?php endif; ?>
-					</li>
-				<?php endforeach; ?>
+        <div class="no-header__m-common">
+            <ul class="no-header__m-lnb-list">
+                <?php foreach ($HOSPITAL_MENU_ITEMS as $PAGE) : ?>
+                <li>
+                    <?php if (isset($PAGE['filename'])) : ?>
+                    <a href="/<?= $area ?>/pages/hospital/<?= $PAGE['filename'] ?>.php" class="no-body-lg fw300">
+                        <?= $PAGE['title'] ?>
+                    </a>
+                    <?php elseif (isset($PAGE['board_no'])) : ?>
+                    <a href="/pages/board/board.list.php?board_no=<?= $PAGE['board_no'] ?>" class="no-body-lg fw300">
+                        <?= $PAGE['title'] ?>
+                    </a>
+                    <?php endif; ?>
+                </li>
+                <?php endforeach; ?>
 
-				<?php if (!empty($AUTH_MENU_ITEMS)) :
+                <?php if (!empty($AUTH_MENU_ITEMS)) :
 					$loginPage = $AUTH_MENU_ITEMS[0];
 				?>
-					<li>
-						<a href="/<?= $area ?>/pages/member/<?= $loginPage['filename'] ?>.php" class="no-body-lg fw300">
-							<?= $loginPage['title'] ?>
-						</a>
-					</li>
-				<?php endif; ?>
+                <li>
+                    <a href="/<?= $area ?>/pages/member/<?= $loginPage['filename'] ?>.php" class="no-body-lg fw300">
+                        <?= $loginPage['title'] ?>
+                    </a>
+                </li>
+                <?php endif; ?>
 
-				<?php foreach ($COMMON_MENU_ITEMS as $PAGE) :
+                <?php foreach ($COMMON_MENU_ITEMS as $PAGE) :
 					$firstFile = $PAGE['pages'][0]['filename'] ?? 'home';
 				?>
-					<li>
-						<a href="/pages/<?= $PAGE['dirname'] ?>/<?= $firstFile ?>.php" class="no-body-lg fw300" target="_blank">
-							<?= $PAGE['title'] ?>
-						</a>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
+                <li>
+                    <a href="/pages/<?= $PAGE['dirname'] ?>/<?= $firstFile ?>.php" class="no-body-lg fw300"
+                        target="_blank">
+                        <?= $PAGE['title'] ?>
+                    </a>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
     </aside>
 
     <aside class="no-header__search-wrap">

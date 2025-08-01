@@ -26,6 +26,14 @@ $board_type = [
     'not' => '공지사항',
 ];
 
+// 회원가입 동의 내용
+$agree_options = [
+    'agree_receive_notice'    => ['label' => "공지 등 문자 수신에 동의 (선택)", 'required' => false],
+    'agree_privacy_policy'    => ['label' => "개인정보 취급방침 동의 (필수)", 'required' => true],
+    'agree_terms_of_service'  => ['label' => "이용약관에 동의 (필수)", 'required' => true]
+];
+
+
 // 허용된 파일 확장자
 $board_file_allow = ['jpg', 'jpeg', 'png', 'gif', 'zip', 'xls', 'xlsx', 'ppt', 'pptx', 'doc', 'docx', 'pdf', 'hwp', 'mp4', 'mov', 'avi', 'txt', 'webp'];
 $employment_file_allow = ['zip', 'xls', 'xlsx', 'ppt', 'pptx', 'doc', 'docx', 'pdf', 'hwp'];

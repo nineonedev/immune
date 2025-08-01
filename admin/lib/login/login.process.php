@@ -39,7 +39,6 @@ if ($data['active_status'] === "N") {
     echo "<script>alert('사용이 중지된 계정입니다.'); window.location.href = '../../index.php';</script>";
     exit;
 }
-
 // Verify password
 if (!password_verify($pwd, $data['upwd'])) {
     echo "<script>alert('아이디 또는 패스워드가 일치하지 않습니다.'); window.location.href = '../../index.php';</script>";

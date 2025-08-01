@@ -57,5 +57,16 @@ $NO_META_APPLE_THOUCH_ICON = "";
 <meta property="og:title" content="<?=$NO_META_OG_TITLE?><?=$NO_STATIC_SUBTITLE?>">
 <meta property="og:description" content="<?=$NO_META_OG_DESCRIPTION?>">
 <link rel="shortcut icon" href="<?=$NO_META_SHORTCUT_ICON?>">
-<meta name="naver-site-verification" content="fac25e6b2f9b700c30a5236fee3cefb59ed9f6a6" />
-<meta name="google-site-verification" content="7D38nEvSN8uMQgHqx7DHTYCYOkpP7cJnlgCyZzXJOQs" />
+
+<!----외부 TAG BEGIN=====================================--->
+<?php
+$stmt = $db->prepare("SELECT tag_content FROM nb_site_tags WHERE is_active = 1 AND sitekey = :sitekey");
+$stmt->execute([':sitekey' => $NO_SITE_UNIQUE_KEY]);
+$tags = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+foreach ($tags as $tag) {
+    echo $tag . PHP_EOL; 
+}
+
+?>
+<!----외부 TAG END=====================================--->

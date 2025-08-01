@@ -129,6 +129,26 @@ nb_member_level
 */
 
 
+// 지점 BRANCH
+$uriSegments = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
+$branch = $uriSegments[0] ?? ''; // 예: 'gangseo'
+
+$state = "/$branch/";
+
+$REST_API_KEY = "060e09813ff0141c60ad7e68b75c7805";
+$AUTH_REDIRECT_URL = "http://localhost:8080/auth/kakao.php";
+
+// STATE에 지점 확인 후 HEADER LOCATION에 물림
+$LOGIN_URL = "https://kauth.kakao.com/oauth/authorize"
+    . "?response_type=code"
+    . "&client_id={$REST_API_KEY}"
+    . "&redirect_uri=" . rawurlencode($AUTH_REDIRECT_URL)
+    . "&state=" . rawurlencode($state)
+    . "&prompt=login";
+
+$LOGOUT_URL = "http://localhost:8080/auth/logout.php";
+
+
 
 $NO_USR_NO   = $_SESSION['no_usr_no']   ?? null;
 $NO_USR_ID   = $_SESSION['no_usr_id']   ?? null;

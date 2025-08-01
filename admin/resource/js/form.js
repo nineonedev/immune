@@ -58,12 +58,16 @@ const formInit = () => {
   const levSelect = $("#lev");
   const chLevSelect = $('select[name="ch_lev"]');
 
+  const activeStatus = $("#active_status");
+  const snsType = $("#sns_type");
   boardSelect.selectmenu();
   perpageSelect.selectmenu({
     change: function (event, ui) {
       $("#frm").submit();
     },
   });
+  snsType.selectmenu();
+  activeStatus.selectmenu();
   category.selectmenu();
   bannerCategory.selectmenu();
   bannerBoard.selectmenu();

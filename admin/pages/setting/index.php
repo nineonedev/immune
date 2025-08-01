@@ -1,8 +1,9 @@
 <?php
 	include_once "../../../inc/lib/base.class.php";
 
-	$depthnum = 4;
-	$pagenum = 2;
+    $pageName = "사이트 정보";
+
+    $depthnum = 10; 
 
 	include_once "../../inc/admin.title.php";
 	include_once "../../inc/admin.css.php";
@@ -412,7 +413,8 @@
                                 <!-- admin-block -->
                             </div>
                         </div>
-                        <!-- card -->
+
+
 
                         <div class="no-card">
                             <div class="no-admin-mid-block">

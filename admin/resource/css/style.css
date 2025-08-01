@@ -549,10 +549,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    visibility 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 @media (max-width: 768px) {
   .no-nav-list {
@@ -1037,9 +1034,7 @@ textarea {
 }
 [data-theme="light"] #theme-btn .toggle {
   background: linear-gradient(145deg, #e1e1e1, #fff);
-  box-shadow:
-    3px 3px 4px #e6e6e6,
-    -3px -3px 4px #fff;
+  box-shadow: 3px 3px 4px #e6e6e6, -3px -3px 4px #fff;
 }
 [data-theme="light"] #theme-btn .toggle .bx-sun {
   color: var(--white-100);
@@ -1052,8 +1047,7 @@ textarea {
 }
 [data-theme="dark"] #theme-btn .toggle {
   background: var(--card-background);
-  box-shadow:
-    3px 3px 3px var(--main-background-color),
+  box-shadow: 3px 3px 3px var(--main-background-color),
     -3px -3px 3px var(--title-color);
 }
 [data-theme="dark"] #theme-btn .toggle .bx-sun {
@@ -2177,8 +2171,9 @@ input.no-input--detail {
 }
 .no-textarea--detail {
   width: 100%;
-  height: 120px;
+  height: 160px;
   resize: none;
+  line-height: 1.51;
 }
 input.no-input--date {
   max-width: 19rem;
@@ -2232,6 +2227,22 @@ a.ui-button:active,
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+}
+#active_status-button,
+#sns_type-button {
+  font-size: 1.5rem;
+  transition: 0.2s;
+  background-color: var(--main-background);
+  border: 1px solid var(--border-color);
+  height: 4.5rem;
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4rem;
+  max-width: 18rem;
+  flex-direction: row-reverse;
 }
 #searchColumn-button {
   font-size: 1.5rem;
@@ -3074,7 +3085,7 @@ a.ui-button:active,
 }
 .no-apply_table td.no-td__million {
   position: relative;
-  padding:;
+  padding: ;
 }
 .no-apply_table td.no-td__million::before {
   content: "(억원)";
@@ -3798,4 +3809,31 @@ input[type="file"].note-image-input {
 .note-editable img,
 .note-editable video {
   max-width: 100%;
+}
+.status-select {
+  appearance: none; /* 기본 브라우저 스타일 제거 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 90px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'6'%20viewBox%3D'0%200%2010%206'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l5%206%205-6z'%20fill%3D'%23999'%20/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 6px;
+
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.status-select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  background-color: #fff;
 }

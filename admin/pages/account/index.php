@@ -23,7 +23,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!--=====================HEAD========================= -->
 <?php include_once "../../inc/admin.head.php"; ?>
 
-<body>
+<body data-page="account">
     <div class="no-wrap">
 
         <!--=====================HEADER========================= -->

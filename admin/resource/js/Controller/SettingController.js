@@ -1,8 +1,7 @@
 import { fetcher } from "../Core/fetcher.js";
-import { attachPhoneAutoHyphen } from "../Core/formatter.js";
 import { API } from "../core/apiRoutes.js";
 
-export class AccountController {
+export class SettingController {
   constructor(
     formSelector = "#frm",
     insertBtnSelector = "#submitBtn",
@@ -16,8 +15,7 @@ export class AccountController {
   }
 
   init() {
-    console.log("[AccountController.js]");
-    attachPhoneAutoHyphen();
+    console.log("[SettingController.js] 초기화됨");
 
     if (this.form && this.insertBtn) {
       this.insertBtn.addEventListener("click", this.insert.bind(this));
@@ -33,9 +31,9 @@ export class AccountController {
   async insert(e) {
     e.preventDefault();
     const formData = new FormData(this.form);
-    formData.set("mode", "save");
+    formData.set("mode", "insert");
 
-    await this.sendRequest(formData, "저장되었습니다.");
+    await this.sendRequest(formData, "등록되었습니다.");
   }
 
   async update(e) {
@@ -64,14 +62,14 @@ export class AccountController {
 
   async sendRequest(formData, successMessage) {
     try {
-      const res = await fetcher(API.ACCOUNT, formData);
+      const res = await fetcher(API.SETTING, formData);
       alert(res.message || successMessage);
 
       const mode = formData.get("mode");
       if (mode === "delete") {
         location.reload();
       } else {
-        location.href = "/admin/pages/account";
+        location.href = "/admin/pages/setting/external.tag.php";
       }
     } catch (err) {
       alert(err.message || "처리 중 오류가 발생했습니다.");

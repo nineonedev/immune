@@ -73,7 +73,10 @@ $menus = [
         'key' => 'setting',
         'title' => '사이트 정보관리',
         'icon' => 'fa-globe',
-        'url'  => '/admin/pages/setting', 
+        'subs' => [
+            ['title' => '사이트 정보 관리', 'url' => 'setting/index.php'],
+            ['title' => '사이트 외부 스크립트 관리', 'url' => 'setting/external.tag.php'],
+        ]
     ],
 ];
 

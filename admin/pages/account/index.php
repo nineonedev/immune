@@ -64,18 +64,12 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div class="no-card-body">
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
-                                        <li>
-                                            <a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check active"
-                                                onClick="doCheckUnCheck('no-chk', 'check');">전체선택</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check"
-                                                onClick="doCheckUnCheck('no-chk', 'uncheck');">선택해제</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check"
-                                                onClick="doDeleteArray();">선택삭제</a>
-                                        </li>
+                                        <li><a href="#" class="no-btn no-btn--sm no-btn--check"
+                                                data-action="selectAll">전체선택</a></li>
+                                        <li><a href="#" class="no-btn no-btn--sm no-btn--check"
+                                                data-action="deselectAll">선택해제</a></li>
+                                        <li><a href="#" class="no-btn no-btn--sm no-btn--check"
+                                                data-action="deleteSelected">선택삭제</a></li>
                                     </ul>
 
                                 </div>
@@ -86,8 +80,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <th class="no-width-25 no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
-                                                            <input type="checkbox"
-                                                                onClick="doCheckUnCheck('no-chk', this.checked ? 'check' : 'uncheck')" />
+                                                            <input type="checkbox" id="selectAllCheckbox" />
                                                             <span><i class="bx bxs-check-square"></i></span>
                                                         </label>
                                                     </div>
@@ -106,11 +99,11 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (!empty($rows)): ?>
                                             <?php foreach ($rows as $row): ?>
                                             <tr>
-                                                <td class="no-check">
+                                                <td>
                                                     <div class="no-checkbox-form">
                                                         <label>
-                                                            <input type="checkbox" name="chk[]"
-                                                                value="<?= $row['no'] ?>" class="no-chk" />
+                                                            <input type="checkbox" class="no-chk"
+                                                                value="<?= $row['no'] ?>" />
                                                             <span><i class="bx bxs-check-square"></i></span>
                                                         </label>
                                                     </div>

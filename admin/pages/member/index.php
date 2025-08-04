@@ -171,36 +171,11 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <h2 class="no-card-title"><?=$pageName?> 관리</h2>
                             </div>
                             <div class="no-card-body">
-                                <div class="no-table-option">
-                                    <ul class="no-table-check-control">
-                                        <li>
-                                            <a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check active"
-                                                onClick="doCheckUnCheck('no-chk', 'check');">전체선택</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check"
-                                                onClick="doCheckUnCheck('no-chk', 'uncheck');">선택해제</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check"
-                                                onClick="doDeleteArray();">선택삭제</a>
-                                        </li>
-                                    </ul>
 
-                                </div>
                                 <div class="no-table-responsive">
                                     <table class="no-table">
                                         <thead>
                                             <tr>
-                                                <th class="no-width-25 no-check">
-                                                    <div class="no-checkbox-form">
-                                                        <label>
-                                                            <input type="checkbox"
-                                                                onClick="doCheckUnCheck('no-chk', this.checked ? 'check' : 'uncheck')" />
-                                                            <span><i class="bx bxs-check-square"></i></span>
-                                                        </label>
-                                                    </div>
-                                                </th>
                                                 <th>번호</th>
                                                 <th>아이디</th>
                                                 <th>이름</th>
@@ -214,15 +189,6 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (!empty($rows)): ?>
                                             <?php foreach ($rows as $row): ?>
                                             <tr>
-                                                <td class="no-check">
-                                                    <div class="no-checkbox-form">
-                                                        <label>
-                                                            <input type="checkbox" name="chk[]"
-                                                                value="<?= $row['id'] ?>" class="no-chk" />
-                                                            <span><i class="bx bxs-check-square"></i></span>
-                                                        </label>
-                                                    </div>
-                                                </td>
                                                 <td><?= $row['id'] ?></td>
                                                 <td><?= htmlspecialchars($row['user_id']) ?></td>
                                                 <td><?= htmlspecialchars($row['name']) ?></td>

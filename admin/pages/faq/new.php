@@ -131,21 +131,22 @@ include_once "../../inc/admin.js.php";
                                     <h3 class="no-admin-title">노출 여부</h3>
                                     <div class="no-admin-content">
                                         <div class="no-radio-form no-list">
-                                            <label for="active_on">
+                                            <?php foreach ($is_active as $value => $label): 
+                                                $current_value = 1;
+                                            ?>
+                                            <?php
+                                                $id = 'active_' . $value;
+                                                $checked = ($current_value == $value) ? 'checked' : '';
+                                            ?>
+                                            <label for="<?= $id ?>">
                                                 <div class="no-radio-box">
-                                                    <input type="radio" name="is_active" id="active_on" value="1"
-                                                        checked>
+                                                    <input type="radio" name="is_active" id="<?= $id ?>"
+                                                        value="<?= $value ?>" <?= $checked ?>>
                                                     <span><i class="bx bx-radio-circle-marked"></i></span>
                                                 </div>
-                                                <span class="no-radio-text">노출</span>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
                                             </label>
-                                            <label for="active_off">
-                                                <div class="no-radio-box">
-                                                    <input type="radio" name="is_active" id="active_off" value="0">
-                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
-                                                </div>
-                                                <span class="no-radio-text">숨김</span>
-                                            </label>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
                                 </div>

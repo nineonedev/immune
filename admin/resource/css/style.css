@@ -3843,7 +3843,8 @@ input[type="file"].note-image-input {
 #categories-button,
 #is_active-button,
 #category_primary-button,
-#category_secondary-button {
+#category_secondary-button,
+#department-button {
   border: 1px solid var(--border-color);
   width: 100%;
 }

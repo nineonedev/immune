@@ -143,6 +143,27 @@ try {
         exit;
     }
 
+
+    // DELETE_ARRAY
+    if ($mode === 'delete_array') {
+        $ids = json_decode($input['ids'] ?? '[]', true);
+
+        if (!is_array($ids) || empty($ids)) {
+            echo json_encode(['success' => false, 'message' => '삭제할 항목이 없습니다.']);
+            exit;
+        }
+
+        $result = AccountModel::deleteMultiple($ids);
+
+        echo json_encode([
+            'success' => $result,
+            'message' => $result ? '선택 항목이 삭제되었습니다.' : '삭제 실패'
+        ]);
+        exit;
+    }
+
+
+
     // ========================================================
     // [기타: 정의되지 않은 mode]
     // ========================================================

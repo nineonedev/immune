@@ -63,6 +63,8 @@ const formInit = () => {
   const categories = $("#categories");
   const isActive = $("#is_active");
 
+  const department = $("#department");
+
   const categoryPrimary = $("#category_primary");
   const categorySecondary = $("#category_secondary");
 
@@ -87,15 +89,15 @@ const formInit = () => {
   levSelect.selectmenu();
   chLevSelect.selectmenu();
 
-  /*
   branchSelect.selectmenu();
-  pathSelect.selectmenu();*/
+  pathSelect.selectmenu();
   categories.selectmenu();
   isActive.selectmenu();
 
-  /*
+  department.selectmenu();
+
   categoryPrimary.selectmenu();
-  categorySecondary.selectmenu();*/
+  categorySecondary.selectmenu();
 
   // const bannerDate = [$('#b_sdate'), $('#b_edate')];
   // const bannerDateRadio = [$('#input3'), $('#input4')];

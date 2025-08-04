@@ -35,6 +35,18 @@ class AccountModel {
         return $stmt->execute([':no' => $id]);
     }
 
+    public static function deleteMultiple(array $ids): bool
+    {
+        if (empty($ids)) return false;
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $db = DB::getInstance();
+        $stmt = $db->prepare("DELETE FROM nb_admin WHERE no IN ($placeholders)");
+
+        return $stmt->execute($ids);
+    }
+
     public static function update($id, $data) 
     {
         $db = DB::getInstance();

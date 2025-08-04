@@ -73,6 +73,25 @@ $nonpay_secondary_categories = [
     ]
 ];
 
+// ACTIVE 공통
+$is_active = [
+    1 => "활성화",
+    0 => "비활성화"
+];
+
+// 부서 리스트
+$departments = [
+    1 => '내과',
+    2 => '정형외과',
+    3 => '피부과',
+];
+
+
+// 저서 및 논문 노출 여부
+$publication_visible = [
+    1 => '노출',
+    0 => '숨김',
+];
 // 허용된 파일 확장자
 $board_file_allow = ['jpg', 'jpeg', 'png', 'gif', 'zip', 'xls', 'xlsx', 'ppt', 'pptx', 'doc', 'docx', 'pdf', 'hwp', 'mp4', 'mov', 'avi', 'txt', 'webp'];
 $employment_file_allow = ['zip', 'xls', 'xlsx', 'ppt', 'pptx', 'doc', 'docx', 'pdf', 'hwp'];

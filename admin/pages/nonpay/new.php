@@ -113,6 +113,30 @@ echo "<script>window.nonpaySecondaryCategories = " . json_encode($nonpay_seconda
                                     </div>
                                 </div>
 
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">노출 여부</h3>
+                                    <div class="no-admin-content">
+                                        <div class="no-radio-form no-list">
+                                            <?php foreach ($is_active as $value => $label): 
+                                                $current_value = 1;
+                                            ?>
+                                            <?php
+                                                $id = 'active_' . $value;
+                                                $checked = ($current_value == $value) ? 'checked' : '';
+                                            ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="<?= $id ?>"
+                                                        value="<?= $value ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- 버튼 -->
                                 <div class="no-items-center center">
                                     <a href="./index.php" class="no-btn no-btn--big no-btn--normal">목록</a>

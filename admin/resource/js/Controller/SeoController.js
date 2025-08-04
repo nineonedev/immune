@@ -1,5 +1,6 @@
 import { fetcher } from "../Core/fetcher.js";
 import { API } from "../core/apiRoutes.js";
+import { initCheckboxManager } from "../utils/initCheckboxManager.js";
 
 export class SeoController {
   constructor({
@@ -33,6 +34,13 @@ export class SeoController {
     this.attachBranchChangeEvent();
 
     this.initSelectedBranchPaths();
+
+    initCheckboxManager(async (selectedIds) => {
+      const formData = new FormData();
+      formData.set("mode", "delete_array");
+      formData.set("ids", JSON.stringify(selectedIds));
+      await this.sendRequest(formData, "선택 항목이 삭제되었습니다.");
+    });
   }
 
   async insert(e) {
@@ -73,7 +81,7 @@ export class SeoController {
       alert(res.message || successMessage);
 
       const mode = formData.get("mode");
-      if (mode === "delete") {
+      if (mode === "delete" || mode === "delete_array") {
         location.reload();
       } else {
         location.href = "/admin/pages/setting/seo.php";

@@ -1,5 +1,6 @@
 import { fetcher } from "../Core/fetcher.js";
 import { API } from "../core/apiRoutes.js";
+import { initCheckboxManager } from "../utils/initCheckboxManager.js";
 
 export class NonPayController {
   constructor({
@@ -41,6 +42,13 @@ export class NonPayController {
     if (this.primarySelect?.value) {
       this.handlePrimaryChange();
     }
+
+    initCheckboxManager(async (selectedIds) => {
+      const formData = new FormData();
+      formData.set("mode", "delete_array");
+      formData.set("ids", JSON.stringify(selectedIds));
+      await this.sendRequest(formData, "선택 항목이 삭제되었습니다.");
+    });
   }
 
   handlePrimaryChange() {
@@ -48,7 +56,9 @@ export class NonPayController {
     const secondaryMap = window.nonpaySecondaryCategories || {};
     const secondaryList = secondaryMap[selectedPrimary] || {};
 
-    // 기존 옵션 초기화
+    const currentValue =
+      this.secondarySelect.dataset.selected || this.secondarySelect.value;
+
     this.secondarySelect.innerHTML =
       '<option value="">2차 카테고리 선택</option>';
 
@@ -57,8 +67,7 @@ export class NonPayController {
       option.value = key;
       option.textContent = label;
 
-      // 기존 선택된 값 유지 (수정 모드에서 필요)
-      if (this.secondarySelect.dataset.selected === key) {
+      if (key === currentValue) {
         option.selected = true;
       }
 
@@ -100,11 +109,11 @@ export class NonPayController {
 
   async sendRequest(formData, successMessage) {
     try {
-      const res = await fetcher(API.NonPay, formData);
+      const res = await fetcher(API.NONPAY, formData);
       alert(res.message || successMessage);
 
       const mode = formData.get("mode");
-      if (mode === "delete") {
+      if (mode === "delete" || mode === "delete_array") {
         location.reload();
       } else {
         location.href = "/admin/pages/nonpay/index.php";

@@ -5,5 +5,6 @@ export const API = {
   SETTING: "/admin/Controller/SettingController.php",
   SEO: "/admin/Controller/SeoController.php",
   FAQ: "/admin/Controller/FaqController.php",
-  NonPay: "/admin/Controller/NonPayController.php",
+  NONPAY: "/admin/Controller/NonPayController.php",
+  DOCTOR: "/admin/Controller/DoctorController.php",
 };

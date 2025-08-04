@@ -87,24 +87,16 @@ include_once "../../inc/admin.js.php";
                                         </select>
                                     </div>
                                 </div>
+
                                 <!-- 2차 카테고리 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title"><label for="category_secondary">2차 카테고리</label></h3>
                                     <div class="no-admin-content">
-                                        <select name="category_secondary" id="category_secondary" required>
+                                        <select name="category_secondary" id="category_secondary" required
+                                            data-selected="<?= htmlspecialchars($item['category_secondary'] ?? '') ?>">
                                             <option value="">2차 카테고리 선택</option>
-                                            <?php
-                                                $selected_primary = $item['category_primary'] ?? null;
-                                                $selected_secondary = $item['category_secondary'] ?? null;
-
-                                                if (isset($nonpay_secondary_categories[$selected_primary])) {
-                                                    foreach ($nonpay_secondary_categories[$selected_primary] as $key => $label) {
-                                                        $selected = ($selected_secondary == $key) ? 'selected' : '';
-                                                        echo "<option value=\"{$key}\" {$selected}>".htmlspecialchars($label)."</option>";
-                                                    }
-                                                }
-                                            ?>
                                         </select>
+
                                     </div>
                                 </div>
 
@@ -140,10 +132,21 @@ include_once "../../inc/admin.js.php";
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">노출 여부</h3>
                                     <div class="no-admin-content">
-                                        <label><input type="radio" name="is_active" value="1"
-                                                <?= $item['is_active'] ? 'checked' : '' ?>> 노출</label>
-                                        <label><input type="radio" name="is_active" value="0"
-                                                <?= !$item['is_active'] ? 'checked' : '' ?>> 숨김</label>
+                                        <div class="no-radio-form no-list">
+                                            <?php foreach ($is_active as $value => $label): 
+                                                $id = 'active_' . $value;
+                                                $checked = ((int)$item['is_active'] === $value) ? 'checked' : '';
+                                            ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="<?= $id ?>"
+                                                        value="<?= $value ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
+                                            <?php endforeach; ?>
+                                        </div>
                                     </div>
                                 </div>
 

@@ -1,5 +1,6 @@
 import { fetcher } from "../Core/fetcher.js";
 import { API } from "../core/apiRoutes.js";
+import { initCheckboxManager } from "../utils/initCheckboxManager.js";
 
 export class FaqController {
   constructor({
@@ -26,6 +27,13 @@ export class FaqController {
     }
 
     this.attachDeleteEvents();
+
+    initCheckboxManager(async (selectedIds) => {
+      const formData = new FormData();
+      formData.set("mode", "delete_array");
+      formData.set("ids", JSON.stringify(selectedIds));
+      await this.sendRequest(formData, "선택 항목이 삭제되었습니다.");
+    });
   }
 
   async insert(e) {
@@ -66,7 +74,7 @@ export class FaqController {
       alert(res.message || successMessage);
 
       const mode = formData.get("mode");
-      if (mode === "delete") {
+      if (mode === "delete" || mode === "delete_array") {
         location.reload();
       } else {
         location.href = "/admin/pages/faq/index.php";

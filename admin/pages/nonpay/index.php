@@ -89,11 +89,10 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="no-card-body no-admin-column">
 
-                                <!-- 카테고리 선택 -->
+                                <!-- 대카테고리 (1차) -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">대카테고리</h3>
                                     <div class="no-admin-content">
-                                        <!-- 1차 카테고리 -->
                                         <select name="category_primary" id="category_primary">
                                             <option value="">전체</option>
                                             <?php foreach ($nonpay_primary_categories as $key => $label): ?>
@@ -105,15 +104,18 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </select>
                                     </div>
                                 </div>
-                                <!-- 카테고리 선택 -->
+
+                                <!-- 중카테고리 (2차) -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">중카테고리</h3>
                                     <div class="no-admin-content">
                                         <select name="category_secondary" id="category_secondary">
                                             <option value="">전체</option>
                                             <?php 
+                                                // 현재 선택된 1차 카테고리에 해당하는 2차 카테고리 배열만 출력
                                                 $secondaries = $nonpay_secondary_categories[$category_primary] ?? [];
-                                                foreach ($secondaries as $subKey => $subLabel): ?>
+                                                foreach ($secondaries as $subKey => $subLabel): 
+                                            ?>
                                             <option value="<?= $subKey ?>"
                                                 <?= $category_secondary == $subKey ? 'selected' : '' ?>>
                                                 <?= htmlspecialchars($subLabel) ?>
@@ -163,14 +165,21 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="no-card-body">
+                                <!-- 체크 컨트롤 -->
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
-                                        <li><a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check active"
-                                                onClick="doCheckUnCheck('no-chk', 'check');">전체선택</a></li>
-                                        <li><a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check"
-                                                onClick="doCheckUnCheck('no-chk', 'uncheck');">선택해제</a></li>
-                                        <li><a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check"
-                                                onClick="doDeleteArray();">선택삭제</a></li>
+                                        <li>
+                                            <a href="#" class="no-btn no-btn--sm no-btn--check"
+                                                data-action="selectAll">전체선택</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="no-btn no-btn--sm no-btn--check"
+                                                data-action="deselectAll">선택해제</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="no-btn no-btn--sm no-btn--check"
+                                                data-action="deleteSelected">선택삭제</a>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -181,8 +190,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <th class="no-width-25 no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
-                                                            <input type="checkbox"
-                                                                onClick="doCheckUnCheck('no-chk', this.checked ? 'check' : 'uncheck')" />
+                                                            <input type="checkbox" id="selectAllCheckbox" />
                                                             <span><i class="bx bxs-check-square"></i></span>
                                                         </label>
                                                     </div>
@@ -218,7 +226,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </td>
                                                 <td><?= htmlspecialchars($row['title']) ?></td>
                                                 <td><?= number_format($row['cost']) ?> 원</td>
-                                                <td><?= $row['is_active'] ? '노출' : '숨김' ?></td>
+                                                <td><?= $is_active[$row['is_active']] ?? '미정' ?></td>
                                                 <td><?= $row['sort_no'] ?></td>
                                                 <td><?= substr($row['updated_at'], 0, 10) ?></td>
                                                 <td>
@@ -245,16 +253,18 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <?php include_once "../../lib/admin.pagination.php"; ?>
                 </section>
             </form>
         </main>
     </div>
+
+    <script>
+    window.nonpaySecondaryCategories = <?= json_encode($nonpay_secondary_categories, JSON_UNESCAPED_UNICODE) ?>;
+    </script>
 
     <?php include_once "../../inc/admin.footer.php"; ?>

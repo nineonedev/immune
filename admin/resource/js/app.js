@@ -4,6 +4,8 @@ import { SettingController } from "./Controller/SettingController.js"; // ✅ �
 import { SeoController } from "./Controller/SeoController.js";
 import { FaqController } from "./Controller/FaqController.js";
 import { NonPayController } from "./Controller/NonPayController.js";
+import { DoctorController } from "./Controller/DoctorController.js";
+import { previewImage } from "./Core/previewImage.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const page = document.body.dataset.page;
@@ -37,6 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
     case "nonpay":
       const nonPayController = new NonPayController();
       nonPayController.init();
+      break;
+
+    case "doctor":
+      const doctorController = new DoctorController();
+      doctorController.init();
+      break;
 
     default:
       // 페이지 매칭 안 될 경우 아무 처리 안 함

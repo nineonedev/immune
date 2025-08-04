@@ -55,4 +55,20 @@ class SiteTagModel {
         $stmt = $db->prepare($sql);
         return $stmt->execute([':id' => $id]);
     }
+
+
+
+    public static function deleteMultiple(array $ids): bool
+    {
+        if (empty($ids)) return false;
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $db = DB::getInstance();
+        $stmt = $db->prepare("DELETE FROM nb_site_tags WHERE id IN ($placeholders)");
+
+        return $stmt->execute($ids);
+    }
+
+    
 }

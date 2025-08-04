@@ -1,15 +1,15 @@
 import { fetcher } from "../Core/fetcher.js";
-import { attachPhoneAutoHyphen } from "../Core/formatter.js";
 import { API } from "../core/apiRoutes.js";
+import { summernoteInit } from "../Core/summernoteInit.js";
 import { initCheckboxManager } from "../utils/initCheckboxManager.js";
 
-export class AccountController {
-  constructor(
+export class DoctorController {
+  constructor({
     formSelector = "#frm",
     insertBtnSelector = "#submitBtn",
     updateBtnSelector = "#editBtn",
-    deleteBtnSelector = ".delete-btn"
-  ) {
+    deleteBtnSelector = ".delete-btn",
+  } = {}) {
     this.form = document.querySelector(formSelector);
     this.insertBtn = document.querySelector(insertBtnSelector);
     this.updateBtn = document.querySelector(updateBtnSelector);
@@ -17,18 +17,11 @@ export class AccountController {
   }
 
   init() {
-    console.log("[AccountController.js]");
-    attachPhoneAutoHyphen();
+    console.log("[DoctorController] Initialized");
 
-    if (this.form && this.insertBtn) {
-      this.insertBtn.addEventListener("click", this.insert.bind(this));
-    }
-
-    if (this.form && this.updateBtn) {
-      this.updateBtn.addEventListener("click", this.update.bind(this));
-    }
-
+    this.bindFormEvents();
     this.attachDeleteEvents();
+    this.initEditors();
 
     initCheckboxManager(async (selectedIds) => {
       const formData = new FormData();
@@ -38,20 +31,21 @@ export class AccountController {
     });
   }
 
-  async insert(e) {
-    e.preventDefault();
-    const formData = new FormData(this.form);
-    formData.set("mode", "save");
+  bindFormEvents() {
+    if (this.form && this.insertBtn) {
+      this.insertBtn.addEventListener("click", this.insert.bind(this));
+    }
 
-    await this.sendRequest(formData, "저장되었습니다.");
+    if (this.form && this.updateBtn) {
+      this.updateBtn.addEventListener("click", this.update.bind(this));
+    }
   }
 
-  async update(e) {
-    e.preventDefault();
-    const formData = new FormData(this.form);
-    formData.set("mode", "update");
-
-    await this.sendRequest(formData, "수정되었습니다.");
+  initEditors() {
+    summernoteInit("#career");
+    summernoteInit("#activity");
+    summernoteInit("#education");
+    summernoteInit("#publications");
   }
 
   attachDeleteEvents() {
@@ -64,22 +58,35 @@ export class AccountController {
         const formData = new FormData();
         formData.set("mode", "delete");
         formData.set("id", id);
-
         await this.sendRequest(formData, "삭제되었습니다.");
       });
     });
   }
 
+  async insert(e) {
+    e.preventDefault();
+    const formData = new FormData(this.form);
+    formData.set("mode", "insert");
+    await this.sendRequest(formData, "의료진이 등록되었습니다.");
+  }
+
+  async update(e) {
+    e.preventDefault();
+    const formData = new FormData(this.form);
+    formData.set("mode", "update");
+    await this.sendRequest(formData, "의료진이 수정되었습니다.");
+  }
+
   async sendRequest(formData, successMessage) {
     try {
-      const res = await fetcher(API.ACCOUNT, formData);
+      const res = await fetcher(API.DOCTOR, formData);
       alert(res.message || successMessage);
 
       const mode = formData.get("mode");
       if (mode === "delete" || mode === "delete_array") {
         location.reload();
       } else {
-        location.href = "/admin/pages/account";
+        location.href = "/admin/pages/doctor/index.php";
       }
     } catch (err) {
       alert(err.message || "처리 중 오류가 발생했습니다.");

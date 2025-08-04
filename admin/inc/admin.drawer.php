@@ -42,7 +42,7 @@ $menus = [
         'key' => 'doctor',
         'title' => '의료진 관리',
         'icon' => 'fa-user-doctor',
-        'url'  => '/admin/main.php',
+        'url'  => '/admin/pages/doctor/index.php',
         'subs' => []
     ],
     6 => [

@@ -224,14 +224,13 @@ function imageUpload($path, $upfile, $origin_file = '', $return_origin = false) 
 
 function imageDelete(string $path): bool
 {
-    // Check if path is provided and if file exists
-    if ($path && file_exists($path)) {
-        return unlink($path); // Return the result of the unlink operation directly
+    // Check if path is provided, exists, and is a file (not a directory)
+    if ($path && file_exists($path) && is_file($path)) {
+        return unlink($path);
     }
 
-    return false; // Return false if the file doesn't exist or path is empty
+    return false;
 }
-
 
 
 // 페이지 리스트 출력

@@ -33,6 +33,45 @@ $agree_options = [
     'agree_terms_of_service'  => ['label' => "이용약관에 동의 (필수)", 'required' => true]
 ];
 
+// 지점 변수 설정
+$branchList = [
+    1 => ['code' => 'gangseo', 'label' => '강서'],
+    2 => ['code' => 'gwangmyeong', 'label' => '광명'],
+    3 => ['code' => 'sinchon', 'label' => '신촌'],
+];
+
+// FAQ 카테고리
+$faq_categories = [
+  1 => '입원/퇴원/외출',
+  2 => '진료/처방/본원치료',
+  3 => '입원생활',
+  4 => '식이/영양',
+  5 => '상담/문의/후기',
+  6 => '기타',
+];
+
+// 비급여 카테고리 1차
+$nonpay_primary_categories = [
+    1 => '행위료',
+    2 => '약제비',
+    3 => '재료비'
+];
+// 비급여 카테고리 2차
+$nonpay_secondary_categories = [
+    1 => [
+        1 => '검사료',
+        2 => '이학요법료',
+        3 => '정신요법료',
+    ],
+    2 => [
+        1 => '주사료',
+        2 => '약품대',
+    ],
+    3 => [
+        1 => '의료소모품',
+        2 => '치료재료대',
+    ]
+];
 
 // 허용된 파일 확장자
 $board_file_allow = ['jpg', 'jpeg', 'png', 'gif', 'zip', 'xls', 'xlsx', 'ppt', 'pptx', 'doc', 'docx', 'pdf', 'hwp', 'mp4', 'mov', 'avi', 'txt', 'webp'];

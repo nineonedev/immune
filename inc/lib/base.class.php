@@ -20,7 +20,6 @@ header("Content-Type: text/html; charset=utf-8");
 $NO_CURRENT_URL = $_SERVER['HTTP_HOST'] ?? '';
 $NO_MAKE_KEY = hash("sha256", $NO_CURRENT_URL . ($NO_SITE_UNIQUE_KEY ?? ''));
 
-
 /*
 if(!isset($_SERVER["HTTPS"])) {
 	header('Location: https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']);
@@ -129,16 +128,18 @@ nb_member_level
 */
 
 
-// 지점 BRANCH
+// 지점 BRANCH 설정
 $uriSegments = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
-$branch = $uriSegments[0] ?? ''; // 예: 'gangseo'
+$branch = $uriSegments[0] ?? ''; 
 
+// STATE 정의
 $state = "/$branch/";
 
+// REST API 설정
 $REST_API_KEY = "060e09813ff0141c60ad7e68b75c7805";
 $AUTH_REDIRECT_URL = "http://localhost:8080/auth/kakao.php";
 
-// STATE에 지점 확인 후 HEADER LOCATION에 물림
+// 로그인 URL 설정
 $LOGIN_URL = "https://kauth.kakao.com/oauth/authorize"
     . "?response_type=code"
     . "&client_id={$REST_API_KEY}"

@@ -46,16 +46,16 @@ $menus = [
         'subs' => []
     ],
     6 => [
-        'key' => 'noninsured',
+        'key' => 'nonpay',
         'title' => '비급여 항목 관리',
         'icon' => 'fa-receipt',
-        'url'  => '/admin/main.php',
+        'url'  => '/admin/pages/nonpay/index.php',
     ],
     7 => [
         'key' => 'faq',
         'title' => 'FAQ 관리',
         'icon' => 'fa-clipboard-question',
-        'url'  => '/admin/faq/index.php',
+        'url'  => '/admin/pages/faq/index.php',
     ],
     8 => [
         'key' => 'account',
@@ -76,6 +76,7 @@ $menus = [
         'subs' => [
             ['title' => '사이트 정보 관리', 'url' => 'setting/index.php'],
             ['title' => '사이트 외부 스크립트 관리', 'url' => 'setting/external.tag.php'],
+            ['title' => '페이지별 SEO 관리', 'url' => 'setting/seo.php'],
         ]
     ],
 ];

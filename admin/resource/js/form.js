@@ -58,6 +58,14 @@ const formInit = () => {
   const levSelect = $("#lev");
   const chLevSelect = $('select[name="ch_lev"]');
 
+  const branchSelect = $("#branch_id");
+  const pathSelect = $("#path");
+  const categories = $("#categories");
+  const isActive = $("#is_active");
+
+  const categoryPrimary = $("#category_primary");
+  const categorySecondary = $("#category_secondary");
+
   const activeStatus = $("#active_status");
   const snsType = $("#sns_type");
   boardSelect.selectmenu();
@@ -78,6 +86,16 @@ const formInit = () => {
 
   levSelect.selectmenu();
   chLevSelect.selectmenu();
+
+  /*
+  branchSelect.selectmenu();
+  pathSelect.selectmenu();*/
+  categories.selectmenu();
+  isActive.selectmenu();
+
+  /*
+  categoryPrimary.selectmenu();
+  categorySecondary.selectmenu();*/
 
   // const bannerDate = [$('#b_sdate'), $('#b_edate')];
   // const bannerDateRadio = [$('#input3'), $('#input4')];

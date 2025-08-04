@@ -3837,3 +3837,13 @@ input[type="file"].note-image-input {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
   background-color: #fff;
 }
+
+#branch_id-button,
+#path-button,
+#categories-button,
+#is_active-button,
+#category_primary-button,
+#category_secondary-button {
+  border: 1px solid var(--border-color);
+  width: 100%;
+}

@@ -18,7 +18,7 @@ include_once "../../inc/admin.js.php";
 
 </head>
 
-<body>
+<body data-page="account">
     <div class="no-wrap">
         <?php include_once "../../inc/admin.header.php"; ?>
 

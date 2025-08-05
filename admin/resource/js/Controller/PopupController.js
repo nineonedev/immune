@@ -3,7 +3,7 @@ import { API } from "../core/apiRoutes.js";
 import { initCheckboxManager } from "../utils/initCheckboxManager.js";
 import { attachRadioToggle } from "../utils/initRadioToggle.js";
 
-export class BannerController {
+export class PopupController {
   constructor({
     formSelector = "#frm",
     insertBtnSelector = "#submitBtn",
@@ -17,7 +17,7 @@ export class BannerController {
   }
 
   init() {
-    console.log("[BannerController] Initialized");
+    console.log("[PopupController] Initialized");
 
     this.bindFormEvents();
     this.attachDeleteEvents();
@@ -26,7 +26,7 @@ export class BannerController {
       const formData = new FormData();
       formData.set("mode", "delete_array");
       formData.set("ids", JSON.stringify(selectedIds));
-      await this.sendRequest(formData, "선택된 배너가 삭제되었습니다.");
+      await this.sendRequest(formData, "선택된 팝업이 삭제되었습니다.");
     });
 
     attachRadioToggle({
@@ -64,7 +64,7 @@ export class BannerController {
         const formData = new FormData();
         formData.set("mode", "delete");
         formData.set("id", id);
-        await this.sendRequest(formData, "배너가 삭제되었습니다.");
+        await this.sendRequest(formData, "팝업이 삭제되었습니다.");
       });
     });
   }
@@ -73,26 +73,26 @@ export class BannerController {
     e.preventDefault();
     const formData = new FormData(this.form);
     formData.set("mode", "insert");
-    await this.sendRequest(formData, "배너가 등록되었습니다.");
+    await this.sendRequest(formData, "팝업이 등록되었습니다.");
   }
 
   async update(e) {
     e.preventDefault();
     const formData = new FormData(this.form);
     formData.set("mode", "update");
-    await this.sendRequest(formData, "배너가 수정되었습니다.");
+    await this.sendRequest(formData, "팝업이 수정되었습니다.");
   }
 
   async sendRequest(formData, successMessage) {
     try {
-      const res = await fetcher(API.BANNER, formData);
+      const res = await fetcher(API.POPUP, formData);
       alert(res.message || successMessage);
 
       const mode = formData.get("mode");
       if (mode === "delete" || mode === "delete_array") {
         location.reload();
       } else {
-        location.href = "/admin/pages/design/banner.list.php";
+        location.href = "/admin/pages/design/popup.list.php";
       }
     } catch (err) {
       alert(err.message || "처리 중 오류가 발생했습니다.");

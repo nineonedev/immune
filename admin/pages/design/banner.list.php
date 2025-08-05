@@ -20,6 +20,8 @@ $branch_id = $_GET['branch_id'] ?? '';
 $banner_type = $_GET['banner_type'] ?? '';
 $active_filter = $_GET['is_active'] ?? '';
 $searchKeyword = $_GET['searchKeyword'] ?? '';
+$start_at = $_GET['start_at'] ?? '';
+$end_at = $_GET['end_at'] ?? '';
 
 // WHERE 조건 구성
 $where = "WHERE 1=1";
@@ -38,6 +40,16 @@ if (!empty($banner_type)) {
 if ($active_filter !== '') {
     $where .= " AND b.is_active = :is_active";
     $params[':is_active'] = (int)$active_filter;
+}
+
+if (!empty($start_at)) {
+    $where .= " AND (b.end_at IS NULL OR b.end_at >= :start_at)";
+    $params[':start_at'] = $start_at;
+}
+
+if (!empty($end_at)) {
+    $where .= " AND (b.start_at IS NULL OR b.start_at <= :end_at)";
+    $params[':end_at'] = $end_at;
 }
 
 if (!empty($searchKeyword)) {
@@ -130,26 +142,54 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
 
-                                <!-- 노출 여부 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">노출 여부</h3>
                                     <div class="no-admin-content">
-                                        <select name="is_active" id="is_active">
-                                            <option value="">전체</option>
-                                            <?php foreach ($is_active as $key => $label): ?>
-                                            <option value="<?= $key ?>"
-                                                <?= ($active_filter == $key) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($label) ?>
-                                            </option>
+                                        <div class="no-radio-form no-list">
+                                            <!-- 전체 옵션 수동 추가 -->
+                                            <label for="is_active_all">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="is_active_all" value=""
+                                                        <?= $active_filter === '' ? 'checked' : '' ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text">전체</span>
+                                            </label>
+
+                                            <!-- $is_active 반복 -->
+                                            <?php foreach ($is_active as $key => $label): 
+                                                $id = "is_active_$key";
+                                                $checked = ($active_filter !== '' && $active_filter == $key) ? 'checked' : '';
+                                            ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="<?= $id ?>"
+                                                        value="<?= $key ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
                                             <?php endforeach; ?>
-                                        </select>
+
+                                        </div>
                                     </div>
                                 </div>
 
+                                <!-- 노출 기간 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">노출 기간</h3>
+                                    <div class="no-admin-content no-admin-date">
+                                        <input type="text" name="start_at" id="start_at"
+                                            value="<?= isset($start_at) ? htmlspecialchars($start_at) : '' ?>" />
+                                        <span></span>
+                                        <input type="text" name="end_at" id="end_at"
+                                            value="<?= isset($end_at) ? htmlspecialchars($end_at) : '' ?>" />
+                                    </div>
+                                </div>
                                 <!-- 검색어 -->
                                 <div class="no-admin-block wide">
                                     <h3 class="no-admin-title">배너명</h3>
-                                    <div class="no-search-wrap no-ml">
+                                    <div class="no-search-wrap ">
                                         <div class="no-search-input">
                                             <i class="bx bx-search-alt-2"></i>
                                             <input type="text" name="searchKeyword" id="searchKeyword"
@@ -180,7 +220,9 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
                                         <ul class="no-table-check-control">
-                                            <li><a href="#" class="no-btn no-btn--sm" data-action="selectAll">전체선택</a>
+                                            <li>
+                                                <a href="#" class="no-btn no-btn--sm no-btn--check active "
+                                                    data-action="selectAll">전체선택</a>
                                             </li>
                                             <li><a href="#" class="no-btn no-btn--sm" data-action="deselectAll">선택해제</a>
                                             </li>
@@ -209,6 +251,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <th>썸네일</th>
                                                 <th>배너 타입</th>
                                                 <th>노출 기간</th>
+                                                <th>정렬</th>
                                                 <th>노출 여부</th>
                                                 <th>관리</th>
                                             </tr>
@@ -219,7 +262,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                  
                                                 ?>
                                             <tr>
-                                                <td>
+                                                <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
                                                             <input type="checkbox" class="no-chk"
@@ -249,7 +292,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <!-- 시작일~종료일 -->
                                                 <td><?= htmlspecialchars($row['start_at']) ?> ~
                                                     <?= htmlspecialchars($row['end_at']) ?></td>
-
+                                                <td><?= $row['sort_no'] ?></td>
                                                 <!-- 노출 여부 -->
                                                 <td>
                                                     <span

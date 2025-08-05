@@ -5,7 +5,7 @@ $NO_META_URL = $protocol . ($_SERVER['HTTP_HOST'] ?? '') . ($_SERVER['REQUEST_UR
 
 // 현재 경로에서 상대 경로만 추출 (ex: cancer/female-1.php)
 $current_path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-$relative_path = preg_replace('#^gangseo/pages/#', '', $current_path);
+$relative_path = preg_replace('#^(.*?/)?pages/#', '', $current_path);
 
 $db = DB::getInstance();
 
@@ -17,10 +17,29 @@ $stmt = $db->prepare($sql);
 $stmt->execute(['path' => $relative_path]);
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// 현재 페이지 타이틀
 $NO_PAGE_TITLE = $data['page_title'] ?? "";
+
+// 메타 타이틀
 $NO_STATIC_TITLE = $data['meta_title'] ?? "";
-$NO_META_DESCRIPTION = $data['meta_description'] ?? "";
-$NO_META_KEYWORDS = $data['meta_keywords'] ?? "";
+$NO_META_DESCRIPTION = $data['meta_description'] ?? $SITEINFO_META_DESCRIPTION;
+$NO_META_KEYWORDS = $data['meta_keywords'] ?? $SITEINFO_META_KEYWORDS;
+
+// 중복 방지 및 조합
+if ($PAGE_TITLE && $NO_PAGE_TITLE) {
+    if ($PAGE_TITLE === $NO_PAGE_TITLE) {
+        $FULL_TITLE = $PAGE_TITLE;
+    } else {
+        $FULL_TITLE = $PAGE_TITLE . ' | ' . $NO_PAGE_TITLE;
+    }
+} elseif ($PAGE_TITLE) {
+    $FULL_TITLE = $PAGE_TITLE;
+} elseif ($NO_PAGE_TITLE) {
+    $FULL_TITLE = $NO_PAGE_TITLE;
+} else {
+    $FULL_TITLE = '';
+}
+
 
 // Twitter 메타 설정
 $NO_META_TWITTER_CARD = "Summary";
@@ -48,10 +67,11 @@ $NO_META_ITEMPROP_KEYWORD = $NO_META_KEYWORDS;
 // Favicon 설정
 $NO_META_SHORTCUT_ICON = ($NO_IS_SUBDIR ?? '') . "/uploads/meta/" . ($SITEINFO_META_FAVICON_ICO ?? '');
 $NO_META_APPLE_THOUCH_ICON = "";
+
 ?>
 
 
-<title><?= htmlspecialchars($NO_STATIC_TITLE . ' - ' . $NO_PAGE_TITLE) ?></title>
+<title><?= htmlspecialchars($FULL_TITLE) ?></title>
 
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

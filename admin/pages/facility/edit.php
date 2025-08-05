@@ -7,7 +7,7 @@ $depthnum = 5;
 try {
     $db = DB::getInstance();
 
-    $stmt = $db->query("SELECT * FROM nb_branches ORDER BY id ASC");
+    $stmt = $db->query("SELECT id, name_kr FROM nb_branches WHERE id IN (2, 3, 4) ORDER BY id ASC");
     $branches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -130,22 +130,6 @@ include_once "../../inc/admin.js.php";
                                                 style="display:none; max-width:150px; margin-top:10px;">
                                             <?php endif; ?>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <!-- 카테고리 -->
-                                <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="categories">카테고리</label></h3>
-                                    <div class="no-admin-content">
-                                        <select name="categories" id="categories" required>
-                                            <option value="">카테고리 선택</option>
-                                            <?php foreach ($facilities as $key => $label): ?>
-                                            <option value="<?= $key ?>"
-                                                <?= ($facility['categories'] == $key) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($label) ?>
-                                            </option>
-                                            <?php endforeach; ?>
-                                        </select>
                                     </div>
                                 </div>
 

@@ -13,7 +13,7 @@ $pageBlock = $pageBlock ?? 2;
 $db = DB::getInstance();
 
 // 지점 목록
-$branchesStmt = $db->prepare("SELECT id, name_kr FROM nb_branches ORDER BY id ASC");
+$branchesStmt = $db->prepare("SELECT id, name_kr FROM nb_branches WHERE id IN (2, 3, 4) ORDER BY id ASC");
 $branchesStmt->execute();
 $branches = $branchesStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -99,15 +99,16 @@ $inquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="no-card-body no-admin-column">
 
+
                                 <!-- 지점 선택 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">지점</h3>
                                     <div class="no-admin-content">
-                                        <select name="branch_id">
+                                        <select name="branch_id" id="branch_id">
                                             <option value="">전체</option>
                                             <?php foreach ($branches as $b): ?>
                                             <option value="<?= $b['id'] ?>"
-                                                <?= ($branch_id == $b['id']) ? 'selected' : '' ?>>
+                                                <?= ($branch_id ?? '') == $b['id'] ? 'selected' : '' ?>>
                                                 <?= htmlspecialchars($b['name_kr']) ?>
                                             </option>
                                             <?php endforeach; ?>
@@ -119,7 +120,7 @@ $inquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">문의 종류</h3>
                                     <div class="no-admin-content">
-                                        <select name="inquiry_type">
+                                        <select name="inquiry_type" id="inquiry_type">
                                             <option value="">전체</option>
                                             <?php foreach ($inquiry_types as $key => $label): ?>
                                             <option value="<?= $key ?>" <?= $inquiry_type == $key ? 'selected' : '' ?>>
@@ -129,6 +130,11 @@ $inquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </select>
                                     </div>
                                 </div>
+
+
+
+
+
 
 
                                 <!-- 검색어 -->

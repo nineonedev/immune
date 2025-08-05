@@ -92,6 +92,7 @@ export class SeoController {
   }
 
   attachBranchChangeEvent() {
+    console.log(this.pathSelect);
     if (!this.branchSelect || !this.pathSelect) return;
 
     this.branchSelect.addEventListener("change", async () => {

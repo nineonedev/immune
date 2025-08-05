@@ -2228,22 +2228,7 @@ a.ui-button:active,
   justify-content: space-between;
   flex-wrap: wrap;
 }
-#active_status-button,
-#sns_type-button {
-  font-size: 1.5rem;
-  transition: 0.2s;
-  background-color: var(--main-background);
-  border: 1px solid var(--border-color);
-  height: 4.5rem;
-  max-width: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.4rem;
-  max-width: 18rem;
-  flex-direction: row-reverse;
-}
+
 #searchColumn-button {
   font-size: 1.5rem;
   transition: 0.2s;
@@ -3844,7 +3829,14 @@ input[type="file"].note-image-input {
 #is_active-button,
 #category_primary-button,
 #category_secondary-button,
-#department-button {
+#department-button,
+#banner_type-button,
+#popup_type-button,
+#facilityCategory-button,
+#active_status-button,
+#sns_type-button,
+#hope_treatment-button,
+#inquiry_type-button {
   border: 1px solid var(--border-color);
   width: 100%;
 }

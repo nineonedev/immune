@@ -10,7 +10,7 @@ $pageBlock = $pageBlock ?? 2;
 
 $db = DB::getInstance();
 
-$branchesStmt = $db->prepare("SELECT id, name_kr FROM nb_branches ORDER BY id ASC");
+$branchesStmt = $db->prepare("SELECT id, name_kr FROM nb_branches WHERE id IN (2, 3, 4) ORDER BY id ASC");
 $branchesStmt->execute();
 $branches = $branchesStmt->fetchAll(PDO::FETCH_ASSOC); 
 
@@ -54,7 +54,7 @@ $sql = "
     FROM nb_doctors d
     LEFT JOIN nb_branches b ON d.branch_id = b.id
     $where
-    ORDER BY d.id DESC
+    ORDER BY d.sort_no ASC
 ";
 
 $stmt = $db->prepare($sql);
@@ -132,19 +132,36 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
 
-                                <!-- 노출 여부 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">노출 여부</h3>
                                     <div class="no-admin-content">
-                                        <select name="is_active" id="is_active">
-                                            <option value="">전체</option>
-                                            <?php foreach ($is_active as $key => $label): ?>
-                                            <option value="<?= $key ?>"
-                                                <?= ($active_filter == $key) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($label) ?>
-                                            </option>
+                                        <div class="no-radio-form no-list">
+                                            <!-- 전체 옵션 수동 추가 -->
+                                            <label for="is_active_all">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="is_active_all" value=""
+                                                        <?= $active_filter === '' ? 'checked' : '' ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text">전체</span>
+                                            </label>
+
+                                            <!-- $is_active 반복 -->
+                                            <?php foreach ($is_active as $key => $label): 
+                                                $id = "is_active_$key";
+                                                $checked = ($active_filter !== '' && $active_filter == $key) ? 'checked' : '';
+                                            ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="<?= $id ?>"
+                                                        value="<?= $key ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
                                             <?php endforeach; ?>
-                                        </select>
+
+                                        </div>
                                     </div>
                                 </div>
 
@@ -191,8 +208,8 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
                                         <ul class="no-table-check-control">
-                                            <li><a href="#" class="no-btn no-btn--sm" data-action="selectAll">전체선택</a>
-                                            </li>
+                                            <li><a href="#" class="no-btn no-btn--sm no-btn--check active "
+                                                    data-action="selectAll">전체선택</a> </li>
                                             <li><a href="#" class="no-btn no-btn--sm" data-action="deselectAll">선택해제</a>
                                             </li>
                                             <li><a href="#" class="no-btn no-btn--sm"
@@ -221,7 +238,8 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <th>내부 이미지</th>
                                                 <th>직급</th>
                                                 <th>부서</th>
-                                                <th>노출</th>
+                                                <th>정렬</th>
+                                                <th>노출 여부</th>
                                                 <th>관리</th>
                                             </tr>
                                         </thead>
@@ -229,7 +247,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (count($rows) > 0): ?>
                                             <?php foreach ($rows as $row): ?>
                                             <tr>
-                                                <td>
+                                                <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
                                                             <input type="checkbox" class="no-chk"
@@ -264,11 +282,13 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?= htmlspecialchars($row['position']) ?></td>
                                                 <td><?= htmlspecialchars($departments[$row['department']] ?? '-') ?>
                                                 </td>
-
-
-
-                                                <!-- 노출 여부 -->
-                                                <td><?= htmlspecialchars($is_active[$row['is_active']] ?? '미정') ?></td>
+                                                <td><?= $row['sort_no'] ?></td>
+                                                <td>
+                                                    <span
+                                                        class="no-btn <?= $row['is_active'] ? 'no-btn--notice' : 'no-btn--normal' ?>">
+                                                        <?= htmlspecialchars($is_active[$row['is_active']] ?? '미정') ?>
+                                                    </span>
+                                                </td>
 
                                                 <td>
                                                     <div class="no-table-role">

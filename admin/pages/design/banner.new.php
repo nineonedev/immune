@@ -82,8 +82,31 @@ include_once "../../inc/admin.js.php";
                                     </div>
                                 </div>
 
-                                <!-- 노출 기간 -->
+                                <!-- 무기한 여부 -->
                                 <div class="no-admin-block">
+                                    <h3 class="no-admin-title">노출 설정</h3>
+                                    <div class="no-admin-content">
+                                        <div class="no-radio-form no-list">
+                                            <?php foreach ($is_unlimited as $value => $label): 
+                                                $id = "unlimited_$value";
+                                                $checked = ($value == 1) ? 'checked' : ''; 
+                                            ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_unlimited" id="<?= $id ?>"
+                                                        value="<?= $value ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- 노출 기간 -->
+                                <div class="no-admin-block" id="display_period">
                                     <h3 class="no-admin-title">노출 기간</h3>
                                     <div class="no-admin-content no-admin-date">
                                         <input type="text" name="start_at" id="start_at"
@@ -103,8 +126,13 @@ include_once "../../inc/admin.js.php";
                                     </div>
                                 </div>
 
-
-
+                                <!-- 설명글 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title"><label for="description">설명</label></h3>
+                                    <div class="no-admin-content">
+                                        <textarea name="description" id="description" rows="4"></textarea>
+                                    </div>
+                                </div>
                                 <!-- 링크 여부 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">링크 여부</h3>
@@ -156,18 +184,6 @@ include_once "../../inc/admin.js.php";
                                 </div>
 
 
-                                <!-- 지속 시간 -->
-                                <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="duration">지속 시간 (초)</label></h3>
-                                    <div class="no-admin-content">
-                                        <input type="number" id="duration" name="duration" min="1" max="60" step="1"
-                                            required>
-                                        <span class="no-admin-info"><i class="bx bxs-info-circle"></i>지속 시간은 초 단위로 숫자만
-                                            입력 가능합니다.</span>
-                                    </div>
-                                </div>
-
-
                                 <!-- 정렬 순서 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title"><label for="sort_no">정렬 순서</label></h3>
@@ -177,14 +193,6 @@ include_once "../../inc/admin.js.php";
                                 </div>
 
 
-
-                                <!-- 설명글 -->
-                                <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="description">설명</label></h3>
-                                    <div class="no-admin-content">
-                                        <textarea name="description" id="description" rows="4"></textarea>
-                                    </div>
-                                </div>
 
 
 

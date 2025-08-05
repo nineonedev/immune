@@ -1,3 +1,4 @@
+// 전화번호 양식
 export function attachPhoneAutoHyphen() {
   const phoneInputs = document.querySelectorAll('input[data-phone="true"]');
   if (!phoneInputs) {

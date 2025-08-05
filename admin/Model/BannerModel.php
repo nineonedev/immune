@@ -6,16 +6,18 @@ class BannerModel
     {
         $db = DB::getInstance();
         $sql = "
-            INSERT INTO nb_banners (
-                title, branch_id, banner_type, has_link, link_url,
-                duration, sort_no, is_active, description, start_at, end_at, banner_image,
-                created_at, updated_at
-            ) VALUES (
-                :title, :branch_id, :banner_type, :has_link, :link_url,
-                :duration, :sort_no, :is_active, :description, :start_at, :end_at, :banner_image,
-                NOW(), NOW()
-            )
-        ";
+                INSERT INTO nb_banners (
+                    title, branch_id, banner_type, has_link, link_url,
+                    sort_no, is_active, description, start_at, end_at, banner_image,
+                    is_unlimited,                       -- 🔧 추가
+                    created_at, updated_at
+                ) VALUES (
+                    :title, :branch_id, :banner_type, :has_link, :link_url,
+                    :sort_no, :is_active, :description, :start_at, :end_at, :banner_image,
+                    :is_unlimited,                     -- 🔧 추가
+                    NOW(), NOW()
+                )
+            ";
 
         $stmt = $db->prepare($sql);
         return $stmt->execute([
@@ -24,13 +26,13 @@ class BannerModel
             ':banner_type'  => $data['banner_type'],
             ':has_link'     => $data['has_link'],
             ':link_url'     => $data['link_url'],
-            ':duration'     => $data['duration'],
             ':sort_no'      => $data['sort_no'],
             ':is_active'    => $data['is_active'],
             ':description'  => $data['description'],
             ':start_at'     => $data['start_at'],
             ':end_at'       => $data['end_at'],
             ':banner_image' => $data['banner_image'],
+            ':is_unlimited' => $data['is_unlimited'], 
         ]);
     }
 
@@ -40,7 +42,8 @@ class BannerModel
 
         $fields = [
             'title', 'branch_id', 'banner_type', 'has_link', 'link_url',
-            'duration', 'sort_no', 'is_active', 'description', 'start_at', 'end_at'
+            'sort_no', 'is_active', 'description', 'start_at', 'end_at',
+            'is_unlimited' 
         ];
 
         if (!empty($data['banner_image'])) {

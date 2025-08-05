@@ -8,6 +8,7 @@ import { DoctorController } from "./Controller/DoctorController.js";
 import { previewImage } from "./Core/previewImage.js";
 import { FacilityController } from "./Controller/FacilityController.js";
 import { BannerController } from "./Controller/BannerController.js";
+import { PopupController } from "./Controller/PopupController.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const page = document.body.dataset.page;
@@ -51,10 +52,17 @@ document.addEventListener("DOMContentLoaded", () => {
     case "facility":
       const facilityController = new FacilityController();
       facilityController.init();
+      break;
 
     case "banner":
       const bannerController = new BannerController();
       bannerController.init();
+      break;
+
+    case "popup":
+      const popupController = new PopupController();
+      popupController.init();
+      break;
 
     default:
       break;

@@ -70,14 +70,23 @@ const formInit = () => {
   const startDatePicker = $("#start_at");
   const endDatePicker = $("#end_at");
 
+  const bannerType = $("#banner_type");
+  const popupType = $("#popup_type");
   const activeStatus = $("#active_status");
   const snsType = $("#sns_type");
+  const facilityCategory = $("#facilityCategory");
+  const hopeTreatment = $("#hope_treatment");
+  const inquiryType = $("#inquiry_type");
+
+  facilityCategory.selectmenu();
   boardSelect.selectmenu();
   perpageSelect.selectmenu({
     change: function (event, ui) {
       $("#frm").submit();
     },
   });
+  inquiryType.selectmenu();
+  hopeTreatment.selectmenu();
   snsType.selectmenu();
   activeStatus.selectmenu();
   category.selectmenu();
@@ -91,8 +100,6 @@ const formInit = () => {
   levSelect.selectmenu();
   chLevSelect.selectmenu();
 
-  branchSelect.selectmenu();
-  pathSelect.selectmenu();
   categories.selectmenu();
   isActive.selectmenu();
 
@@ -101,6 +108,8 @@ const formInit = () => {
   categoryPrimary.selectmenu();
   categorySecondary.selectmenu();
 
+  bannerType.selectmenu();
+  popupType.selectmenu();
   startDatePicker.datepicker();
   endDatePicker.datepicker();
   // const bannerDate = [$('#b_sdate'), $('#b_edate')];

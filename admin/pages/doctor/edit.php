@@ -7,7 +7,7 @@ $depthnum = 5;
 try {
     $db = DB::getInstance();
 
-    $stmt = $db->query("SELECT * FROM nb_branches ORDER BY id ASC");
+    $stmt = $db->query("SELECT id, name_kr FROM nb_branches WHERE id IN (2, 3, 4) ORDER BY id ASC");
     $branches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // 수정 대상 ID 받기

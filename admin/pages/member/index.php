@@ -31,7 +31,6 @@ if ($sns_type === 'normal') {
     $where .= " AND kakao_id IS NOT NULL";
 }
 
-
 // 검색 조건 필터
 if (!empty($searchColumn) && !empty($searchKeyword)) {
     $allowedColumns = ['user_id', 'name', 'email'];

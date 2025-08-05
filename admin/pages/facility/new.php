@@ -7,7 +7,7 @@ $depthnum = 4;
 try {
     $db = DB::getInstance(); 
     $branches = [];
-    $stmt = $db->query("SELECT * FROM nb_branches ORDER BY id ASC");
+    $stmt = $db->query("SELECT id, name_kr FROM nb_branches WHERE id IN (2, 3, 4) ORDER BY id ASC");
     $branches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
     echo "데이터베이스 연결 오류: " . $e->getMessage();

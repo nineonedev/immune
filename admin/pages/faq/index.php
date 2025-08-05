@@ -12,7 +12,7 @@ $pageBlock = $pageBlock ?? 2;
 $db = DB::getInstance();
 
 // 지점 데이터
-$branchesStmt = $db->prepare("SELECT id, name_kr FROM nb_branches ORDER BY id ASC");
+$branchesStmt = $db->prepare("SELECT id, name_kr FROM nb_branches WHERE id IN (2, 3, 4) ORDER BY id ASC");
 $branchesStmt->execute();
 $branches = $branchesStmt->fetchAll(PDO::FETCH_ASSOC); 
 
@@ -62,8 +62,9 @@ $sql = "
     FROM nb_faqs f
     LEFT JOIN nb_branches b ON f.branch_id = b.id
     {$where}
-    ORDER BY f.id DESC
+    ORDER BY f.sort_no ASC
 ";
+
 $stmt = $db->prepare($sql);
 $stmt->execute($params); 
 $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -145,19 +146,36 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
 
-                                <!-- 노출 여부 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">노출 여부</h3>
                                     <div class="no-admin-content">
-                                        <select name="is_active" id="is_active">
-                                            <option value="">전체</option>
-                                            <?php foreach ($is_active as $key => $label): ?>
-                                            <option value="<?= $key ?>"
-                                                <?= ($active_filter == $key) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($label) ?>
-                                            </option>
+                                        <div class="no-radio-form no-list">
+                                            <!-- 전체 옵션 수동 추가 -->
+                                            <label for="is_active_all">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="is_active_all" value=""
+                                                        <?= $active_filter === '' ? 'checked' : '' ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text">전체</span>
+                                            </label>
+
+                                            <!-- $is_active 반복 -->
+                                            <?php foreach ($is_active as $key => $label): 
+                                                $id = "is_active_$key";
+                                                $checked = ($active_filter !== '' && $active_filter == $key) ? 'checked' : '';
+                                            ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="<?= $id ?>"
+                                                        value="<?= $key ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
                                             <?php endforeach; ?>
-                                        </select>
+
+                                        </div>
                                     </div>
                                 </div>
 
@@ -203,7 +221,7 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div class="no-card-body">
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
-                                        <li><a href="#" class="no-btn no-btn--sm no-btn--check"
+                                        <li><a href="#" class="no-btn no-btn--sm no-btn--check active "
                                                 data-action="selectAll">전체선택</a></li>
                                         <li><a href="#" class="no-btn no-btn--sm no-btn--check"
                                                 data-action="deselectAll">선택해제</a></li>
@@ -238,7 +256,7 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (count($faqRows) > 0): ?>
                                             <?php foreach ($faqRows as $row): ?>
                                             <tr>
-                                                <td>
+                                                <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
                                                             <input type="checkbox" class="no-chk"
@@ -251,7 +269,12 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?= htmlspecialchars($row['branch_label']) ?></td>
                                                 <td><?= $faq_categories[$row['categories']] ?? '기타' ?></td>
                                                 <td><?= htmlspecialchars($row['question']) ?></td>
-                                                <td><?= $is_active[$row['is_active']] ?? '미정' ?></td>
+                                                <td>
+                                                    <span
+                                                        class="no-btn <?= $row['is_active'] ? 'no-btn--notice' : 'no-btn--normal' ?>">
+                                                        <?= htmlspecialchars($is_active[$row['is_active']] ?? '미정') ?>
+                                                    </span>
+                                                </td>
                                                 <td><?= $row['sort_no'] ?></td>
                                                 <td><?= substr($row['updated_at'], 0, 10) ?></td>
                                                 <td>

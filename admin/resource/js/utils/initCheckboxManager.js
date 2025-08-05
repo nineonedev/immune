@@ -1,4 +1,4 @@
-import { CheckboxManager } from "../utils/CheckboxManager.js";
+import { CheckboxManager } from "./checkboxManager.js";
 
 export function initCheckboxManager(onDelete) {
   new CheckboxManager({

@@ -29,7 +29,7 @@ if ($id) {
 }
 
 // 지점 목록
-$stmt = $db->query("SELECT * FROM nb_branches ORDER BY id ASC");
+$stmt = $db->query("SELECT id, name_kr FROM nb_branches WHERE id IN (2, 3, 4) ORDER BY id ASC");
 $branches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 

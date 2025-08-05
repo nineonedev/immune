@@ -12,8 +12,8 @@ $pageBlock = $pageBlock ?? 2;
 $db = DB::getInstance();
 
 $category_primary = $_GET['category_primary'] ?? '';
-$category_secondary = $_GET['category_secondary'] ?? '';
 $searchKeyword = $_GET['searchKeyword'] ?? '';
+$active_filter = $_GET['is_active'] ?? '';  
 
 $where = "WHERE 1=1";
 $params = [];
@@ -23,10 +23,11 @@ if (!empty($category_primary)) {
     $params[':category_primary'] = $category_primary;
 }
 
-if (!empty($category_secondary)) {
-    $where .= " AND f.category_secondary = :category_secondary";
-    $params[':category_secondary'] = $category_secondary;
+if ($active_filter !== '') {
+    $where .= " AND f.is_active = :is_active";
+    $params[':is_active'] = (int)$active_filter;
 }
+
 
 if (!empty($searchKeyword)) {
     $where .= " AND f.title LIKE :searchKeyword";
@@ -37,8 +38,9 @@ $sql = "
     SELECT f.*
     FROM nb_nonpay_items f
     {$where}
-    ORDER BY f.id DESC
+    ORDER BY f.sort_no ASC
 ";
+
 $stmt = $db->prepare($sql);
 $stmt->execute($params);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -105,23 +107,36 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
 
-                                <!-- 중카테고리 (2차) -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title">중카테고리</h3>
+                                    <h3 class="no-admin-title">노출 여부</h3>
                                     <div class="no-admin-content">
-                                        <select name="category_secondary" id="category_secondary">
-                                            <option value="">전체</option>
-                                            <?php 
-                                                // 현재 선택된 1차 카테고리에 해당하는 2차 카테고리 배열만 출력
-                                                $secondaries = $nonpay_secondary_categories[$category_primary] ?? [];
-                                                foreach ($secondaries as $subKey => $subLabel): 
+                                        <div class="no-radio-form no-list">
+                                            <!-- 전체 옵션 수동 추가 -->
+                                            <label for="is_active_all">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="is_active_all" value=""
+                                                        <?= $active_filter === '' ? 'checked' : '' ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text">전체</span>
+                                            </label>
+
+                                            <!-- $is_active 반복 -->
+                                            <?php foreach ($is_active as $key => $label): 
+                                                $id = "is_active_$key";
+                                                $checked = ($active_filter !== '' && $active_filter == $key) ? 'checked' : '';
                                             ?>
-                                            <option value="<?= $subKey ?>"
-                                                <?= $category_secondary == $subKey ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($subLabel) ?>
-                                            </option>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_active" id="<?= $id ?>"
+                                                        value="<?= $key ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
                                             <?php endforeach; ?>
-                                        </select>
+
+                                        </div>
                                     </div>
                                 </div>
 
@@ -169,7 +184,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
                                         <li>
-                                            <a href="#" class="no-btn no-btn--sm no-btn--check"
+                                            <a href="#" class="no-btn no-btn--sm no-btn--check active "
                                                 data-action="selectAll">전체선택</a>
                                         </li>
                                         <li>
@@ -200,7 +215,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <th>2차 카테고리</th>
                                                 <th>항목명</th>
                                                 <th>비용</th>
-                                                <th>노출</th>
+                                                <th>노출 여부</th>
                                                 <th>정렬</th>
                                                 <th>수정일</th>
                                                 <th>관리</th>
@@ -210,7 +225,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (count($rows) > 0): ?>
                                             <?php foreach ($rows as $row): ?>
                                             <tr>
-                                                <td>
+                                                <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
                                                             <input type="checkbox" class="no-chk"
@@ -226,7 +241,12 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </td>
                                                 <td><?= htmlspecialchars($row['title']) ?></td>
                                                 <td><?= number_format($row['cost']) ?> 원</td>
-                                                <td><?= $is_active[$row['is_active']] ?? '미정' ?></td>
+                                                <td>
+                                                    <span
+                                                        class="no-btn <?= $row['is_active'] ? 'no-btn--notice' : 'no-btn--normal' ?>">
+                                                        <?= htmlspecialchars($is_active[$row['is_active']] ?? '미정') ?>
+                                                    </span>
+                                                </td>
                                                 <td><?= $row['sort_no'] ?></td>
                                                 <td><?= substr($row['updated_at'], 0, 10) ?></td>
                                                 <td>

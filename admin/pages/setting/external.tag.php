@@ -64,7 +64,8 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div class="no-card-body">
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
-                                        <li><a href="#" class="no-btn no-btn--sm" data-action="selectAll">전체선택</a>
+                                        <li><a href="#" class="no-btn no-btn--sm no-btn--check active "
+                                                data-action="selectAll">전체선택</a>
                                         </li>
                                         <li><a href="#" class="no-btn no-btn--sm" data-action="deselectAll">선택해제</a>
                                         </li>
@@ -95,7 +96,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (!empty($rows)): ?>
                                             <?php foreach ($rows as $row): ?>
                                             <tr>
-                                                <td>
+                                                <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
                                                             <input type="checkbox" class="no-chk"

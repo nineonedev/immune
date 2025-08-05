@@ -9,4 +9,5 @@ export const API = {
   DOCTOR: "/admin/Controller/DoctorController.php",
   FACILITY: "/admin/Controller/FacilityController.php",
   BANNER: "/admin/Controller/BannerController.php",
+  POPUP: "/admin/Controller/PopupController.php",
 };

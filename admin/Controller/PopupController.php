@@ -1,23 +1,23 @@
 <?php
 require_once "../../inc/lib/base.class.php";
 require_once "../core/Validator.php";
-require_once "../Model/BannerModel.php";
+require_once "../Model/PopupModel.php";
 
 header('Content-Type: application/json');
 
 try {
     $input = $_POST;
     $mode = $input['mode'] ?? '';
-    $upload_path = $_SERVER['DOCUMENT_ROOT'] . "/uploads/banners";
+    $upload_path = $_SERVER['DOCUMENT_ROOT'] . "/uploads/popups";
 
     $validator = new Validator();
 
     // INSERT
     if ($mode === 'insert') {
-          $data = [
+        $data = [
             'title'         => trim($input['title'] ?? ''),
             'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
-            'banner_type'   => (int)($input['banner_type'] ?? 0),
+            'popup_type'    => (int)($input['popup_type'] ?? 0),
             'has_link'      => (int)($input['has_link'] ?? 2),
             'link_url'      => trim($input['link_url'] ?? ''),
             'sort_no'       => (int)($input['sort_no'] ?? 0),
@@ -25,25 +25,25 @@ try {
             'description'   => trim($input['description'] ?? ''),
             'start_at'      => trim($input['start_at'] ?? null),
             'end_at'        => trim($input['end_at'] ?? null),
-            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1), 
+            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
         ];
 
         $validator->require('title', $data['title'], '제목');
-        $validator->require('banner_type', $data['banner_type'], '배너 위치');
+        $validator->require('popup_type', $data['popup_type'], '팝업 위치');
 
         if ($validator->fails()) {
             echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
             exit;
         }
 
-        $image = imageUpload($upload_path, $_FILES['banner_image'] ?? []);
-        $data['banner_image'] = $image['saved'] ?? '';
+        $image = imageUpload($upload_path, $_FILES['popup_image'] ?? []);
+        $data['popup_image'] = $image['saved'] ?? '';
 
-        $result = BannerModel::insert($data);
+        $result = PopupModel::insert($data);
 
         echo json_encode([
             'success' => $result,
-            'message' => $result ? '배너가 등록되었습니다.' : '등록 실패'
+            'message' => $result ? '팝업이 등록되었습니다.' : '등록 실패'
         ]);
         exit;
     }
@@ -53,10 +53,10 @@ try {
         $id = (int)($input['id'] ?? 0);
         if (!$id) throw new Exception("ID가 없습니다.");
 
-         $data = [
+        $data = [
             'title'         => trim($input['title'] ?? ''),
             'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
-            'banner_type'   => (int)($input['banner_type'] ?? 0),
+            'popup_type'    => (int)($input['popup_type'] ?? 0),
             'has_link'      => (int)($input['has_link'] ?? 2),
             'link_url'      => trim($input['link_url'] ?? ''),
             'sort_no'       => (int)($input['sort_no'] ?? 0),
@@ -64,30 +64,30 @@ try {
             'description'   => trim($input['description'] ?? ''),
             'start_at'      => trim($input['start_at'] ?? null),
             'end_at'        => trim($input['end_at'] ?? null),
-            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1), // 🔧 추가
+            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
         ];
 
         $validator->require('title', $data['title'], '제목');
-        $validator->require('banner_type', $data['banner_type'], '배너 위치');
+        $validator->require('popup_type', $data['popup_type'], '팝업 위치');
 
         if ($validator->fails()) {
             echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
             exit;
         }
 
-        $existing = BannerModel::find($id);
+        $existing = PopupModel::find($id);
         if (!$existing) {
             echo json_encode(['success' => false, 'message' => '데이터를 찾을 수 없습니다.']);
             exit;
         }
 
-        if (!empty($_FILES['banner_image']) && $_FILES['banner_image']['error'] !== UPLOAD_ERR_NO_FILE) {
-            imageDelete($upload_path . '/' . $existing['banner_image']);
-            $image = imageUpload($upload_path, $_FILES['banner_image']);
-            $data['banner_image'] = $image['saved'];
+        if (!empty($_FILES['popup_image']) && $_FILES['popup_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            imageDelete($upload_path . '/' . $existing['popup_image']);
+            $image = imageUpload($upload_path, $_FILES['popup_image']);
+            $data['popup_image'] = $image['saved'];
         }
 
-        $result = BannerModel::update($id, $data);
+        $result = PopupModel::update($id, $data);
 
         echo json_encode([
             'success' => $result,
@@ -101,12 +101,12 @@ try {
         $id = (int)($input['id'] ?? 0);
         if (!$id) throw new Exception("ID가 없습니다.");
 
-        $existing = BannerModel::find($id);
+        $existing = PopupModel::find($id);
         if ($existing) {
-            imageDelete($upload_path . '/' . $existing['banner_image']);
+            imageDelete($upload_path . '/' . $existing['popup_image']);
         }
 
-        $result = BannerModel::delete($id);
+        $result = PopupModel::delete($id);
 
         echo json_encode([
             'success' => $result,
@@ -124,13 +124,13 @@ try {
         }
 
         foreach ($ids as $id) {
-            $existing = BannerModel::find((int)$id);
+            $existing = PopupModel::find((int)$id);
             if ($existing) {
-                imageDelete($upload_path . '/' . $existing['banner_image']);
+                imageDelete($upload_path . '/' . $existing['popup_image']);
             }
         }
 
-        $result = BannerModel::deleteMultiple($ids);
+        $result = PopupModel::deleteMultiple($ids);
 
         echo json_encode([
             'success' => $result,

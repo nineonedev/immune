@@ -1,261 +1,219 @@
 <?php
-    include_once "../../../inc/lib/base.class.php";
+include_once "../../../inc/lib/base.class.php";
 
-    $depthnum = 2;
-    $pagenum = 2;
+$pageName = "팝업";
+$depthnum = 3;
+$pagenum = 2;
 
-    include_once "../../inc/admin.title.php";
-    include_once "../../inc/admin.css.php";
-    include_once "../../inc/admin.js.php";
+try {
+    $db = DB::getInstance(); 
+    $branches = [];
+    $stmt = $db->query("SELECT * FROM nb_branches WHERE id IN (2,3,4) ORDER BY id ASC"); // 강서, 광명, 신촌만
+    $branches = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo "DB 오류: " . $e->getMessage();
+    exit;
+}
+
+include_once "../../inc/admin.title.php";
+include_once "../../inc/admin.css.php";
+include_once "../../inc/admin.js.php";
 ?>
+
 </head>
 
-<body>
+<body data-page="popup">
     <div class="no-wrap">
-        <!-- Header -->
-        <?php
-            include_once "../../inc/admin.header.php";
-        ?>
+        <?php include_once "../../inc/admin.header.php"; ?>
 
-        <!-- Main -->
         <main class="no-app no-container">
-            <!-- Drawer -->
-            <?php
-                include_once "../../inc/admin.drawer.php";
-            ?>
+            <?php include_once "../../inc/admin.drawer.php"; ?>
 
-            <!-- Contents -->
-            <form id="frm" name="frm" method="post" enctype="multipart/form-data">
-                <input type="hidden" id="mode" name="mode" value="">
-                <input type="hidden" name="p_is_link" id="p_is_link" value="N" />
+            <form id="frm" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="mode" value="insert">
+
                 <section class="no-content">
-                    <!-- Page Title -->
+
                     <div class="no-toolbar">
                         <div class="no-toolbar-container no-flex-stack">
                             <div class="no-page-indicator">
-                                <h1 class="no-page-title">배너 관리</h1>
+                                <h1 class="no-page-title"><?= $pageName ?> 등록</h1>
                                 <div class="no-breadcrumb-container">
                                     <ul class="no-breadcrumb-list">
-                                        <li class="no-breadcrumb-item">
-                                            <span>디자인</span>
-                                        </li>
-                                        <li class="no-breadcrumb-item">
-                                            <span>배너 관리</span>
-                                        </li>
+                                        <li class="no-breadcrumb-item"><span><?= $pageName ?></span></li>
+                                        <li class="no-breadcrumb-item"><span><?= $pageName ?> 등록</span></li>
                                     </ul>
                                 </div>
                             </div>
-                            <!-- page indicator -->
                         </div>
                     </div>
 
-                    <!-- card-title -->
                     <div class="no-toolbar-container">
                         <div class="no-card">
                             <div class="no-card-header no-card-header--detail">
-                                <h2 class="no-card-title">배너 등록</h2>
+                                <h2 class="no-card-title"><?=$pageName?> 등록</h2>
                             </div>
                             <div class="no-card-body no-admin-column no-admin-column--detail">
 
+                                <!-- 지점 -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title">
-                                        <label for="title">팝업노출</label>
-                                    </h3>
+                                    <h3 class="no-admin-title"><label for="branch_id">지점</label></h3>
                                     <div class="no-admin-content">
-                                        <div class="no-radio-form">
-                                            <label for="input1">
-                                                <div class="no-radio-box">
-                                                    <input type="radio" name="p_view" id="input1" value="Y" checked />
-                                                    <span>
-                                                        <i class="bx bx-radio-circle-marked"></i>
-                                                    </span>
-                                                </div>
-                                                <span class="no-radio-text">노출</span>
-                                            </label>
+                                        <select name="branch_id" id="branch_id">
+                                            <option value="">공통</option>
+                                            <?php foreach ($branches as $branch): ?>
+                                            <option value="<?= $branch['id'] ?>">
+                                                <?= htmlspecialchars($branch['name_kr']) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
 
-                                            <label for="input2">
+                                <!-- 팝업 타입 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title"><label for="popup_type">팝업 위치</label></h3>
+                                    <div class="no-admin-content">
+                                        <select name="popup_type" id="popup_type" required>
+                                            <option value="">선택</option>
+                                            <?php foreach ($banner_types as $key => $label): ?>
+                                            <option value="<?= $key ?>"><?= htmlspecialchars($label) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- 무기한 여부 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">노출 설정</h3>
+                                    <div class="no-admin-content">
+                                        <div class="no-radio-form no-list">
+                                            <?php foreach ($is_unlimited as $value => $label): 
+                                                $id = "unlimited_$value";
+                                                $checked = ($value == 1) ? 'checked' : ''; 
+                                            ?>
+                                            <label for="<?= $id ?>">
                                                 <div class="no-radio-box">
-                                                    <input type="radio" name="p_view" id="input2" value="N" />
-                                                    <span>
-                                                        <i class="bx bx-radio-circle-marked"></i>
-                                                    </span>
+                                                    <input type="radio" name="is_unlimited" id="<?= $id ?>"
+                                                        value="<?= $value ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
                                                 </div>
-                                                <span class="no-radio-text">숨김</span>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
                                             </label>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- admin-block -->
 
+
+                                <!-- 노출 기간 -->
+                                <div class="no-admin-block" id="display_period">
+                                    <h3 class="no-admin-title">노출 기간</h3>
+                                    <div class="no-admin-content no-admin-date">
+                                        <input type="text" name="start_at" id="start_at"
+                                            value="<?php echo isset($start_at) ? htmlspecialchars($start_at) : ''; ?>" />
+                                        <span></span>
+                                        <input type="text" name="end_at" id="end_at"
+                                            value="<?php echo isset($end_at) ? htmlspecialchars($end_at) : ''; ?>" />
+                                    </div>
+                                </div>
+
+
+                                <!-- 제목 -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title">
-                                        <span>기한설정</span>
-                                    </h3>
+                                    <h3 class="no-admin-title"><label for="title">제목</label></h3>
                                     <div class="no-admin-content">
-                                        <div class="no-radio-form no-radio-flex">
-                                            <div class="no-radio-link">
-                                                <label for="input3">
-                                                    <div class="no-radio-box">
-                                                        <input type="radio" name="p_none_limit" id="input3" value="Y"
-                                                            checked
-                                                            onClick="doAttrChange('p_date', 'disabled', true);" />
-                                                        <span>
-                                                            <i class="bx bx-radio-circle-marked"></i>
-                                                        </span>
-                                                    </div>
-                                                    <span class="no-radio-text">무기한</span>
-                                                </label>
+                                        <input type="text" id="title" name="title" required>
+                                    </div>
+                                </div>
 
-                                                <label for="input4">
-                                                    <div class="no-radio-box">
-                                                        <input type="radio" name="p_none_limit" id="input4" value="N"
-                                                            onClick="doAttrChange('p_date', 'disabled', false);" />
-                                                        <span>
-                                                            <i class="bx bx-radio-circle-marked"></i>
-                                                        </span>
-                                                    </div>
-                                                    <span class="no-radio-text">기한지정</span>
-                                                </label>
-                                            </div>
+                                <!-- 설명글 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title"><label for="description">설명</label></h3>
+                                    <div class="no-admin-content">
+                                        <textarea name="description" id="description" rows="4"></textarea>
+                                    </div>
+                                </div>
 
-                                            <div class="no-admin-content no-admin-date no-pd no-flex-row">
-                                                <input type="text" name="p_sdate" id="p_sdate" disabled />
-                                                <span></span>
-                                                <input type="text" name="p_edate" id="p_edate" disabled />
-                                            </div>
+                                <!-- 링크 여부 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">링크 여부</h3>
+                                    <div class="no-admin-content">
+                                        <div class="no-radio-form no-list">
+                                            <?php foreach ($has_link as $value => $label): 
+                                                $id = "link_$value";
+                                                $checked = ($value == 2) ? 'checked' : '';
+                                            ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="has_link" id="<?= $id ?>"
+                                                        value="<?= $value ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- admin-block -->
 
+                                <!-- 링크 URL -->
+                                <div class="no-admin-block" id="link_url_block">
+                                    <h3 class="no-admin-title"><label for="link_url">링크 URL</label></h3>
+                                    <div class="no-admin-content">
+                                        <input type="url" id="link_url" name="link_url"
+                                            placeholder="http:// 또는 https://">
+                                    </div>
+                                </div>
+
+                                <!-- 팝업 이미지 -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title">
-                                        <label for="title">팝업 이미지</label>
-                                    </h3>
+                                    <h3 class="no-admin-title"><label for="popup_image">팝업 이미지</label></h3>
                                     <div class="no-admin-content">
                                         <div class="no-file-control">
-                                            <input type="text" class="no-fake-file" id="fake_p_img"
+                                            <input type="text" class="no-fake-file" id="fakePopupFileTxt"
                                                 placeholder="파일을 선택해주세요." readonly disabled />
                                             <div class="no-file-box">
-                                                <input type="file" name="p_img" id="p_img"
-                                                    onchange="document.getElementById('fake_p_img').value = this.value" />
-                                                <button type="button" class="no-btn no-btn--main">
-                                                    파일찾기
-                                                </button>
+                                                <input type="file" name="popup_image" id="popup_image"
+                                                    onchange="document.getElementById('fakePopupFileTxt').value = this.value"
+                                                    accept="image/*" />
+                                                <button type="button" class="no-btn no-btn--main">파일찾기</button>
                                             </div>
                                         </div>
-                                        <!-- file control -->
+                                        <span class="no-admin-info"><i class="bx bxs-info-circle"></i>팝업에 사용되는
+                                            이미지입니다.</span>
                                     </div>
                                 </div>
-                                <!-- admin-block -->
 
+
+                                <!-- 정렬 순서 -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title">
-                                        <label for="p_idx">노출순위</label>
-                                    </h3>
+                                    <h3 class="no-admin-title"><label for="sort_no">정렬 순서</label></h3>
                                     <div class="no-admin-content">
-                                        <input type="text" name="p_idx" id="p_idx" class="no-input--detail"
-                                            placeholder="0" />
-                                        <span class="no-admin-info">
-                                            <i class="bx bxs-info-circle"></i>
-                                            노출순위가 높을수록 우선 노출됩니다.
-                                        </span>
-                                        <span class="no-admin-info">
-                                            <i class="bx bxs-info-circle"></i>
-                                            미입력시 자동으로 부여됩니다.
-                                        </span>
+                                        <input type="number" id="sort_no" name="sort_no" value="0" min="0">
                                     </div>
                                 </div>
-                                <!-- admin-block -->
-
-                                <div class="no-admin-block">
-                                    <h3 class="no-admin-title">
-                                        <label for="p_title">타이틀</label>
-                                    </h3>
-                                    <div class="no-admin-content">
-                                        <input type="text" name="p_title" id="p_title" class="no-input--detail"
-                                            placeholder="타이틀을 입력해주세요." />
-                                    </div>
-                                </div>
-                                <!-- admin-block -->
-
-                                <div class="no-admin-block">
-                                    <h3 class="no-admin-title">
-                                        <span>링크타겟</span>
-                                    </h3>
-                                    <div class="no-admin-content">
-                                        <div class="no-radio-form">
-                                            <label for="input5">
-                                                <div class="no-radio-box">
-                                                    <input type="radio" name="p_target" id="input5" value="" checked
-                                                        onClick="$('#p_is_link').val('N'); doHideDiv('no_linkaddress');" />
-                                                    <span>
-                                                        <i class="bx bx-radio-circle-marked"></i>
-                                                    </span>
-                                                </div>
-                                                <span class="no-radio-text">링크없음</span>
-                                            </label>
-
-                                            <label for="input6">
-                                                <div class="no-radio-box">
-                                                    <input type="radio" name="p_target" id="input6" value="_self"
-                                                        onClick="$('#p_is_link').val('Y'); doOpenDiv('no_link_target_box');" />
-                                                    <span>
-                                                        <i class="bx bx-radio-circle-marked"></i>
-                                                    </span>
-                                                </div>
-                                                <span class="no-radio-text">같은창</span>
-                                            </label>
-
-                                            <label for="input7">
-                                                <div class="no-radio-box">
-                                                    <input type="radio" name="p_target" id="input7" value="_blank"
-                                                        onClick="$('#p_is_link').val('Y'); doOpenDiv('no_link_target_box');" />
-                                                    <span>
-                                                        <i class="bx bx-radio-circle-marked"></i>
-                                                    </span>
-                                                </div>
-                                                <span class="no-radio-text">새창</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- admin-block -->
-
-                                <div id="no_link_target_box" class="no-admin-block no_linkaddress"
-                                    style="display: none;">
-                                    <h3 class="no-admin-title">
-                                        <label for="b_link">링크주소</label>
-                                    </h3>
-                                    <div class="no-admin-content">
-                                        <input type="text" name="p_link" id="p_link" class="no-input--detail"
-                                            placeholder="링크주소를 입력해주세요." />
-                                    </div>
-                                </div>
-                                <!-- admin-block -->
 
 
+                                <!-- 버튼 -->
                                 <div class="no-items-center center">
                                     <a href="./popup.list.php" class="no-btn no-btn--big no-btn--normal">목록</a>
-                                    <a href="javascript:void(0);" class="no-btn no-btn--big no-btn--main"
-                                        onClick="doRegSave();">수정</a>
+                                    <button type="submit" class="no-btn no-btn--big no-btn--main"
+                                        id="submitBtn">저장</button>
                                 </div>
+
                             </div>
-                            <!-- card-body -->
+
                         </div>
                     </div>
+
                 </section>
             </form>
+
         </main>
-
-        <!-- Footer -->
-        <script type="text/javascript"
-            src="./js/popup.process.js?c=<?= htmlspecialchars($STATIC_ADMIN_JS_MODIFY_DATE) ?>"></script>
-        <?php
-            include_once "../../inc/admin.footer.php";
-        ?>
-
+        <?php include_once "../../inc/admin.footer.php"; ?>
     </div>
+
+
 </body>
 
 </html>

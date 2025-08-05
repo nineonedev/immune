@@ -147,7 +147,7 @@ function doSettingSave() {
         alert(jsonData.msg);
       } else if (jsonData.result == "success") {
         alert(jsonData.msg);
-        location.href = "./site.config.php";
+        location.href = "./index.php";
       }
     },
     error: function (e) {},

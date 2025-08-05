@@ -67,6 +67,8 @@ const formInit = () => {
 
   const categoryPrimary = $("#category_primary");
   const categorySecondary = $("#category_secondary");
+  const startDatePicker = $("#start_at");
+  const endDatePicker = $("#end_at");
 
   const activeStatus = $("#active_status");
   const snsType = $("#sns_type");
@@ -99,6 +101,8 @@ const formInit = () => {
   categoryPrimary.selectmenu();
   categorySecondary.selectmenu();
 
+  startDatePicker.datepicker();
+  endDatePicker.datepicker();
   // const bannerDate = [$('#b_sdate'), $('#b_edate')];
   // const bannerDateRadio = [$('#input3'), $('#input4')];
 

@@ -3,7 +3,7 @@ include_once "../../../inc/lib/base.class.php";
 
 $db = DB::getInstance();
 
-$depthnum = 3;
+$depthnum = 2;
 $pagenum = 2;
 
 // 검색어 및 상태

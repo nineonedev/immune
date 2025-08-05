@@ -1,12 +1,13 @@
 <?php
 $BASE_URL = '/admin/pages/';
 
-$gnbActive = array_fill(1, 9, "");
+$gnbActive = array_fill(1, 11, "");
 $pageActive = [];
 $pagenum = $pagenum ?? 0;
 
+// 메뉴 정의
 $menus = [
-    1 => [ 
+    1 => [
         'key' => 'dashboard',
         'title' => '대시보드',
         'icon' => 'fa-grid-2',
@@ -35,7 +36,7 @@ $menus = [
         'key' => 'facility',
         'title' => '시설 관리',
         'icon' => 'fa-hospital',
-        'url'  => '/admin/main.php',
+        'url'  => '/admin/pages/facility/index.php',
         'subs' => []
     ],
     5 => [
@@ -79,8 +80,19 @@ $menus = [
             ['title' => '페이지별 SEO 관리', 'url' => 'setting/seo.php'],
         ]
     ],
+    11 => [
+        'key' => 'inquiry',
+        'title' => '문의 관리',
+        'icon' => 'fa-envelope-open-text',
+        'subs' => [
+            ['title' => '간편 문의', 'url' => 'inquiry/simple.php'],
+            ['title' => '공진단 · 상담 문의', 'url' => 'inquiry/herb.php'],
+            ['title' => '예진표 (맞춤한약)', 'url' => 'inquiry/prescription.php'],
+        ]
+    ],
 ];
 
+// 메뉴 활성화 설정 함수
 function setActive(&$gnbActive, &$pageActive, $depth, $page, $gnbIndex, $key, $subCount = 0) {
     $gnbActive[$gnbIndex] = "active";
 
@@ -92,6 +104,7 @@ function setActive(&$gnbActive, &$pageActive, $depth, $page, $gnbIndex, $key, $s
     }
 }
 
+// 현재 페이지 정보로 활성화 설정
 if (isset($menus[$depthnum])) {
     $menu = $menus[$depthnum];
     $subCount = isset($menu['subs']) && is_array($menu['subs']) ? count($menu['subs']) : 0;
@@ -122,9 +135,12 @@ if (isset($menus[$depthnum])) {
                     </span>
                     <ul class="no-menu-sub">
                         <?php foreach ($menu['subs'] as $i => $sub): ?>
+                        <?php
+                            $subUrl = $BASE_URL . $sub['url'];
+                            $isActive = $pageActive[$menu['key']][$i] ?? '';
+                        ?>
                         <li class="no-menu-item">
-                            <a href="<?=$NO_IS_SUBDIR . $BASE_URL . $sub['url']?>"
-                                class="no-menu-link <?=$pageActive[$menu['key']][$i] ?? ''?>">
+                            <a href="<?=$NO_IS_SUBDIR . $subUrl?>" class="no-menu-link <?=$isActive?>">
                                 <span class="no-menu-bullet"><span class="no-menu-bullet-dot"></span></span>
                                 <span class="no-menu-title"><?=$sub['title']?></span>
                             </a>
@@ -139,7 +155,6 @@ if (isset($menus[$depthnum])) {
                     <?php endif; ?>
                 </li>
                 <?php endforeach; ?>
-
             </ul>
         </nav>
     </div>

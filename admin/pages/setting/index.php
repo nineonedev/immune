@@ -4,6 +4,7 @@
     $pageName = "사이트 정보";
 
     $depthnum = 10; 
+    $pagenum = 1;
 
 	include_once "../../inc/admin.title.php";
 	include_once "../../inc/admin.css.php";

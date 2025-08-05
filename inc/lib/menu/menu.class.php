@@ -179,6 +179,7 @@ class Menu
     return $page_dirname;
   }
 
+  /*
   public function getPath($prev_info, $v)
   {
     if (isset($v['ext_link'])) return $v['ext_link'];
@@ -202,7 +203,42 @@ class Menu
       ? $prev_info['dirname'] . '/' . $v['filename']
       : $v['filename'];
     return $this->getFile($path);
+  }*/
+
+
+  public function getPath($prev_info, $v)
+  {
+      if (isset($v['ext_link'])) return $v['ext_link'];
+
+      if (isset($v['board_no'])) {
+          $params = "?board_no=" . $v['board_no'];
+          if (isset($v['category_no'])) {
+              $params .= "&category_no=" . $v['category_no'];
+          }
+          return $this->boardPath . $params;
+      }
+
+      if (!isset($v['filename']) || empty($v['filename'])) {
+          if (isset($v['pages']) && count($v['pages']) > 0) {
+              return $v['pages'][0]['path'];
+          }
+          return $this->getFile('index');
+      }
+
+      $path = !empty($prev_info['dirname'])
+          ? $prev_info['dirname'] . '/' . $v['filename']
+          : $v['filename'];
+
+      $fullPath = $this->getFile($path);
+
+      if (isset($v['get']) && is_array($v['get'])) {
+          $query = http_build_query($v['get']);
+          $fullPath .= '?' . $query;
+      }
+
+      return $fullPath;
   }
+
 
   public function getCurPageIndex()
   {

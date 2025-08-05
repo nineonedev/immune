@@ -3,6 +3,7 @@ include_once "../../../inc/lib/base.class.php";
 
 $pageName = "페이지별 SEO";
 $depthnum = 10;
+$pagenum = 3;
 
 // 페이지네이션 필수 변수
 $Page = $Page ?? 1;

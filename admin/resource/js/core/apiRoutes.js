@@ -7,4 +7,6 @@ export const API = {
   FAQ: "/admin/Controller/FaqController.php",
   NONPAY: "/admin/Controller/NonPayController.php",
   DOCTOR: "/admin/Controller/DoctorController.php",
+  FACILITY: "/admin/Controller/FacilityController.php",
+  BANNER: "/admin/Controller/BannerController.php",
 };

@@ -240,7 +240,7 @@
 		$HOSPITAL_MENU_ITEMS = [];
 		$AUTH_MENU_ITEMS = [];
 		$areaMenuPath = __DIR__ . '/../../json/menu.' . $area . '.json';
-
+        
 		if (file_exists($areaMenuPath)) {
 			$jsonData = file_get_contents($areaMenuPath);
 			$parsedData = json_decode($jsonData, true);
@@ -294,15 +294,21 @@
                 <?php endif; ?>
 
                 <?php foreach ($COMMON_MENU_ITEMS as $PAGE) :
-					$firstFile = $PAGE['pages'][0]['filename'] ?? 'home';
-				?>
+                    $firstFile = $PAGE['pages'][0]['filename'] ?? 'home';
+                    $href = "/pages/{$PAGE['dirname']}/{$firstFile}.php";
+
+                    if (isset($PAGE['pages'][0]['get']) && is_array($PAGE['pages'][0]['get'])) {
+                        $query = http_build_query($PAGE['pages'][0]['get']);
+                        $href .= '?' . $query;
+                    }
+                ?>
                 <li>
-                    <a href="/pages/<?= $PAGE['dirname'] ?>/<?= $firstFile ?>.php" class="no-body-lg fw300"
-                        target="_blank">
+                    <a href="<?= $href ?>" class="no-body-lg fw300" target="_blank">
                         <?= $PAGE['title'] ?>
                     </a>
                 </li>
                 <?php endforeach; ?>
+
             </ul>
         </div>
     </aside>

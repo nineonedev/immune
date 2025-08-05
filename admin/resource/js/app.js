@@ -6,6 +6,8 @@ import { FaqController } from "./Controller/FaqController.js";
 import { NonPayController } from "./Controller/NonPayController.js";
 import { DoctorController } from "./Controller/DoctorController.js";
 import { previewImage } from "./Core/previewImage.js";
+import { FacilityController } from "./Controller/FacilityController.js";
+import { BannerController } from "./Controller/BannerController.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const page = document.body.dataset.page;
@@ -21,17 +23,17 @@ document.addEventListener("DOMContentLoaded", () => {
       memberController.init();
       break;
 
-    case "setting": // ✅
+    case "setting":
       const settingController = new SettingController();
       settingController.init();
       break;
 
-    case "seo": // ✅
+    case "seo":
       const seoController = new SeoController();
       seoController.init();
       break;
 
-    case "faq": // ✅
+    case "faq":
       const faqController = new FaqController();
       faqController.init();
       break;
@@ -46,8 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
       doctorController.init();
       break;
 
+    case "facility":
+      const facilityController = new FacilityController();
+      facilityController.init();
+
+    case "banner":
+      const bannerController = new BannerController();
+      bannerController.init();
+
     default:
-      // 페이지 매칭 안 될 경우 아무 처리 안 함
       break;
   }
 });

@@ -3848,3 +3848,30 @@ input[type="file"].note-image-input {
   border: 1px solid var(--border-color);
   width: 100%;
 }
+
+.no-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.no-tag {
+  display: inline-block;
+  background-color: #f6f6f6; /* 아주 연한 회색 */
+  color: #555; /* 부드러운 중간 회색 텍스트 */
+  padding: 10px 16px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.no-tag:hover {
+  background-color: #eaeaea; /* 살짝 진해지는 호버 효과 */
+}
+
+.no-admin-block .no-admin-date {
+  flex-direction: row;
+}

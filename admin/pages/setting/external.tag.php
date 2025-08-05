@@ -3,7 +3,7 @@ include_once "../../../inc/lib/base.class.php";
 
 $pageName = "사이트 외부 태그";
 $depthnum = 10;
-
+$pagenum = 2;
 
 $Page = $Page ?? 1;
 $listCurPage = $listCurPage ?? 1;

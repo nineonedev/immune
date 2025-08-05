@@ -1,24 +1,26 @@
 <?php
 include_once "../../../inc/lib/base.class.php";
 
-$pageName = "배너";
-$depthnum = 3;
-$pagenum = 1;
+$pageName = "시설";
+$depthnum = 4;
+
+$db = DB::getInstance();
 
 $Page = $Page ?? 1;
 $listCurPage = $listCurPage ?? 1;
 $pageBlock = $pageBlock ?? 2;
 
-$db = DB::getInstance();
 
-$branchesStmt = $db->prepare("SELECT * FROM nb_branches WHERE id IN (2,3,4) ORDER BY id ASC");
+// 지점 목록
+$branchesStmt = $db->prepare("SELECT id, name_kr FROM nb_branches ORDER BY id ASC");
 $branchesStmt->execute();
 $branches = $branchesStmt->fetchAll(PDO::FETCH_ASSOC); 
 
-// GET 파라미터 처리
+// GET 파라미터
 $branch_id = $_GET['branch_id'] ?? '';
-$banner_type = $_GET['banner_type'] ?? '';
-$active_filter = $_GET['is_active'] ?? '';
+$category = $_GET['category'] ?? '';
+$active_filter = $_GET['is_active'] ?? '';  
+$searchColumn = $_GET['searchColumn'] ?? '';
 $searchKeyword = $_GET['searchKeyword'] ?? '';
 
 // WHERE 조건 구성
@@ -26,32 +28,40 @@ $where = "WHERE 1=1";
 $params = [];
 
 if (!empty($branch_id)) {
-    $where .= " AND b.branch_id = :branch_id";
+    $where .= " AND f.branch_id = :branch_id";
     $params[':branch_id'] = $branch_id;
 }
 
-if (!empty($banner_type)) {
-    $where .= " AND b.banner_type = :banner_type";
-    $params[':banner_type'] = $banner_type;
+if (!empty($category)) {
+    $where .= " AND f.categories = :category";
+    $params[':category'] = $category;
 }
 
 if ($active_filter !== '') {
-    $where .= " AND b.is_active = :is_active";
+    $where .= " AND f.is_active = :is_active";
     $params[':is_active'] = (int)$active_filter;
 }
 
-if (!empty($searchKeyword)) {
-    $where .= " AND b.title LIKE :searchKeyword";
-    $params[':searchKeyword'] = "%{$searchKeyword}%";
+if (!empty($searchColumn) && !empty($searchKeyword)) {
+    $allowedColumns = ['title', 'categories'];
+    if (in_array($searchColumn, $allowedColumns)) {
+        if ($searchColumn === 'categories') {
+            $where .= " AND f.categories = :searchCategory";
+            $params[':searchCategory'] = array_search($searchKeyword, $facilities) ?: -1;
+        } else {
+            $where .= " AND f.{$searchColumn} LIKE :searchKeyword";
+            $params[':searchKeyword'] = "%{$searchKeyword}%";
+        }
+    }
 }
 
 // SQL 실행
 $sql = "
-    SELECT b.*, br.name_kr AS branch_name
-    FROM nb_banners b
-    LEFT JOIN nb_branches br ON b.branch_id = br.id
+    SELECT f.*, b.name_kr AS branch_name
+    FROM nb_facilities f
+    LEFT JOIN nb_branches b ON f.branch_id = b.id
     $where
-    ORDER BY b.sort_no ASC, b.id DESC
+    ORDER BY f.id DESC
 ";
 
 $stmt = $db->prepare($sql);
@@ -61,7 +71,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php include_once "../../inc/admin.head.php"; ?>
 
-<body data-page="banner">
+<body data-page="facility">
     <div class="no-wrap">
         <?php include_once "../../inc/admin.header.php"; ?>
         <main class="no-app no-container">
@@ -83,8 +93,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
                             <div class="no-items-center">
-                                <a href="./banner.new.php" class="no-btn no-btn--main no-btn--big"> <?= $pageName ?> 생성
-                                </a>
+                                <a href="./new.php" class="no-btn no-btn--main no-btn--big"> <?= $pageName ?> 생성 </a>
                             </div>
                         </div>
                     </div>
@@ -113,16 +122,15 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
 
-
-                                <!-- 배너 위치 -->
+                                <!-- 카테고리 선택 -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title">배너 위치</h3>
+                                    <h3 class="no-admin-title">카테고리</h3>
                                     <div class="no-admin-content">
-                                        <select name="banner_type" id="banner_type">
+                                        <select name="category" id="category">
                                             <option value="">전체</option>
-                                            <?php foreach ($banner_types as $code => $label): ?>
-                                            <option value="<?= $code ?>"
-                                                <?= ($banner_type == $code) ? 'selected' : '' ?>>
+                                            <?php foreach ($facilities as $key => $label): ?>
+                                            <option value="<?= $key ?>"
+                                                <?= ($category ?? '') == $key ? 'selected' : '' ?>>
                                                 <?= htmlspecialchars($label) ?>
                                             </option>
                                             <?php endforeach; ?>
@@ -148,26 +156,33 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                                 <!-- 검색어 -->
                                 <div class="no-admin-block wide">
-                                    <h3 class="no-admin-title">배너명</h3>
-                                    <div class="no-search-wrap no-ml">
-                                        <div class="no-search-input">
-                                            <i class="bx bx-search-alt-2"></i>
-                                            <input type="text" name="searchKeyword" id="searchKeyword"
-                                                placeholder="배너명을 입력하세요"
-                                                value="<?= htmlspecialchars($searchKeyword ?? '') ?>">
-                                        </div>
-                                        <div class="no-search-btn">
-                                            <button type="submit" class="no-btn no-btn--main no-btn--search">
-                                                검색
-                                            </button>
+                                    <h3 class="no-admin-title">검색어</h3>
+                                    <div class="no-search-select">
+                                        <select name="searchColumn" id="searchColumn">
+                                            <option value="">선택</option>
+                                            <option value="title"
+                                                <?= ($searchColumn ?? '') === 'title' ? 'selected' : '' ?>>이름</option>
+                                            <option value="categories"
+                                                <?= ($searchColumn ?? '') === 'categories' ? 'selected' : '' ?>>카테고리
+                                            </option>
+                                        </select>
+                                        <div class="no-search-wrap no-ml">
+                                            <div class="no-search-input">
+                                                <i class="bx bx-search-alt-2"></i>
+                                                <input type="text" name="searchKeyword" id="searchKeyword"
+                                                    placeholder="검색어 입력"
+                                                    value="<?= htmlspecialchars($searchKeyword ?? '') ?>">
+                                            </div>
+                                            <div class="no-search-btn">
+                                                <button type="submit"
+                                                    class="no-btn no-btn--main no-btn--search">검색</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
 
                     <!-- 리스트 -->
                     <div class="no-content-container">
@@ -179,19 +194,15 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div class="no-card-body">
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
-                                        <ul class="no-table-check-control">
-                                            <li><a href="#" class="no-btn no-btn--sm" data-action="selectAll">전체선택</a>
-                                            </li>
-                                            <li><a href="#" class="no-btn no-btn--sm" data-action="deselectAll">선택해제</a>
-                                            </li>
-                                            <li><a href="#" class="no-btn no-btn--sm"
-                                                    data-action="deleteSelected">선택삭제</a></li>
-                                        </ul>
+                                        <li><a href="#" class="no-btn no-btn--sm" data-action="selectAll">전체선택</a></li>
+                                        <li><a href="#" class="no-btn no-btn--sm" data-action="deselectAll">선택해제</a>
+                                        </li>
+                                        <li><a href="#" class="no-btn no-btn--sm" data-action="deleteSelected">선택삭제</a>
+                                        </li>
                                     </ul>
                                 </div>
 
                                 <div class="no-table-responsive">
-
                                     <table class="no-table">
                                         <thead>
                                             <tr>
@@ -205,19 +216,16 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </th>
                                                 <th>번호</th>
                                                 <th>지점</th>
-                                                <th>배너명</th>
+                                                <th>이름</th>
                                                 <th>썸네일</th>
-                                                <th>배너 타입</th>
-                                                <th>노출 기간</th>
-                                                <th>노출 여부</th>
+                                                <th>카테고리</th>
+                                                <th>노출</th>
                                                 <th>관리</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php if (count($rows) > 0): ?>
-                                            <?php foreach ($rows as $row): 
-                                                 
-                                                ?>
+                                            <?php foreach ($rows as $row): ?>
                                             <tr>
                                                 <td>
                                                     <div class="no-checkbox-form">
@@ -231,40 +239,23 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?= $row['id'] ?></td>
                                                 <td><?= htmlspecialchars($row['branch_name'] ?? '-') ?></td>
                                                 <td><?= htmlspecialchars($row['title']) ?></td>
-
-                                                <!-- 썸네일 이미지 -->
                                                 <td>
-                                                    <?php if (!empty($row['banner_image'])): ?>
-                                                    <img src="/uploads/banners/<?= $row['banner_image'] ?>" alt="썸네일"
+                                                    <?php if (!empty($row['thumb_image'])): ?>
+                                                    <img src="/uploads/facilities/<?= $row['thumb_image'] ?>" alt="썸네일"
                                                         style="max-width: 60px;">
                                                     <?php else: ?>
                                                     <span style="color: #aaa;">-</span>
                                                     <?php endif; ?>
                                                 </td>
-
-                                                <!-- 배너 타입 -->
-                                                <td><?= htmlspecialchars($banner_types[$row['banner_type']] ?? '-') ?>
+                                                <td><?= htmlspecialchars($facilities[$row['categories']] ?? '-') ?>
                                                 </td>
-
-                                                <!-- 시작일~종료일 -->
-                                                <td><?= htmlspecialchars($row['start_at']) ?> ~
-                                                    <?= htmlspecialchars($row['end_at']) ?></td>
-
-                                                <!-- 노출 여부 -->
-                                                <td>
-                                                    <span
-                                                        class="no-btn <?= $row['is_active'] ? 'no-btn--notice' : 'no-btn--normal' ?>">
-                                                        <?= htmlspecialchars($is_active[$row['is_active']] ?? '미정') ?>
-                                                    </span>
-                                                </td>
-
-
+                                                <td><?= htmlspecialchars($is_active[$row['is_active']] ?? '미정') ?></td>
                                                 <td>
                                                     <div class="no-table-role">
                                                         <span class="no-role-btn"><i
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
-                                                            <a href="banner.edit.php?id=<?= $row['id'] ?>"
+                                                            <a href="edit.php?id=<?= $row['id'] ?>"
                                                                 class="no-btn no-btn--sm no-btn--normal">수정</a>
                                                             <button type="button"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline delete-btn"
@@ -276,14 +267,12 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php endforeach; ?>
                                             <?php else: ?>
                                             <tr>
-                                                <td colspan="9" style="text-align: center; color: #888;">등록된 배너가 없습니다.
+                                                <td colspan="8" style="text-align: center; color: #888;">등록된 시설이 없습니다.
                                                 </td>
                                             </tr>
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
-
-
                                 </div>
                             </div>
                         </div>

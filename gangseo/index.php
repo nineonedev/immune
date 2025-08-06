@@ -3,14 +3,19 @@
 <!-- dev -->
 
 <?php include_once $STATIC_ROOT . '/inc/layouts/head.php'; ?>
-<?php include_once $STATIC_ROOT . '/inc/lib/popup.php'; ?>
-<!-- css, js  -->
+
+<!-- 팝업입니다============================================== -->
+<?php
+    $branchId = 2;
+    $popupType = 1;
+    include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
+?>
+<!-- 팝업입니다============================================== -->
 
 <!-- contents -->
-
 <main>
     <?php
-        $banners = getBannersByBranch('ganseo', 1);
+        $banners = getBannersByBranch('gangseo', 1);
     ?>
     <section class="no-cetner-visual">
         <div class="no-container-pc">
@@ -25,20 +30,22 @@
                             <?php if (!empty($banners)): ?>
                             <?php foreach ($banners as $banner): ?>
                             <?php
-                                $imgSrc = '/uploads/banners/' . $banner['banner_image'];
-                                $alt = htmlspecialchars($banner['title']);
-                                $imgTag = "<img src=\"{$imgSrc}\" alt=\"{$alt}\">";
+                                    $imgSrc = '/uploads/banners/' . $banner['banner_image'];
+                                    $alt = htmlspecialchars($banner['title']);
+                                    $imgTag = "<img src=\"{$imgSrc}\" alt=\"{$alt}\">";
 
-                                if ($banner['has_link'] == 1 && !empty($banner['link_url'])) {
-                                    $href = htmlspecialchars($banner['link_url']);
-                                    echo "<a href=\"{$href}\" target=\"_blank\">{$imgTag}</a>";
-                                } else {
-                                    echo $imgTag;
-                                }
-                            ?>
+                                    if ($banner['has_link'] == 1 && !empty($banner['link_url'])) {
+                                        $href = htmlspecialchars($banner['link_url']);
+                                        $target = ((int)$banner['is_target'] === 1) ? '_blank' : '_self'; 
+                                        echo "<a href=\"{$href}\" target=\"{$target}\">{$imgTag}</a>";
+                                    } else {
+                                        echo $imgTag;
+                                    }
+                                ?>
                             <?php endforeach; ?>
                             <?php endif; ?>
                         </section>
+
 
                         <section class="no-main-center no-pd-48--y">
                             <div class="no-container-sm">

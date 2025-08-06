@@ -14,19 +14,20 @@ try {
 
     // INSERT
     if ($mode === 'insert') {
-        $data = [
-            'title'         => trim($input['title'] ?? ''),
-            'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
-            'popup_type'    => (int)($input['popup_type'] ?? 0),
-            'has_link'      => (int)($input['has_link'] ?? 2),
-            'link_url'      => trim($input['link_url'] ?? ''),
-            'sort_no'       => (int)($input['sort_no'] ?? 0),
-            'is_active'     => (int)($input['is_active'] ?? 1),
-            'description'   => trim($input['description'] ?? ''),
-            'start_at'      => trim($input['start_at'] ?? null),
-            'end_at'        => trim($input['end_at'] ?? null),
-            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
-        ];
+            $data = [
+                'title'         => trim($input['title'] ?? ''),
+                'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
+                'popup_type'    => (int)($input['popup_type'] ?? 0),
+                'has_link'      => (int)($input['has_link'] ?? 2),
+                'link_url'      => trim($input['link_url'] ?? ''),
+                'is_target'     => (int)($input['is_target'] ?? 1), // ✅ 추가
+                'sort_no'       => (int)($input['sort_no'] ?? 0),
+                'is_active'     => (int)($input['is_active'] ?? 1),
+                'description'   => trim($input['description'] ?? ''),
+                'start_at'      => trim($input['start_at'] ?? null),
+                'end_at'        => trim($input['end_at'] ?? null),
+                'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
+            ];
 
         $validator->require('title', $data['title'], '제목');
         $validator->require('popup_type', $data['popup_type'], '팝업 위치');
@@ -53,12 +54,13 @@ try {
         $id = (int)($input['id'] ?? 0);
         if (!$id) throw new Exception("ID가 없습니다.");
 
-        $data = [
+         $data = [
             'title'         => trim($input['title'] ?? ''),
             'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
             'popup_type'    => (int)($input['popup_type'] ?? 0),
             'has_link'      => (int)($input['has_link'] ?? 2),
             'link_url'      => trim($input['link_url'] ?? ''),
+            'is_target'     => (int)($input['is_target'] ?? 1), // ✅ 추가
             'sort_no'       => (int)($input['sort_no'] ?? 0),
             'is_active'     => (int)($input['is_active'] ?? 1),
             'description'   => trim($input['description'] ?? ''),

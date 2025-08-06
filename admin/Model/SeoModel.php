@@ -8,9 +8,9 @@ class SeoModel
 
         $sql = "
             INSERT INTO nb_branch_seos 
-                (branch_id, path, page_title, meta_title, meta_description, meta_keywords)
+                (branch_id, path, page_title, meta_title, meta_description, meta_keywords, section_title, topic_title)
             VALUES 
-                (:branch_id, :path, :page_title, :meta_title, :meta_description, :meta_keywords)
+                (:branch_id, :path, :page_title, :meta_title, :meta_description, :meta_keywords, :section_title, :topic_title)
         ";
 
         $stmt = $db->prepare($sql);
@@ -21,6 +21,8 @@ class SeoModel
             ':meta_title' => $data['meta_title'],
             ':meta_description' => $data['meta_description'],
             ':meta_keywords' => $data['meta_keywords'],
+            ':section_title' => $data['section_title'],
+            ':topic_title' => $data['topic_title'],
         ]);
     }
 
@@ -37,6 +39,8 @@ class SeoModel
                 meta_title = :meta_title,
                 meta_description = :meta_description,
                 meta_keywords = :meta_keywords,
+                section_title = :section_title,
+                topic_title = :topic_title,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = :id
         ";
@@ -50,10 +54,11 @@ class SeoModel
             ':meta_title' => $data['meta_title'],
             ':meta_description' => $data['meta_description'],
             ':meta_keywords' => $data['meta_keywords'],
+            ':section_title' => $data['section_title'],
+            ':topic_title' => $data['topic_title'],
             ':id' => $id
         ]);
     }
-
 
     public static function delete($id)
     {
@@ -64,7 +69,6 @@ class SeoModel
         return $stmt->execute([':id' => $id]);
     }
 
-    
     public static function deleteMultiple(array $ids): bool
     {
         if (empty($ids)) return false;

@@ -22,7 +22,7 @@
 
         <ul class="link-list fade-up no-mg-32--t">
             <li>
-                <a href="/pages/board/board.list.php?board_no=16">
+                <a href="../hospital/faq.php">
                     <h3 class="no-body-xl fw600">FAQ</h3>
                     <p class="no-body-lg fw300">자주 묻는 질문</p>
 
@@ -31,7 +31,7 @@
             </li>
 
             <li>
-                <a href="/pages/board/board.list.php?board_no=10">
+                <a href="../hospital/facility.php">
                     <h3 class="no-body-xl fw600">시설 둘러보기</h3>
                     <p class="no-body-lg fw300">믿음과 안심의 시작</p>
 
@@ -40,7 +40,7 @@
             </li>
 
             <li>
-                <a href="/gangseo/pages/hospital/location.php">
+                <a href="../hospital/location.php">
                     <h3 class="no-body-xl fw600">오시는 길</h3>
                     <p class="no-body-lg fw300">건강으로 향하는 첫 걸음</p>
 

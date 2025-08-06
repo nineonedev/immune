@@ -99,6 +99,28 @@ include_once "../../inc/admin.js.php";
                                     </div>
                                 </div>
 
+                                <!-- 중간 카테고리 제목 (section_title) -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">
+                                        <label for="section_title">중간 카테고리 제목</label>
+                                    </h3>
+                                    <div class="no-admin-content">
+                                        <input type="text" id="section_title" name="section_title"
+                                            placeholder="예: 유방/자궁/난소암">
+                                    </div>
+                                </div>
+
+                                <!-- 세부 주제 제목 (topic_title) -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">
+                                        <label for="topic_title">세부 주제 제목</label>
+                                    </h3>
+                                    <div class="no-admin-content">
+                                        <input type="text" id="topic_title" name="topic_title" placeholder="예: 수술전후">
+                                    </div>
+                                </div>
+
+
                                 <!-- Meta Title -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title"><label for="meta_title">Meta Title</label></h3>

@@ -17,6 +17,8 @@ try {
         $meta_title = trim($input['meta_title'] ?? '');
         $meta_description = trim($input['meta_description'] ?? '');
         $meta_keywords = trim($input['meta_keywords'] ?? '');
+        $section_title = trim($input['section_title'] ?? '');
+        $topic_title = trim($input['topic_title'] ?? '');
 
         if (!$branch_id || !$path || !$page_title) {
             echo json_encode([
@@ -32,7 +34,9 @@ try {
             'page_title' => $page_title,
             'meta_title' => $meta_title,
             'meta_description' => $meta_description,
-            'meta_keywords' => $meta_keywords
+            'meta_keywords' => $meta_keywords,
+            'section_title' => $section_title,
+            'topic_title' => $topic_title
         ]);
 
         echo json_encode([
@@ -58,9 +62,10 @@ try {
             'meta_title' => trim($input['meta_title'] ?? ''),
             'meta_description' => trim($input['meta_description'] ?? ''),
             'meta_keywords' => trim($input['meta_keywords'] ?? ''),
+            'section_title' => trim($input['section_title'] ?? ''),
+            'topic_title' => trim($input['topic_title'] ?? '')
         ];
 
-        // 필수값 유효성 검사
         if (!$data['branch_id'] || !$data['path'] || !$data['page_title']) {
             echo json_encode([
                 'success' => false,
@@ -77,7 +82,6 @@ try {
         ]);
         exit;
     }
-
 
     // ============ DELETE ============
     if ($mode === 'delete') {
@@ -97,8 +101,7 @@ try {
         exit;
     }
 
-    
-    // DELETE_ARRAY
+    // ============ DELETE_ARRAY ============
     if ($mode === 'delete_array') {
         $ids = json_decode($input['ids'] ?? '[]', true);
 
@@ -115,7 +118,6 @@ try {
         ]);
         exit;
     }
-
 
     echo json_encode(['success' => false, 'message' => '유효하지 않은 요청입니다.']);
     exit;

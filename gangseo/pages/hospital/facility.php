@@ -2,15 +2,14 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/inc/lib/base.class.php';
 
 // 배너 가져오기
-$banners = getBannersByBranch('ganseo', 5, 1);
+$banners = getBannersByBranch('gangseo', 5, 1);
 $banner = $banners[0] ?? null;
 
 // 강서 지점 시설 정보 - 카테고리별
-$facilities1 = getFacilities('ganseo', 1);
-$facilities2 = getFacilities('ganseo', 2); 
-$facilities3 = getFacilities('ganseo', 3); 
-$facilities4 = getFacilities('ganseo', 4); 
-
+$facilities1 = getFacilities('gangseo', 1);
+$facilities2 = getFacilities('gangseo', 2); 
+$facilities3 = getFacilities('gangseo', 3); 
+$facilities4 = getFacilities('gangseo', 4); 
 
 ?>
 
@@ -18,8 +17,6 @@ $facilities4 = getFacilities('ganseo', 4);
 <?php include_once $STATIC_ROOT . '/inc/layouts/head.php'; ?>
 
 <!-- css, js  -->
-
-
 
 <!-- contents -->
 <main>

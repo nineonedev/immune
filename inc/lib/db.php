@@ -45,7 +45,6 @@ class DB {
         return $this->conn->prepare($query);
     }
 
-    // SELECT 다중 결과
     public function select($query, $params = []) {
         $stmt = $this->conn->prepare($query);
         $stmt->execute($params);

@@ -5,7 +5,7 @@
 <!-- dev -->
 
 <?php
-    $doctors = getDoctors('ganseo'); 
+    $doctors = getDoctors('gangseo'); 
 
     // 대표 원장 추출
     $ceoDoctors = array_filter($doctors, fn($doc) => $doc['is_ceo'] == 1);

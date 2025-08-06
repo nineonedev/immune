@@ -6,18 +6,18 @@ class BannerModel
     {
         $db = DB::getInstance();
         $sql = "
-                INSERT INTO nb_banners (
-                    title, branch_id, banner_type, has_link, link_url,
-                    sort_no, is_active, description, start_at, end_at, banner_image,
-                    is_unlimited,                       -- 🔧 추가
-                    created_at, updated_at
-                ) VALUES (
-                    :title, :branch_id, :banner_type, :has_link, :link_url,
-                    :sort_no, :is_active, :description, :start_at, :end_at, :banner_image,
-                    :is_unlimited,                     -- 🔧 추가
-                    NOW(), NOW()
-                )
-            ";
+            INSERT INTO nb_banners (
+                title, branch_id, banner_type, has_link, link_url,
+                sort_no, is_active, description, start_at, end_at, banner_image,
+                is_unlimited, is_target,       -- ✅ 추가
+                created_at, updated_at
+            ) VALUES (
+                :title, :branch_id, :banner_type, :has_link, :link_url,
+                :sort_no, :is_active, :description, :start_at, :end_at, :banner_image,
+                :is_unlimited, :is_target,      -- ✅ 추가
+                NOW(), NOW()
+            )
+        ";
 
         $stmt = $db->prepare($sql);
         return $stmt->execute([
@@ -32,9 +32,11 @@ class BannerModel
             ':start_at'     => $data['start_at'],
             ':end_at'       => $data['end_at'],
             ':banner_image' => $data['banner_image'],
-            ':is_unlimited' => $data['is_unlimited'], 
+            ':is_unlimited' => $data['is_unlimited'],
+            ':is_target'    => $data['is_target'], // ✅ 추가
         ]);
     }
+
 
     public static function update($id, $data)
     {
@@ -43,7 +45,7 @@ class BannerModel
         $fields = [
             'title', 'branch_id', 'banner_type', 'has_link', 'link_url',
             'sort_no', 'is_active', 'description', 'start_at', 'end_at',
-            'is_unlimited' 
+            'is_unlimited', 'is_target' // ✅ 추가
         ];
 
         if (!empty($data['banner_image'])) {
@@ -59,6 +61,7 @@ class BannerModel
         $data['id'] = $id;
         return $stmt->execute($data);
     }
+
 
     public static function delete($id)
     {

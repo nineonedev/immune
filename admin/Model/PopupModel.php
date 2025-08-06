@@ -9,12 +9,12 @@ class PopupModel
             INSERT INTO nb_popups (
                 title, branch_id, popup_type, has_link, link_url,
                 sort_no, is_active, description, start_at, end_at, popup_image,
-                is_unlimited,
+                is_unlimited, is_target, -- ✅ 추가됨
                 created_at, updated_at
             ) VALUES (
                 :title, :branch_id, :popup_type, :has_link, :link_url,
                 :sort_no, :is_active, :description, :start_at, :end_at, :popup_image,
-                :is_unlimited,
+                :is_unlimited, :is_target, -- ✅ 추가됨
                 NOW(), NOW()
             )
         ";
@@ -33,8 +33,10 @@ class PopupModel
             ':end_at'        => $data['end_at'],
             ':popup_image'   => $data['popup_image'],
             ':is_unlimited'  => $data['is_unlimited'],
+            ':is_target'     => $data['is_target'], // ✅ 추가됨
         ]);
     }
+
 
     public static function update($id, $data)
     {
@@ -43,7 +45,7 @@ class PopupModel
         $fields = [
             'title', 'branch_id', 'popup_type', 'has_link', 'link_url',
             'sort_no', 'is_active', 'description', 'start_at', 'end_at',
-            'is_unlimited'
+            'is_unlimited', 'is_target' // ✅ 추가됨
         ];
 
         if (!empty($data['popup_image'])) {
@@ -59,6 +61,7 @@ class PopupModel
         $data['id'] = $id;
         return $stmt->execute($data);
     }
+
 
     public static function delete($id)
     {

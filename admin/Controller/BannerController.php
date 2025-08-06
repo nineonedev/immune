@@ -20,6 +20,7 @@ try {
             'banner_type'   => (int)($input['banner_type'] ?? 0),
             'has_link'      => (int)($input['has_link'] ?? 2),
             'link_url'      => trim($input['link_url'] ?? ''),
+            'is_target'     => (int)($input['is_target'] ?? 1), // ✅ 추가
             'sort_no'       => (int)($input['sort_no'] ?? 0),
             'is_active'     => (int)($input['is_active'] ?? 1),
             'description'   => trim($input['description'] ?? ''),
@@ -27,6 +28,7 @@ try {
             'end_at'        => trim($input['end_at'] ?? null),
             'is_unlimited'  => (int)($input['is_unlimited'] ?? 1), 
         ];
+
 
         $validator->require('title', $data['title'], '제목');
         $validator->require('banner_type', $data['banner_type'], '배너 위치');
@@ -59,13 +61,15 @@ try {
             'banner_type'   => (int)($input['banner_type'] ?? 0),
             'has_link'      => (int)($input['has_link'] ?? 2),
             'link_url'      => trim($input['link_url'] ?? ''),
+            'is_target'     => (int)($input['is_target'] ?? 1), // ✅ 추가
             'sort_no'       => (int)($input['sort_no'] ?? 0),
             'is_active'     => (int)($input['is_active'] ?? 1),
             'description'   => trim($input['description'] ?? ''),
             'start_at'      => trim($input['start_at'] ?? null),
             'end_at'        => trim($input['end_at'] ?? null),
-            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1), // 🔧 추가
+            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1), 
         ];
+
 
         $validator->require('title', $data['title'], '제목');
         $validator->require('banner_type', $data['banner_type'], '배너 위치');

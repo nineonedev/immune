@@ -33,7 +33,7 @@ export class BannerController {
 
     attachRadioToggle({
       radioName: "has_link",
-      targetIds: ["link_url_block"],
+      targetIds: ["link_url_block", "link_target_block"],
       toggleOnValue: "1",
       mode: "visibility",
     });

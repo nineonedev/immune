@@ -320,6 +320,7 @@
 
         <h3 class="no-body-xl fw600 --tac no-mg-20--x">궁금하신 내용을 검색해 주세요.</h3>
 
+        <!-- 왜 코드를 이렇게 작성했는지?
         <div class="header-search-box no-mg-32--y">
             <input type="search" name="searchKeyword" placeholder="검색어를 입력해주세요" class="no-body-md">
             <a href="/gangseo/search.php">
@@ -327,6 +328,15 @@
                     <i class="fa-regular fa-magnifying-glass"></i>
                 </button>
             </a>
+        </div>-->
+
+        <div class="header-search-box no-mg-32--y">
+            <form action="/<?= htmlspecialchars($area) ?>/search.php" method="GET">
+                <input type="search" name="keyword" placeholder="검색어를 입력해주세요" class="no-body-md" required>
+                <button type="submit">
+                    <i class="fa-regular fa-magnifying-glass"></i>
+                </button>
+            </form>
         </div>
 
         <div class="search-history no-mg-16--t">

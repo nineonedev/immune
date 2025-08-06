@@ -18,7 +18,7 @@
         </li>
 
         <li>
-            <a href="/pages/board/board.list.php?board_no=9">
+            <a href="/gangseo/pages/hospital/doctor.php">
                 <p class="no-body-xl">의료진소개</p>
                 <img src="/resource/images/icon/home-doctor.svg">
             </a>

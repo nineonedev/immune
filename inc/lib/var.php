@@ -23,6 +23,10 @@ $popup_types = [
     6 => '면력채널',
 ];
 
+$link_targets = [
+    0 => ['label' => '현재창', 'target' => '_self'],
+    1 => ['label' => '새창', 'target' => '_blank'],
+];
 
 $has_link = [
     1 => '링크',

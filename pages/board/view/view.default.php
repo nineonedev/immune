@@ -21,27 +21,29 @@
 
                                 <div class="view-wrap no-mg-24--t fade-up">
                                     <div class="view-top">
-										<?php
+                                        <?php
 											if ($board_no == 11) {
 										?>
-                                        <a href="/pages/board/board.list.php?board_no=<?=$board_no?>&category_no=<?=$data['category_no']?>" class="no-body-lg fw600 blue category"><?=$data['category_name']?> <i class="fa-solid fa-angle-up fa-rotate-90"></i></a>
-										<?php
+                                        <a href="/pages/board/board.list.php?board_no=<?=$board_no?>&category_no=<?=$data['category_no']?>"
+                                            class="no-body-lg fw600 blue category"><?=$data['category_name']?> <i
+                                                class="fa-solid fa-angle-up fa-rotate-90"></i></a>
+                                        <?php
 											}
 										?>
 
-										<?php
+                                        <?php
 											if ($board_no == 12) {
 										?>
-											<p class="no-body-lg fw300"><?=$data['extra1']?></p>
-										<?php
+                                        <p class="no-body-lg fw300"><?=$data['extra1']?></p>
+                                        <?php
 											}
 										?>
 
-										<?php
+                                        <?php
 											if ($board_no == 13) {
 										?>
-											<p class="no-body-lg fw300">[<?=$data['category_name']?>]</p>
-										<?php
+                                        <p class="no-body-lg fw300">[<?=$data['category_name']?>]</p>
+                                        <?php
 											}
 										?>
 
@@ -51,22 +53,23 @@
 												$backUrl .= "&category_no={$data['category_no']}";
 											}
 										?>
-										<a href="<?=$backUrl?>" class="no-body-md fw300 back">뒤로가기</a>
+                                        <a href="<?=$backUrl?>" class="no-body-md fw300 back">뒤로가기</a>
 
                                     </div>
 
                                     <div class="view-title no-mg-12--t">
                                         <h3 class="no-body-xxl fw600 no-mg-8--b"><?=$data['title']?></h3>
-                                        <p class="no-body-lg fw300 wgray"><?= date("Y.m.d", strtotime($data['regdate'])) ?></p>
+                                        <p class="no-body-lg fw300 wgray">
+                                            <?= date("Y.m.d", strtotime($data['regdate'])) ?></p>
                                     </div>
 
+                                    <!---- 11,12의 경우 영상 업로드 요청하셔서 summernote에서 영상 업로드 예정입니다. css 수정 필요.
                                     <figure class="view-thumnail no-mg-24--y">
-										<?php if ($board_no == 13): ?>
-											<img src="/uploads/board/<?=$data['file_attach_1']?>" alt="<?=$data['title']?>" class="no-radius-sm">
-										<?php else: ?>
-											<img src="<?=$imgSrc?>" alt="<?=$data['title']?>" class="no-radius-sm">
-										<?php endif; ?>
-									</figure>
+                                        <?php if ($board_no == 13): ?>
+                                        <img src="/uploads/board/<?=$data['file_attach_1']?>" alt="<?=$data['title']?>"
+                                            class="no-radius-sm">
+                                        <?php endif; ?>
+                                    </figure>---->
 
                                     <div class="view-content">
                                         <?=htmlspecialchars_decode($data['contents'])?>

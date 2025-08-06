@@ -11,7 +11,8 @@ function getBannersByBranch($branchName, $bannerType = null, $limit = 0, $return
         SELECT 
             b.*, 
             br.name AS branch_code, 
-            br.name_kr AS branch_name
+            br.name_kr AS branch_name,
+            b.is_target  -- ✅ 새창 여부 필드 포함
         FROM nb_banners AS b
         INNER JOIN nb_branches AS br ON b.branch_id = br.id
         WHERE 
@@ -26,7 +27,6 @@ function getBannersByBranch($branchName, $bannerType = null, $limit = 0, $return
             )
             AND br.name = :branchName
     ";
-
 
     if (!is_null($bannerType)) {
         $query .= " AND b.banner_type = :bannerType";
@@ -64,6 +64,8 @@ function getBannersByBranch($branchName, $bannerType = null, $limit = 0, $return
 
     return $results;
 }
+
+
 
 
 function getDoctors($branchName = null, $department = null, $limit = 0, $return_type = 'array') {
@@ -247,6 +249,82 @@ function getNonpayItemsByPrimaryCategory(int $primaryCategory, int $limit = 0, s
 }
 
 
+
+function getFaqs(string $branchName, $category = null, $keyword = null, $limit = 0, $return_type = 'array', $offset = 0) {
+    $db = DB::getInstance();
+    $params = [':branchName' => $branchName];
+
+    $query = "
+        SELECT 
+            f.*, 
+            br.name AS branch_code, 
+            br.name_kr AS branch_name
+        FROM nb_faqs AS f
+        INNER JOIN nb_branches AS br ON f.branch_id = br.id
+        WHERE f.is_active = 1
+          AND br.name = :branchName
+    ";
+
+    if (!is_null($category)) {
+        $query .= " AND f.categories = :category";
+        $params[':category'] = $category;
+    }
+
+    if (!is_null($keyword)) {
+        $query .= " AND f.question LIKE :keyword";
+        $params[':keyword'] = '%' . $keyword . '%';
+    }
+
+    $query .= " ORDER BY f.sort_no ASC";
+
+    // ✅ LIMIT 직접 삽입 (권장)
+    if ($limit > 0) {
+        $offset = (int)$offset;
+        $limit = (int)$limit;
+        $query .= " LIMIT $offset, $limit";
+    }
+
+    $stmt = $db->prepare($query);
+
+    foreach ($params as $key => $value) {
+        $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+        $stmt->bindValue($key, $value, $type);
+    }
+
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($return_type === 'json') {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['success' => true, 'data' => $results]);
+        return;
+    }
+
+    return $results;
+}
+
+
+
+
+
+function getTotalCount(string $from, string $where = '', array $params = []): int {
+    $db = DB::getInstance();
+
+    $query = "SELECT COUNT(*) AS total FROM {$from}";
+    if (!empty($where)) {
+        $query .= " WHERE {$where}";
+    }
+
+    $stmt = $db->prepare($query);
+    foreach ($params as $key => $val) {
+        $type = is_int($val) ? PDO::PARAM_INT : PDO::PARAM_STR;
+        $stmt->bindValue($key, $val, $type);
+    }
+
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return (int)($row['total'] ?? 0);
+}
 
 
 

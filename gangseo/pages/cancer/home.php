@@ -2,8 +2,19 @@
 
 <!-- dev -->
 
+
+
+
 <?php include_once $STATIC_ROOT . '/inc/layouts/head.php'; ?>
-<!-- css, js  -->
+
+<!-- 팝업입니다============================================== -->
+<?php
+    $branchId = 2;
+    $popupType = 2;
+    include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
+?>
+
+<!-- 팝업입니다============================================== -->
 
 <!-- contents -->
 
@@ -191,7 +202,8 @@
                                         </li>
                                     </ul>
 
-                                    <span class="source no-body-sm fw600 --tac no-mg-24--t" <?= $aos_fade ?>>2024. 11. 06 기준, 전지점 조사결과</span>
+                                    <span class="source no-body-sm fw600 --tac no-mg-24--t" <?= $aos_fade ?>>2024. 11.
+                                        06 기준, 전지점 조사결과</span>
                                 </div>
                             </div>
                         </section>
@@ -211,12 +223,14 @@
                                                 </figure>
 
                                                 <div class="f-wrap no-mg-16--t">
-                                                    <h3 class="no-heading-sm no-mg-8--b">림프종 항암 초기의 힘든 시간, 세심한 치료로 극복했습니다.</h3>
+                                                    <h3 class="no-heading-sm no-mg-8--b">림프종 항암 초기의 힘든 시간, 세심한 치료로
+                                                        극복했습니다.</h3>
                                                     <i class=" fa-regular fa-arrow-right i-30"></i>
                                                 </div>
                                                 <div class="txt no-mg-8--t">
                                                     <span class="no-body-lg fw300">66세 김정아님</span>
-                                                    <p class="no-mg-8--t no-body-md fw300">다른 병원에서는 연고와 약 처방만 받았는데 여기서 다양한 치료법으로 치료 받아서 많이 나았고 만독스러웠습니다.</p>
+                                                    <p class="no-mg-8--t no-body-md fw300">다른 병원에서는 연고와 약 처방만 받았는데 여기서
+                                                        다양한 치료법으로 치료 받아서 많이 나았고 만독스러웠습니다.</p>
                                                 </div>
                                             </a>
                                         </li>
@@ -228,12 +242,14 @@
                                                 </figure>
 
                                                 <div class="f-wrap no-mg-16--t">
-                                                    <h3 class="no-heading-sm no-mg-8--b">위암 절제술 후 기력 저하, 맞춤 케어로 활력을 되찾았어요.</h3>
+                                                    <h3 class="no-heading-sm no-mg-8--b">위암 절제술 후 기력 저하, 맞춤 케어로 활력을
+                                                        되찾았어요.</h3>
                                                     <i class=" fa-regular fa-arrow-right i-30"></i>
                                                 </div>
                                                 <div class="txt no-mg-8--t">
                                                     <span class="no-body-lg fw300">65세 황일동님</span>
-                                                    <p class="no-mg-8--t no-body-md fw300">맞춤 식사 케어와 세심한 치료로 기력을 회복하고 있습니다. 친절한 의료진 덕분에 암은 극복할 수 있다는 자신감을 얻게 되었습니다.</p>
+                                                    <p class="no-mg-8--t no-body-md fw300">맞춤 식사 케어와 세심한 치료로 기력을 회복하고
+                                                        있습니다. 친절한 의료진 덕분에 암은 극복할 수 있다는 자신감을 얻게 되었습니다.</p>
                                                 </div>
                                             </a>
                                         </li>
@@ -245,12 +261,14 @@
                                                 </figure>
 
                                                 <div class="f-wrap no-mg-16--t">
-                                                    <h3 class="no-heading-sm no-mg-8--b">유방암 2기, 통합치료로 부종 개선, 웃음도 되찾았어요.</h3>
+                                                    <h3 class="no-heading-sm no-mg-8--b">유방암 2기, 통합치료로 부종 개선, 웃음도 되찾았어요.
+                                                    </h3>
                                                     <i class=" fa-regular fa-arrow-right i-30"></i>
                                                 </div>
                                                 <div class="txt no-mg-8--t">
                                                     <span class="no-body-lg fw300">64세 한은숙님</span>
-                                                    <p class="no-mg-8--t no-body-md fw300">면력 통합치료를 통해 림프 부종이 개선되고 삶의 질이 향상되었습니다. 가족의 지지와 긍정적인 마음가짐으로 암을 이겨낼 수 있다는 희망을 얻었습니다.</p>
+                                                    <p class="no-mg-8--t no-body-md fw300">면력 통합치료를 통해 림프 부종이 개선되고 삶의 질이
+                                                        향상되었습니다. 가족의 지지와 긍정적인 마음가짐으로 암을 이겨낼 수 있다는 희망을 얻었습니다.</p>
                                                 </div>
                                             </a>
                                         </li>
@@ -274,7 +292,8 @@
                                     <img src="/resource/images/cancer-data.svg">
                                 </figure>
 
-                                <span class="source no-body-sm fw300 --tac no-mg-32--t" <?= $aos_fade ?>>25.4.17 면력 서비스 만족도 설문 조사 결과</span>
+                                <span class="source no-body-sm fw300 --tac no-mg-32--t" <?= $aos_fade ?>>25.4.17 면력 서비스
+                                    만족도 설문 조사 결과</span>
                             </div>
                         </section>
 
@@ -325,7 +344,8 @@
                                             <span class="no-body-md fw600">암 수술</span>
 
                                             <h3 class="no-body-xxl fw600 no-mg-16--t">수술 후 회복 및 재활</h3>
-                                            <p class="no-body-md fw300 no-mg-4--t">수술 후유증 완화 | 체력 및 면역력 회복 <br> 신체기능 정상화 | 감염 예방관리</p>
+                                            <p class="no-body-md fw300 no-mg-4--t">수술 후유증 완화 | 체력 및 면역력 회복 <br> 신체기능 정상화
+                                                | 감염 예방관리</p>
                                         </div>
                                     </li>
 
@@ -342,7 +362,8 @@
 
                                             <h3 class="no-body-xxl fw600 no-mg-16--t">항암·방사선 치료 효과
                                                 개선 도움</h3>
-                                            <p class="no-body-md fw300 no-mg-4--t">항암치료율 향상 | 항암부작용 감소<br> 항암내성 완화 | 암성통증 관리<br> 손상 조직 회복 | 면역체계 정상화</p>
+                                            <p class="no-body-md fw300 no-mg-4--t">항암치료율 향상 | 항암부작용 감소<br> 항암내성 완화 |
+                                                암성통증 관리<br> 손상 조직 회복 | 면역체계 정상화</p>
                                         </div>
                                     </li>
 
@@ -392,9 +413,12 @@
 
                                     <img src="/resource/images/cancer-graph.jpg" class="no-mg-32--t">
 
-                                    <span class="source no-body-sm fw300 --tac no-mg-32--t">※ 한약의 안정성 및 효과가 입증된 자료입니다.</span>
-                                    <span class="source source-info no-mg-4--t --tac">참고논문 Rao. X.Q. et al, (1994), The long-term effects of shen xue tang comblned
-                                        with chemotherapy on mid-and late-stage stomach cancer. CJITWM, 14(6), 366.</span>
+                                    <span class="source no-body-sm fw300 --tac no-mg-32--t">※ 한약의 안정성 및 효과가 입증된
+                                        자료입니다.</span>
+                                    <span class="source source-info no-mg-4--t --tac">참고논문 Rao. X.Q. et al, (1994), The
+                                        long-term effects of shen xue tang comblned
+                                        with chemotherapy on mid-and late-stage stomach cancer. CJITWM, 14(6),
+                                        366.</span>
                                 </figure>
 
                                 <strong class="no-body-xxl fw600 no-mg-32--t --tac fade-up">
@@ -404,7 +428,8 @@
                             </div>
                         </section>
 
-                        <section class="no-cancer-food no-pd-48--y imgbg" style="background-image: url('/resource/images/cancer-food-bg.jpg');">
+                        <section class="no-cancer-food no-pd-48--y imgbg"
+                            style="background-image: url('/resource/images/cancer-food-bg.jpg');">
                             <div class="no-container-sm">
                                 <hgroup class="--tac fade-up no-mg-24--b">
                                     <p class="no-body-lg fw300">암을 진단받은 대부분의 환자들이<br>
@@ -430,9 +455,11 @@
                                     </li>
                                 </ul>
 
-                                <strong class="no-body-lg fw600 --tac">의료진·임상 영양사·치료식 셰프가<br> 오직 한 사람을 위해 끊임없이 고민합니다.</strong>
+                                <strong class="no-body-lg fw600 --tac">의료진·임상 영양사·치료식 셰프가<br> 오직 한 사람을 위해 끊임없이
+                                    고민합니다.</strong>
 
-                                <h2 class="blur-js font-kr fw300 no-heading-sm --tac no-mg-200--t">식사는 또 하나의<br> 치료제 입니다.</h2>
+                                <h2 class="blur-js font-kr fw300 no-heading-sm --tac no-mg-200--t">식사는 또 하나의<br> 치료제
+                                    입니다.</h2>
                             </div>
                         </section>
 
@@ -452,7 +479,8 @@
                                         </figure>
                                         <div class="txt">
                                             <h3 class="no-body-xl fw600">산책 프로그램</h3>
-                                            <p class="no-body-md fw300 no-mg-8--t">매일 평일 오전, 병원 인근 산책 코스로 향하는 야외 산책 버스를 운행합니다. 자연 속에서 컨디션과 마음을 회복해보세요.</p>
+                                            <p class="no-body-md fw300 no-mg-8--t">매일 평일 오전, 병원 인근 산책 코스로 향하는 야외 산책 버스를
+                                                운행합니다. 자연 속에서 컨디션과 마음을 회복해보세요.</p>
                                         </div>
                                     </li>
 
@@ -462,7 +490,8 @@
                                         </figure>
                                         <div class="txt">
                                             <h3 class="no-body-xl fw600">소풍 프로그램</h3>
-                                            <p class="no-body-md fw300 no-mg-8--t">매주 1회, 병원 밖으로 떠나는 힐링 소풍 프로그램을 진행합니다. 자연과 함께 몸과 마음에 여유를 더해보세요.</p>
+                                            <p class="no-body-md fw300 no-mg-8--t">매주 1회, 병원 밖으로 떠나는 힐링 소풍 프로그램을 진행합니다.
+                                                자연과 함께 몸과 마음에 여유를 더해보세요.</p>
                                         </div>
                                     </li>
 
@@ -472,7 +501,8 @@
                                         </figure>
                                         <div class="txt">
                                             <h3 class="no-body-xl fw600">운동치료</h3>
-                                            <p class="no-body-md fw300 no-mg-8--t">매주 1회, 전문 치료사와 함께하는 운동치료 프로그램을 진행합니다. 움직임을 통해 체력과 회복력을 높여보세요.</p>
+                                            <p class="no-body-md fw300 no-mg-8--t">매주 1회, 전문 치료사와 함께하는 운동치료 프로그램을 진행합니다.
+                                                움직임을 통해 체력과 회복력을 높여보세요.</p>
                                         </div>
                                     </li>
 
@@ -482,7 +512,8 @@
                                         </figure>
                                         <div class="txt">
                                             <h3 class="no-body-xl fw600">원데이클래스</h3>
-                                            <p class="no-body-md fw300 no-mg-8--t">매주 1회, 주제별로 달라지는 원데이 클래스 프로그램을 운영합니다. 작은 즐거움이 쌓여, 마음 회복의 힘이 됩니다.</p>
+                                            <p class="no-body-md fw300 no-mg-8--t">매주 1회, 주제별로 달라지는 원데이 클래스 프로그램을 운영합니다.
+                                                작은 즐거움이 쌓여, 마음 회복의 힘이 됩니다.</p>
                                         </div>
                                     </li>
 
@@ -492,7 +523,8 @@
                                         </figure>
                                         <div class="txt">
                                             <h3 class="no-body-xl fw600">푸드테라피</h3>
-                                            <p class="no-body-md fw300 no-mg-8--t">2주에 한 번, 전문 셰프와 함께하는 푸드테라피 클래스가 진행됩니다. 맛있고 건강한 식사를 통해 힐링과 영양을 동시에 채워보세요.</p>
+                                            <p class="no-body-md fw300 no-mg-8--t">2주에 한 번, 전문 셰프와 함께하는 푸드테라피 클래스가
+                                                진행됩니다. 맛있고 건강한 식사를 통해 힐링과 영양을 동시에 채워보세요.</p>
                                         </div>
                                     </li>
                                 </ul>

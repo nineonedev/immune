@@ -175,6 +175,31 @@ include_once "../../inc/admin.js.php";
                                         </div>
                                     </div>
                                 </div>
+                                <!-- 새창 여부 -->
+                                <div class="no-admin-block" id="link_target_block">
+                                    <h3 class="no-admin-title">새창 여부</h3>
+                                    <div class="no-admin-content">
+                                        <div class="no-radio-form no-list">
+                                            <?php
+                                                $current_target = isset($popup['is_target']) ? (int)$popup['is_target'] : 1;
+
+                                                foreach ($link_targets as $val => $info):
+                                                    $id = "link_target_$val";
+                                                    $checked = ($current_target === $val) ? 'checked' : '';
+                                                ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_target" id="<?= $id ?>"
+                                                        value="<?= $val ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span
+                                                    class="no-radio-text"><?= htmlspecialchars($info['label']) ?></span>
+                                            </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- 링크 URL -->
                                 <div class="no-admin-block" id="link_url_block">

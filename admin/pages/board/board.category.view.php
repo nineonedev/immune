@@ -4,6 +4,12 @@ include_once "../../../inc/lib/base.class.php";
 $depthnum = 1;
 $pagenum = 2;
 
+// 페이지네이션 필수 변수
+$Page = $Page ?? 1;
+$listCurPage = $listCurPage ?? 1;
+$pageBlock = $pageBlock ?? 2;
+
+
 $connect = DB::getInstance(); // PDO 인스턴스
 
 try {

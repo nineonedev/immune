@@ -227,11 +227,11 @@
         },
         {
           "title": "의료진안내",
-          "board_no": "9"
+          "filename": "doctor"
         },
         {
           "title": "시설안내",
-          "board_no": "10"
+          "filename": "facility"
         },
         {
           "title": "위치안내",
@@ -263,7 +263,7 @@
         },
         {
           "title": "FAQ",
-          "board_no": "16"
+          "filename": "faq"
         }
       ]
     },

@@ -3867,3 +3867,81 @@ input[type="file"].note-image-input {
 .no-admin-block .no-admin-date {
   flex-direction: row;
 }
+
+.no-admin-grid--3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4rem;
+}
+.no-admin-grid--4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.4rem;
+}
+
+.no-admin-grid--3 .no-table {
+  min-width: auto;
+}
+
+.no-admin-grid--3 .no-card-header {
+  padding: 0 2rem;
+}
+.no-admin-grid--3 .no-card-body {
+  padding: 0 1rem;
+}
+
+.no-admmin-link--card {
+  padding-top: 6rem;
+}
+
+/* 전체 그리드 항목 스타일 */
+.no-admin-grid--4 li.no-dashboard-item {
+  flex: 1 1 calc(25% - 20px);
+  min-width: 200px;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+/* 타이틀 영역 스타일 */
+.no-admin-grid--4 li.no-dashboard-item .no-dashboard-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* 아이콘 스타일 */
+.no-admin-grid--4 li.no-dashboard-item .no-dashboard-icon {
+  margin-right: 8px;
+}
+
+.no-admin-grid--4 li.no-dashboard-item .no-dashboard-icon i {
+  font-size: 2rem;
+}
+
+/* 제목 텍스트 스타일 */
+.no-admin-grid--4 li.no-dashboard-item h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 설명 문구 스타일 */
+.no-admin-grid--4 li.no-dashboard-item p {
+  margin: 0 0 16px;
+  font-size: 15px;
+  color: #555;
+}
+
+/* 버튼 스타일 */
+.btn-link {
+  display: flex;
+  font-size: 13px;
+  color: #007bff;
+  text-decoration: none;
+  align-items: center;
+}
+.btn-link:hover {
+  text-decoration: underline;
+}

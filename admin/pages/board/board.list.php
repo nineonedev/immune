@@ -1,6 +1,6 @@
 <?php include_once "../../../inc/lib/base.class.php";
 
-$depthnum = 1;
+$depthnum = 2;
 $pagenum = 2;
 
 $searchKeyword = $_REQUEST['searchKeyword'] ?? '';
@@ -253,7 +253,6 @@ try {
                                                 <th>게시판 이름</th>
                                                 <th>공지</th>
                                                 <th>제목</th>
-                                                <th>작성자</th>
                                                 <th>작성일</th>
                                                 <th>조회수</th>
                                                 <th>관리</th>
@@ -281,7 +280,6 @@ try {
                                                 <td style="max-width: 40rem"><a
                                                         href="./board.view.php?no=<?= $v['no'] ?>&<?= $searchParam ?>"><?= htmlspecialchars($v['title']) ?></a>
                                                 </td>
-                                                <td><?= htmlspecialchars($v['write_name']) ?></td>
                                                 <td><?= htmlspecialchars($v['regdate']) ?></td>
                                                 <td><?= htmlspecialchars($v['read_cnt']) ?></td>
                                                 <td>
@@ -290,12 +288,8 @@ try {
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </span>
                                                         <div class="no-table-action">
-                                                            <a href="./board.comment.view.php?no=<?= $v['no'] ?>&<?= $searchParam ?>"
-                                                                class="no-btn no-btn--sm no-btn--normal">댓글</a>
                                                             <a href="./board.view.php?no=<?= $v['no'] ?>&<?= $searchParam ?>"
                                                                 class="no-btn no-btn--sm no-btn--normal">수정</a>
-                                                            <a href="javascript:doCopy(<?= $v['no'] ?>);"
-                                                                class="no-btn no-btn--sm no-btn--normal">복사</a>
                                                             <a href="javascript:doDelete(<?= $v['no'] ?>);"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline">삭제</a>
                                                         </div>

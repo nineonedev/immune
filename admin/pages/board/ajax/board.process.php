@@ -33,16 +33,21 @@ if ($mode == "save") {
 	
 	//var_dump($_FILES['thumb_image']);exit; 
     // Handle file uploads
+    
+    $origin_file = ''; 
+
     $uploadResult = imageUpload($uploads_dir, $_FILES['thumb_image'], $origin_file, false, $allow);
-    $thumb_image_saved = $uploadResult['saved'];
+    $thumb_image_saved = $uploadResult['saved'] ?? null;
 
     $file_attachments = [];
     for ($i = 1; $i <= 5; $i++) {
-        $uploadResult = imageUpload($uploads_dir, $_FILES["addFile$i"], $origin_file, true, $allow);
-        $file_attachments[$i] = [
-            'saved' => $uploadResult['saved'],
-            'origin' => $uploadResult['origin']
-        ];
+        if (isset($_FILES["addFile$i"]) && $_FILES["addFile$i"]['error'] === UPLOAD_ERR_OK) {
+            $uploadResult = imageUpload($uploads_dir, $_FILES["addFile$i"], $origin_file, true, $allow);
+            $file_attachments[$i] = [
+                'saved' => $uploadResult['saved'] ?? null,
+                'origin' => $uploadResult['origin'] ?? null,
+            ];
+        }
     }
 
 	// echo json_encode($file_attachments); exit; 
@@ -108,16 +113,16 @@ if ($mode == "save") {
             ':write_name' => $write_name,
             ':direct_url' => $direct_url,
             ':thumb_image' => $thumb_image_saved,
-			':file_attach_1' => $file_attachments[1]['saved'],
-			':file_attach_2' => $file_attachments[2]['saved'],
-			':file_attach_3' => $file_attachments[3]['saved'],
-			':file_attach_4' => $file_attachments[4]['saved'],
-			':file_attach_5' => $file_attachments[5]['saved'],
-			':file_attach_origin_1' => $file_attachments[1]['origin'],
-			':file_attach_origin_2' => $file_attachments[2]['origin'],
-			':file_attach_origin_3' => $file_attachments[3]['origin'],
-			':file_attach_origin_4' => $file_attachments[4]['origin'],
-			':file_attach_origin_5' => $file_attachments[5]['origin'],
+			':file_attach_1' => $file_attachments[1]['saved'] ?? null,
+            ':file_attach_2' => $file_attachments[2]['saved'] ?? null,
+            ':file_attach_3' => $file_attachments[3]['saved'] ?? null,
+            ':file_attach_4' => $file_attachments[4]['saved'] ?? null,
+            ':file_attach_5' => $file_attachments[5]['saved'] ?? null,
+            ':file_attach_origin_1' => $file_attachments[1]['origin'] ?? null,
+            ':file_attach_origin_2' => $file_attachments[2]['origin'] ?? null,
+            ':file_attach_origin_3' => $file_attachments[3]['origin'] ?? null,
+            ':file_attach_origin_4' => $file_attachments[4]['origin'] ?? null,
+            ':file_attach_origin_5' => $file_attachments[5]['origin'] ?? null,
 			':extra1' => $extras['extra1'],
 			':extra2' => $extras['extra2'],
 			':extra3' => $extras['extra3'],
@@ -140,119 +145,136 @@ if ($mode == "save") {
         echo json_encode(["result" => "fail", "msg" => "처리중 문제가 발생하였습니다.[Error-DB: " . $e->getMessage() . "]"]);
     }
 } else if ($mode == "edit") {
-	try {
-			$no = $_POST['no'];
-			$board_no = $_POST['board_no'];
-			$title = $_POST['title'];
-			$write_name = $_POST['write_name'];
-			$contents = htmlspecialchars($_POST['contents'], ENT_QUOTES, 'UTF-8');
-			$category_no = $_POST['category_no'] ?? 0;
-			$is_notice = $_POST['is_notice'] === 'Y' ? 'Y' : 'N';
-			$regdate = $_POST['regdate'] ?? null;
-			$direct_url = $_POST['direct_url'];
+    try {
+        $no = $_POST['no'] ?? null;
+        $board_no = $_POST['board_no'] ?? null;
+        $title = $_POST['title'] ?? '';
+        $write_name = $_POST['write_name'] ?? '';
+        $contents = htmlspecialchars($_POST['contents'] ?? '', ENT_QUOTES, 'UTF-8');
+        $category_no = $_POST['category_no'] ?? 0;
+        $is_notice = ($_POST['is_notice'] ?? '') === 'Y' ? 'Y' : 'N';
+        $regdate = $_POST['regdate'] ?? null;
+        $direct_url = $_POST['direct_url'] ?? '';
 
-			$extraFields = [];
-			for ($i = 1; $i <= 15; $i++) {
-				$extraFields["extra{$i}"] = $_POST["extra{$i}"] ?? '';
-			}
+        if (!$no || !$board_no) {
+            echo json_encode(["result" => "fail", "msg" => "잘못된 요청입니다."]);
+            exit;
+        }
 
-			$uploads_dir = $UPLOAD_DIR_BOARD;
-			$allow = $board_file_allow;
+        $extraFields = [];
+        for ($i = 1; $i <= 15; $i++) {
+            $extraFields["extra{$i}"] = $_POST["extra{$i}"] ?? '';
+        }
 
-			$thumb_image_saved = null;
-			if (isset($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] === UPLOAD_ERR_OK) {
-				$thumb_image_saved = imageUpload($uploads_dir, $_FILES['thumb_image'], $origin_file, false, $allow)['saved'] ?? null;
-			}
+        $uploads_dir = $UPLOAD_DIR_BOARD;
+        $allow = $board_file_allow;
+        $origin_file = ''; // 선언 추가
 
-			$fileAttachments = [];
-			for ($i = 1; $i <= 5; $i++) {
-				if (isset($_FILES["addFile{$i}"]) && $_FILES["addFile{$i}"]['error'] === UPLOAD_ERR_OK) {
-					$uploadResult = imageUpload($uploads_dir, $_FILES["addFile{$i}"], $origin_file, true, $allow);
-					$fileAttachments["file_attach_{$i}_saved"] = $uploadResult['saved'] ?? null;
-					$fileAttachments["file_attach_{$i}_origin"] = $uploadResult['origin'] ?? null;
-				}
-			}
+        $thumb_image_saved = null;
 
-			$db = DB::getInstance();
-			$stmt = $db->prepare("SELECT thumb_image, file_attach_1, file_attach_2, file_attach_3, file_attach_4, file_attach_5 FROM nb_board WHERE no = :no");
-			$stmt->execute(['no' => $no]);
-			$data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-			if (!$data) {
-				echo json_encode(["result" => "fail", "msg" => "정보를 찾을 수 없습니다"]);
-				exit;
-			}
-
-			$attach_file_del = $_POST['attach_file_del'] ?? [];
-			foreach ($attach_file_del as $val) {
-				$fileToDelete = match ($val) {
-					"0" => $data['thumb_image'],
-					"1" => $data['file_attach_1'],
-					"2" => $data['file_attach_2'],
-					"3" => $data['file_attach_3'],
-					"4" => $data['file_attach_4'],
-					"5" => $data['file_attach_5'],
-					default => null,
-				};
-
-				if ($fileToDelete) {
-					imageDelete($UPLOAD_DIR_BOARD . "/" . $fileToDelete);
-					$field = $val === "0" ? "thumb_image" : "file_attach_" . $val;
-					$db->prepare("UPDATE nb_board SET {$field} = NULL WHERE no = :no")->execute(['no' => $no]);
-				}
-			}
-
-			if ($thumb_image_saved && !empty($data['thumb_image'])) {
-				imageDelete($UPLOAD_DIR_BOARD . "/" . $data['thumb_image']);
-			}
-
-			for ($i = 1; $i <= 5; $i++) {
-				if ($fileAttachments["file_attach_{$i}_saved"] && !empty($data["file_attach_{$i}"])) {
-					imageDelete($UPLOAD_DIR_BOARD . "/" . $data["file_attach_{$i}"]);
-				}
-			}
-
-			$updateFields = [
-				'board_no' => $board_no,
-				'title' => $title,
-				'contents' => $contents,
-				'is_notice' => $is_notice,
-				'direct_url' => $direct_url,
-				'regdate' => $regdate
-			];
-
-			foreach ($extraFields as $key => $value) {
-				$updateFields[$key] = $value;
-			}
-
-			if ($category_no) $updateFields['category_no'] = $category_no;
-			if ($thumb_image_saved) $updateFields['thumb_image'] = $thumb_image_saved;
-
-			for ($i = 1; $i <= 5; $i++) {
-				if ($fileAttachments["file_attach_{$i}_saved"]) {
-					$updateFields["file_attach_{$i}"] = $fileAttachments["file_attach_{$i}_saved"];
-					$updateFields["file_attach_origin_{$i}"] = $fileAttachments["file_attach_{$i}_origin"];
-				}
-			}
-
-			$query = "UPDATE nb_board SET ";
-			$query .= implode(", ", array_map(fn($field) => "$field = :$field", array_keys($updateFields)));
-			$query .= " WHERE no = :no";
-
-			$updateFields['no'] = $no;
-
-			$stmt = $db->prepare($query);
-			$result = $stmt->execute($updateFields);
-
-			echo $result
-				? json_encode(["result" => "success", "msg" => "정상적으로 수정되었습니다."])
-				: json_encode(["result" => "fail", "msg" => "처리중 문제가 발생하였습니다.[Error-DB]"]);
-
-		} catch (Exception $e) {
-			echo json_encode(["result" => "fail", "msg" => "Exception occurred: " . $e->getMessage()]);
-		}
+        if (isset($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] === UPLOAD_ERR_OK) {
+            $thumb_result = imageUpload($uploads_dir, $_FILES['thumb_image'], $origin_file, false, $allow);
+            $thumb_image_saved = $thumb_result['saved'] ?? null;
+        }
 
 
+        $fileAttachments = [];
+        for ($i = 1; $i <= 5; $i++) {
+            if (isset($_FILES["addFile{$i}"]) && $_FILES["addFile{$i}"]['error'] === UPLOAD_ERR_OK) {
+                $uploadResult = imageUpload($uploads_dir, $_FILES["addFile{$i}"], null, true, $allow);
+                $fileAttachments["file_attach_{$i}_saved"] = $uploadResult['saved'] ?? null;
+                $fileAttachments["file_attach_{$i}_origin"] = $uploadResult['origin'] ?? null;
+            }
+        }
+
+        $db = DB::getInstance();
+        $stmt = $db->prepare("SELECT thumb_image, file_attach_1, file_attach_2, file_attach_3, file_attach_4, file_attach_5 FROM nb_board WHERE no = :no");
+        $stmt->execute(['no' => $no]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            echo json_encode(["result" => "fail", "msg" => "정보를 찾을 수 없습니다"]);
+            exit;
+        }
+
+        $attach_file_del = $_POST['attach_file_del'] ?? [];
+        foreach ($attach_file_del as $val) {
+            $fileToDelete = null;
+
+            switch ($val) {
+                case "0": $fileToDelete = $data['thumb_image']; break;
+                case "1": $fileToDelete = $data['file_attach_1']; break;
+                case "2": $fileToDelete = $data['file_attach_2']; break;
+                case "3": $fileToDelete = $data['file_attach_3']; break;
+                case "4": $fileToDelete = $data['file_attach_4']; break;
+                case "5": $fileToDelete = $data['file_attach_5']; break;
+            }
+
+            if ($fileToDelete) {
+                imageDelete($UPLOAD_DIR_BOARD . "/" . $fileToDelete);
+                $field = $val === "0" ? "thumb_image" : "file_attach_" . $val;
+                $db->prepare("UPDATE nb_board SET {$field} = NULL WHERE no = :no")->execute(['no' => $no]);
+            }
+        }
+
+        if ($thumb_image_saved && !empty($data['thumb_image'])) {
+            imageDelete($UPLOAD_DIR_BOARD . "/" . $data['thumb_image']);
+        }
+
+        for ($i = 1; $i <= 5; $i++) {
+            $saved = $fileAttachments["file_attach_{$i}_saved"] ?? null;
+            if ($saved && !empty($data["file_attach_{$i}"])) {
+                imageDelete($UPLOAD_DIR_BOARD . "/" . $data["file_attach_{$i}"]);
+            }
+        }
+
+        $updateFields = [
+            'board_no' => $board_no,
+            'title' => $title,
+            'contents' => $contents,
+            'is_notice' => $is_notice,
+            'direct_url' => $direct_url,
+            'regdate' => $regdate
+        ];
+
+        foreach ($extraFields as $key => $value) {
+            $updateFields[$key] = $value;
+        }
+
+        if ($category_no) {
+            $updateFields['category_no'] = $category_no;
+        }
+
+        if ($thumb_image_saved) {
+            $updateFields['thumb_image'] = $thumb_image_saved;
+        }
+
+        for ($i = 1; $i <= 5; $i++) {
+            $saved = $fileAttachments["file_attach_{$i}_saved"] ?? null;
+            $origin = $fileAttachments["file_attach_{$i}_origin"] ?? null;
+
+            if ($saved) {
+                $updateFields["file_attach_{$i}"] = $saved;
+                $updateFields["file_attach_origin_{$i}"] = $origin;
+            }
+        }
+
+        $query = "UPDATE nb_board SET ";
+        $query .= implode(", ", array_map(fn($field) => "$field = :$field", array_keys($updateFields)));
+        $query .= " WHERE no = :no";
+
+        $updateFields['no'] = $no;
+
+        $stmt = $db->prepare($query);
+        $result = $stmt->execute($updateFields);
+
+        echo $result
+            ? json_encode(["result" => "success", "msg" => "정상적으로 수정되었습니다."])
+            : json_encode(["result" => "fail", "msg" => "처리중 문제가 발생하였습니다.[Error-DB]"]);
+
+    } catch (Exception $e) {
+        echo json_encode(["result" => "fail", "msg" => "Exception occurred: " . $e->getMessage()]);
+    }
 } else if ($mode == "delete") {
     $no = $_REQUEST['no'];
 
@@ -407,148 +429,149 @@ if ($mode == "save") {
         $dom = new DOMDocument();
         libxml_use_internal_errors(true);
         $dom->loadHTML('<?xml encoding="utf-8" ?>' . $htmlContent);
-        $images = $dom->getElementsByTagName('img');
+$images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $img) {
-            $originalSrc = $img->getAttribute('src');
-            $baseSrc = basename($originalSrc);
-            $updatedSrc = copyAndRenameFile($UPLOAD_DIR_BOARD . '/' . $baseSrc);
+foreach ($images as $img) {
+$originalSrc = $img->getAttribute('src');
+$baseSrc = basename($originalSrc);
+$updatedSrc = copyAndRenameFile($UPLOAD_DIR_BOARD . '/' . $baseSrc);
 
-            if (file_exists($originalSrc)) {
-                $newSrc = $UPLOAD_DIR_BOARD . '/' . $updatedSrc;
+if (file_exists($originalSrc)) {
+$newSrc = $UPLOAD_DIR_BOARD . '/' . $updatedSrc;
 
-                if (copy($originalSrc, $newSrc)) {
-                    $img->setAttribute('src', '/uploads/board/' . $updatedSrc);
-                    $updatedSrcArray[] = $updatedSrc;
-                }
-            }
-        }
+if (copy($originalSrc, $newSrc)) {
+$img->setAttribute('src', '/uploads/board/' . $updatedSrc);
+$updatedSrcArray[] = $updatedSrc;
+}
+}
+}
 
-        $updatedHtmlContent = $dom->saveHTML();
-        libxml_clear_errors();
+$updatedHtmlContent = $dom->saveHTML();
+libxml_clear_errors();
 
-        return $updatedHtmlContent;
-    }
+return $updatedHtmlContent;
+}
 
-    $no = $_REQUEST['no'];
+$no = $_REQUEST['no'];
 
-    try {
-        $sql = "SELECT thumb_image, file_attach_1, file_attach_2, file_attach_3, file_attach_4, file_attach_5, contents FROM nb_board WHERE no = :no";
-        $stmt = DB::getInstance()->prepare($sql);
-        $stmt->execute([':no' => $no]);
+try {
+$sql = "SELECT thumb_image, file_attach_1, file_attach_2, file_attach_3, file_attach_4, file_attach_5, contents FROM
+nb_board WHERE no = :no";
+$stmt = DB::getInstance()->prepare($sql);
+$stmt->execute([':no' => $no]);
 
-        $orgData = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$orgData) {
-            throw new Exception("정보를 찾을 수 없습니다.");
-        }
+$orgData = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$orgData) {
+throw new Exception("정보를 찾을 수 없습니다.");
+}
 
-        $newData = [];
-        foreach ($orgData as $k => $v) {
-            if ($k === 'contents') {
-                $contents = stripslashes($v);
-                $contents = htmlspecialchars_decode($contents);
-                $newContents = copyAndUpdateImageSrc($contents);
-                $newData[$k] = htmlspecialchars($newContents);
-            } else if (!empty($v)) {
-                $newData[$k] = copyAndRenameFile($UPLOAD_DIR_BOARD . '/' . $v);
-            } else {
-                $newData[$k] = '';
-            }
-        }
+$newData = [];
+foreach ($orgData as $k => $v) {
+if ($k === 'contents') {
+$contents = stripslashes($v);
+$contents = htmlspecialchars_decode($contents);
+$newContents = copyAndUpdateImageSrc($contents);
+$newData[$k] = htmlspecialchars($newContents);
+} else if (!empty($v)) {
+$newData[$k] = copyAndRenameFile($UPLOAD_DIR_BOARD . '/' . $v);
+} else {
+$newData[$k] = '';
+}
+}
 
-        $query = "INSERT INTO nb_board (
-                    sitekey, 
-                    board_no, 
-                    user_no, 
-                    category_no, 
-                    title, 
-                    contents, 
-                    regdate, 
-                    is_notice, 
-                    write_name, 
-                    direct_url,
-                    thumb_image, 
-                    file_attach_1, 
-                    file_attach_2, 
-                    file_attach_3, 
-                    file_attach_4, 
-                    file_attach_5,
-                    file_attach_origin_1,
-                    file_attach_origin_2,
-                    file_attach_origin_3,
-                    file_attach_origin_4, 
-                    file_attach_origin_5,
-                    extra1,
-                    extra2, 
-                    extra3, 
-                    extra4,
-                    extra5,
-                    extra6,
-                    extra7,
-                    extra8,
-                    extra9,
-                    extra10,
-                    extra11,
-                    extra12,
-                    extra13,
-                    extra14,
-                    extra15
-                    ) 
-                    SELECT 
-                    sitekey, 
-                    board_no, 
-                    user_no, 
-                    category_no, 
-                    title,
-                    :contents, 
-                    regdate, 
-                    is_notice, 
-                    write_name, 
-                    direct_url,
-                    :thumb_image, 
-                    :file_attach_1, 
-                    :file_attach_2, 
-                    :file_attach_3, 
-                    :file_attach_4, 
-                    :file_attach_5,
-                    file_attach_origin_1,
-                    file_attach_origin_2, 
-                    file_attach_origin_3,
-                    file_attach_origin_4,
-                    file_attach_origin_5, 
-                    extra1, 
-                    extra2, 
-                    extra3, 
-                    extra4, 
-                    extra5,
-                    extra6,
-                    extra7,
-                    extra8,
-                    extra9,
-                    extra10,
-                    extra11,
-                    extra12,
-                    extra13,
-                    extra14,
-                    extra15
-                    FROM nb_board WHERE no = :no";
+$query = "INSERT INTO nb_board (
+sitekey,
+board_no,
+user_no,
+category_no,
+title,
+contents,
+regdate,
+is_notice,
+write_name,
+direct_url,
+thumb_image,
+file_attach_1,
+file_attach_2,
+file_attach_3,
+file_attach_4,
+file_attach_5,
+file_attach_origin_1,
+file_attach_origin_2,
+file_attach_origin_3,
+file_attach_origin_4,
+file_attach_origin_5,
+extra1,
+extra2,
+extra3,
+extra4,
+extra5,
+extra6,
+extra7,
+extra8,
+extra9,
+extra10,
+extra11,
+extra12,
+extra13,
+extra14,
+extra15
+)
+SELECT
+sitekey,
+board_no,
+user_no,
+category_no,
+title,
+:contents,
+regdate,
+is_notice,
+write_name,
+direct_url,
+:thumb_image,
+:file_attach_1,
+:file_attach_2,
+:file_attach_3,
+:file_attach_4,
+:file_attach_5,
+file_attach_origin_1,
+file_attach_origin_2,
+file_attach_origin_3,
+file_attach_origin_4,
+file_attach_origin_5,
+extra1,
+extra2,
+extra3,
+extra4,
+extra5,
+extra6,
+extra7,
+extra8,
+extra9,
+extra10,
+extra11,
+extra12,
+extra13,
+extra14,
+extra15
+FROM nb_board WHERE no = :no";
 
-        $stmt = DB::getInstance()->prepare($query);
-        $stmt->execute([
-            ':contents' => $newData['contents'],
-            ':thumb_image' => $newData['thumb_image'],
-            ':file_attach_1' => $newData['file_attach_1'],
-            ':file_attach_2' => $newData['file_attach_2'],
-            ':file_attach_3' => $newData['file_attach_3'],
-            ':file_attach_4' => $newData['file_attach_4'],
-            ':file_attach_5' => $newData['file_attach_5'],
-            ':no' => $no
-        ]);
+$stmt = DB::getInstance()->prepare($query);
+$stmt->execute([
+':contents' => $newData['contents'],
+':thumb_image' => $newData['thumb_image'],
+':file_attach_1' => $newData['file_attach_1'],
+':file_attach_2' => $newData['file_attach_2'],
+':file_attach_3' => $newData['file_attach_3'],
+':file_attach_4' => $newData['file_attach_4'],
+':file_attach_5' => $newData['file_attach_5'],
+':no' => $no
+]);
 
-        echo json_encode(["result" => "success", "msg" => "정상적으로 복사 되었습니다."]);
-    } catch (PDOException $e) {
-        echo json_encode(["result" => "fail", "msg" => "DB 처리중 오류가 발생하였습니다.[Error: " . $e->getMessage() . "]"]);
-    } catch (Exception $e) {
-        echo json_encode(["result" => "fail", "msg" => $e->getMessage()]);
-    }
+echo json_encode(["result" => "success", "msg" => "정상적으로 복사 되었습니다."]);
+} catch (PDOException $e) {
+echo json_encode(["result" => "fail", "msg" => "DB 처리중 오류가 발생하였습니다.[Error: " . $e->getMessage() . "]"]);
+} catch (Exception $e) {
+echo json_encode(["result" => "fail", "msg" => $e->getMessage()]);
+}
 }

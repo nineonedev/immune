@@ -138,26 +138,31 @@
                                 <!-- admin-block -->
 
                                 <!-- Extra Fields based on boardManage_info -->
-								<?php
+                                <?php
 								$textarea_fields = [11, 12, 13, 14, 15];
 								for ($i = 1; $i <= 15; $i++) {
 									$extra_field_key = 'extra_match_field' . $i;
 									$extra_field = $boardManage_info[0][$extra_field_key] ?? null;
 									if ($extra_field) { ?>
-										<div class="no-admin-block extra_fields">
-											<h3 class="no-admin-title">
-												<label for="extra<?= $i ?>"><?= htmlspecialchars($extra_field) ?></label>
-											</h3>
-											<div class="no-admin-content">
-												<?php if (in_array($i, $textarea_fields)) { ?>
-													<textarea style="height: 15rem" name="extra<?= $i ?>" id="extra<?= $i ?>" class="no-input--detail" placeholder="<?= htmlspecialchars($extra_field) ?>"><?= htmlspecialchars($data['extra' . $i]) ?></textarea>
-												<?php } else { ?>
-													<input type="text" name="extra<?= $i ?>" id="extra<?= $i ?>" value="<?= htmlspecialchars($data['extra' . $i]) ?>" class="no-input--detail" placeholder="<?= htmlspecialchars($extra_field) ?>" />
-												<?php } ?>
-											</div>
-										</div>
-								<?php } } ?>
-								<!-- admin-block -->
+                                <div class="no-admin-block extra_fields">
+                                    <h3 class="no-admin-title">
+                                        <label for="extra<?= $i ?>"><?= htmlspecialchars($extra_field) ?></label>
+                                    </h3>
+                                    <div class="no-admin-content">
+                                        <?php if (in_array($i, $textarea_fields)) { ?>
+                                        <textarea style="height: 15rem" name="extra<?= $i ?>" id="extra<?= $i ?>"
+                                            class="no-input--detail"
+                                            placeholder="<?= htmlspecialchars($extra_field) ?>"><?= htmlspecialchars($data['extra' . $i]) ?></textarea>
+                                        <?php } else { ?>
+                                        <input type="text" name="extra<?= $i ?>" id="extra<?= $i ?>"
+                                            value="<?= htmlspecialchars($data['extra' . $i]) ?>"
+                                            class="no-input--detail"
+                                            placeholder="<?= htmlspecialchars($extra_field) ?>" />
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <?php } } ?>
+                                <!-- admin-block -->
 
                                 <div class="no-admin-block no-admin-pos">
                                     <h3 class="no-admin-title">
@@ -322,8 +327,6 @@
                                 <div class="no-items-center center">
                                     <a href="javascript:void(0);" class="no-btn no-btn--big no-btn--delete-outline"
                                         onClick="doDelete(<?= htmlspecialchars($data['no']) ?>);">삭제</a>
-                                    <a href="javascript:void(0);" class="no-btn no-btn--big no-btn--normal"
-                                        onClick="doCopy(<?= htmlspecialchars($data['no']) ?>);">복사</a>
                                     <a href="./board.list.php?<?= $searchParam ?>"
                                         class="no-btn no-btn--big no-btn--normal">목록</a>
                                     <a href="javascript:void(0);" class="no-btn no-btn--big no-btn--main"

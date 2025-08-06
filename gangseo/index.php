@@ -9,6 +9,9 @@
 <!-- contents -->
 
 <main>
+    <?php
+        $banners = getBannersByBranch('ganseo', 1);
+    ?>
     <section class="no-cetner-visual">
         <div class="no-container-pc">
             <div class="visual-wrap">
@@ -19,7 +22,22 @@
 
                     <div class="no-main">
                         <section class="no-main-visual">
-                            <img src="/resource/images/main-visual.jpg">
+                            <?php if (!empty($banners)): ?>
+                            <?php foreach ($banners as $banner): ?>
+                            <?php
+                                $imgSrc = '/uploads/banners/' . $banner['banner_image'];
+                                $alt = htmlspecialchars($banner['title']);
+                                $imgTag = "<img src=\"{$imgSrc}\" alt=\"{$alt}\">";
+
+                                if ($banner['has_link'] == 1 && !empty($banner['link_url'])) {
+                                    $href = htmlspecialchars($banner['link_url']);
+                                    echo "<a href=\"{$href}\" target=\"_blank\">{$imgTag}</a>";
+                                } else {
+                                    echo $imgTag;
+                                }
+                            ?>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
                         </section>
 
                         <section class="no-main-center no-pd-48--y">
@@ -167,47 +185,39 @@
                             </div>
                         </section>
 
+                        <?php
+                            $doctors = getDoctors('ganseo'); 
+                        ?>
                         <section class="no-main-doctor no-pd-48--y">
                             <div class="no-container-sm">
                                 <hgroup class="--tac fade-up no-mg-24--b">
                                     <h2 class="no-heading-sl">함께하는 면력 의료진</h2>
                                     <p class="no-body-lg fw300">편안한 치료를 위해 면력은 노력합니다.</p>
                                 </hgroup>
-
                                 <div class="basic-slider" <?= $aos_left_slow ?>>
                                     <ul class="swiper-wrapper doctor-list">
+                                        <?php foreach ($doctors as $doctor): ?>
                                         <?php
-                                        $board_info = getBoardInfoByName("의료진안내");
-                                        $board_no   = $board_info[0]['no'];
-                                        $arrLenders = getBoardLimit($board_no, 99, "");
-
-                                        foreach ($arrLenders as $k => $v):
-                                            $title = mb_substr($v['title'], 0, 150, "utf-8");
-
-                                            $link = "/pages/board/board.view.php?board_no={$board_no}&no={$v['no']}";
-
-                                            $imgSrc = '';
-                                            if ($v['thumb_image']) {
-                                                $imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-                                            } else {
-                                                $imgTags = getImageTag($v['contents'], "src");
-                                                $imgSrc = $imgTags[0] ?? '';
-                                            }
+                                            $name = htmlspecialchars($doctor['title']);
+                                            $position = htmlspecialchars($doctor['position']);
+                                            $imgSrc = !empty($doctor['thumb_image']) 
+                                            ? "/uploads/doctors/" . $doctor['thumb_image'] 
+                                            : "";
+                                            $link = "pages/hospital/doctor.view.php?id=" . urlencode($doctor['id']);
                                         ?>
                                         <li class="swiper-slide">
                                             <a href="<?= $link ?>">
                                                 <figure>
-                                                    <img src="<?= $imgSrc ?>" alt="<?= $title ?>">
+                                                    <img src="<?= $imgSrc ?>" alt="<?= $name ?>">
                                                 </figure>
 
                                                 <div class="f-wrap no-mg-16--t">
                                                     <div class="txt">
-                                                        <h3 class="no-heading-sm no-mg-8--b"><?= $title ?></h3>
-                                                        <p class="no-body-lg fw600"><?= $v['extra1'] ?> <span
-                                                                class="no-body-md fw300"><?= $v['extra2'] ?></span></p>
+                                                        <h3 class="no-heading-sm no-mg-8--b"><?= $name ?></h3>
+                                                        <p class="no-body-lg fw600"><?= $position ?></p>
                                                     </div>
 
-                                                    <i class=" fa-regular fa-arrow-right i-30"></i>
+                                                    <i class="fa-regular fa-arrow-right i-30"></i>
                                                 </div>
                                             </a>
                                         </li>
@@ -215,8 +225,7 @@
                                     </ul>
                                 </div>
 
-                                <a href="/pages/board/board.list.php?board_no=9"
-                                    class="basic-btn no-body-lg fw600 no-mg-40--t">
+                                <a href="pages/hospital/doctor.php" class="basic-btn no-body-lg fw600 no-mg-40--t">
                                     의료진 더보기
                                 </a>
                             </div>
@@ -274,42 +283,30 @@
                             </div>
                         </section>
 
+
+                        <?php
+                            $facilities = getFacilities('ganseo', 1, 4);
+                        ?>
+
                         <section class="no-main-facility no-pd-48--y">
                             <div class="no-container-sm">
                                 <hgroup class="--tac fade-up no-mg-24--b">
                                     <h2 class="no-heading-sl">회복을 위한 공간 설계</h2>
-                                    <p class="no-body-lg fw300">작은 부분까지 배려한 공간에서<br> 온전한 회복을 경험하세요.</p>
+                                    <p class="no-body-lg fw300">작은 부분까지 배려한 공간에서<br>온전한 회복을 경험하세요.</p>
                                 </hgroup>
 
                                 <div class="basic-slider" <?= $aos_left_slow ?>>
                                     <ul class="swiper-wrapper facility-list">
-                                        <?php
-                                        $board_info = getBoardInfoByName("시설안내");
-                                        $board_no   = $board_info[0]['no'];
-                                        $arrLenders = getBoardLimit($board_no, 99, "");
-
-                                        foreach ($arrLenders as $v) {
-                                            if ((int)$v['category_no'] !== 10) continue;
-
-                                            $title = mb_substr($v['title'], 0, 150, "utf-8");
-                                            $link = "/pages/board/board.view.php?board_no={$board_no}&no={$v['no']}";
-
-                                            $imgSrc = '';
-                                            if ($v['thumb_image']) {
-                                                $imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-                                            } else {
-                                                $imgTags = getImageTag($v['contents'], "src");
-                                                $imgSrc = $imgTags[0] ?? '';
-                                            }
-                                        ?>
+                                        <?php foreach ($facilities as $facility): ?>
+                                        <?php if (!empty($facility['thumb_image'])): ?>
                                         <li class="swiper-slide">
                                             <figure>
-                                                <img src="<?= $imgSrc ?>" alt="<?= $title ?>">
+                                                <img src="/uploads/facilities/<?= htmlspecialchars($facility['thumb_image']) ?>"
+                                                    alt="<?= htmlspecialchars($facility['title']) ?>">
                                             </figure>
                                         </li>
-                                        <?php
-										}
-										?>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
                                     </ul>
                                 </div>
 
@@ -319,6 +316,7 @@
                                 </a>
                             </div>
                         </section>
+
 
                         <section class="no-main-location no-pd-48--t no-pd-64--b">
                             <div class="no-container-sm">

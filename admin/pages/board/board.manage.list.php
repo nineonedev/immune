@@ -2,7 +2,7 @@
 include_once "../../../inc/lib/base.class.php";
 $connect = DB::getInstance(); // PDO 인스턴스
 
-$depthnum = 1;
+$depthnum = 2;
 $pagenum = 1;
 
 

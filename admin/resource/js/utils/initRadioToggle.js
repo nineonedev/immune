@@ -25,6 +25,17 @@ export function attachRadioToggle({
 
       if (mode === "visibility") {
         el.style.display = isToggled ? "flex" : "none";
+
+        if (!isToggled) {
+          const inputs = el.querySelectorAll("input, textarea, select");
+          inputs.forEach((input) => {
+            if (input.type === "checkbox" || input.type === "radio") {
+              input.checked = false;
+            } else {
+              input.value = "";
+            }
+          });
+        }
       } else if (mode === "enable") {
         el.disabled = isToggled;
         if (isToggled) el.value = "";

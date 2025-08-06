@@ -18,7 +18,7 @@ try {
             'title'               => trim($input['title'] ?? ''),
             'branch_id'           => (int)($input['branch_id'] ?? 0),
             'position'            => trim($input['position'] ?? ''),
-            'department'          => (int)($input['department'] ?? 0),
+            'department'          => trim($input['department'] ?? ''),
             'keywords'            => trim($input['keywords'] ?? ''),
             'career'              => trim($input['career'] ?? ''),
             'activity'            => trim($input['activity'] ?? ''),
@@ -27,6 +27,7 @@ try {
             'publications'        => trim($input['publications'] ?? ''),
             'sort_no'             => (int)($input['sort_no'] ?? 0),
             'is_active'           => (int)($input['is_active'] ?? 1),
+            'is_ceo'              => (int)($input['is_ceo'] ?? 2),
         ];
 
         $validator->require('title', $data['title'], '이름');
@@ -60,7 +61,7 @@ try {
             'title'               => trim($input['title'] ?? ''),
             'branch_id'           => (int)($input['branch_id'] ?? 0),
             'position'            => trim($input['position'] ?? ''),
-            'department'          => (int)($input['department'] ?? 0),
+            'department'          => trim($input['department'] ?? ''),
             'keywords'            => trim($input['keywords'] ?? ''),
             'career'              => trim($input['career'] ?? ''),
             'activity'            => trim($input['activity'] ?? ''),
@@ -69,6 +70,7 @@ try {
             'publications'        => trim($input['publications'] ?? ''),
             'sort_no'             => (int)($input['sort_no'] ?? 0),
             'is_active'           => (int)($input['is_active'] ?? 1),
+            'is_ceo'              => (int)($input['is_ceo'] ?? 2),
         ];
 
         $validator->require('title', $data['title'], '이름');

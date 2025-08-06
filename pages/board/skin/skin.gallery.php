@@ -1,379 +1,4 @@
 <?php
-	if ($board_no == 9) {
-?>
-
-<main>
-	<section class="no-cetner-visual">
-		<div class="no-container-pc">
-			<div class="visual-wrap">
-				<?php include_once $STATIC_ROOT . '/inc/shared/pc-info.php'; ?>
-
-				<div class="mobile-visual-wrap">
-					<?php include_once $STATIC_ROOT . '/inc/layouts/header.php'; ?>
-					<?php include_once $STATIC_ROOT . '/inc/shared/sub.nav-board.php'; ?>
-
-					<div class="no-cancer no-neuro no-rehab no-doctor">
-						<section class="no-doctor-ceo no-pd-48--y">
-
-							<h2 class="no-heading-sm --tac fade-up">환자분들의 <br>
-								편안한 치료를 위해<br>
-								<b class="fw700 blue">면력은 노력합니다.</b>
-							</h2>
-
-							<?php
-							$noticeItem = null;
-							foreach ($arrResultSet as $v) {
-								if (isset($v['is_notice']) && $v['is_notice'] === 'Y') {
-									$noticeItem = $v;
-									break;
-								}
-							}
-							if ($noticeItem):
-								$title = iconv_substr($noticeItem['title'], 0, 2000, "utf-8");
-								$contents = strip_tags(html_entity_decode($noticeItem['contents'], ENT_QUOTES, 'UTF-8'));
-								$contents = iconv_substr($contents, 0, 500, "utf-8");
-								$link = "./board.view.php?board_no=$board_no&no={$noticeItem['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
-
-								$imgSrc = "";
-								if (!empty($noticeItem['thumb_image'])) {
-									$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $noticeItem['thumb_image'];
-								}
-
-								$target = '_self';
-							?>
-							<figure class="no-mg-16--t">
-								<img src="<?= $imgSrc ?>" alt="<?= $title ?>" class="fade-up">
-							</figure>
-
-							<div class="no-container-sm">
-								<a href="<?= $link ?>" class="f-wrap no-mg-16--t">
-									<div class="txt">
-										<h3 class="no-heading-sm"><?= $title ?></h3>
-										<p class="no-body-lg fw600"><?= $v['category_name'] ?><b class="blue"><?= $v['extra1'] ?></b></p>
-									</div>
-
-									<i class=" fa-regular fa-arrow-right i-30"></i>
-								</a>
-							</div>
-							<?php endif; ?>
-						</section>
-
-						<section class="no-doctor-members no-pd-48--y">
-							<div class="no-container-sm">
-								<ul class="doctor-list">
-									<?php foreach ($arrResultSet as $k => $v): ?>
-									<?php if (isset($v['is_notice']) && $v['is_notice'] === 'Y') continue; ?>
-
-									<?php
-										$title = iconv_substr($v['title'], 0, 2000, "utf-8");
-										$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
-										$contents = iconv_substr($contents, 0, 500, "utf-8");
-										$link = "./board.view.php?board_no=$board_no&no={$v['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
-
-										$imgSrc = "";
-										if (!empty($v['thumb_image'])) {
-											$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-										}
-
-										$target = '_self';
-									?>
-
-									<li class="fade-up">
-										<a href="<?= $link ?>">
-											<figure>
-												<img src="<?= $imgSrc ?>" alt="<?= $title ?>" class="fade-up">
-											</figure>
-
-											<div class="f-wrap no-mg-16--t">
-												<div class="txt">
-													<h3 class="no-heading-sm no-mg-8--b"><?= $title ?></h3>
-													<p class="no-body-lg fw600"><?= $v['category_name'] ?> <?= $v['extra1'] ?> <span class="no-body-md fw300"><?= $v['extra2'] ?></span></p>
-												</div>
-												<i class="fa-regular fa-arrow-right i-30"></i>
-											</div>
-										</a>
-									</li>
-								<?php endforeach; ?>
-								</ul>
-							</div>
-						</section>
-
-						<?php include_once $STATIC_ROOT . '/inc/layouts/integrate-link.php'; ?>
-					</div>
-
-					<?php include_once $STATIC_ROOT . '/inc/layouts/footer.php'; ?>
-
-					<?php include_once $STATIC_ROOT . '/inc/layouts/floating-bottom.php'; ?>
-				</div>
-			</div>
-		</div>
-	</section>
-</main>
-
-<?php
-	}
-?>
-
-<?php
-	if ($board_no == 10) {
-?>
-
-<main>
-    <section class="no-cetner-visual">
-        <div class="no-container-pc">
-            <div class="visual-wrap">
-                <?php include_once $STATIC_ROOT . '/inc/shared/pc-info.php'; ?>
-
-                <div class="mobile-visual-wrap">
-                    <?php include_once $STATIC_ROOT . '/inc/layouts/header.php'; ?>
-                    <?php include_once $STATIC_ROOT . '/inc/shared/sub.nav-board.php'; ?>
-
-                    <div class="no-cancer no-neuro no-rehab no-facility">
-                        <section class="no-cancer-visual">
-                            <h2 class="no-heading-sm fw300 --tac fade-up">필요한 치료만,<br>
-                                <b class="fw700">진심을 담아</b>
-                            </h2>
-
-                            <img src="/resource/images/facility-visual.jpg">
-                        </section>
-
-                        <section class="no-cancer-sub-thyroid-guide facility no-pd-48--y">
-                            <div class="no-container-sm">
-                                <div class="left-slider" <?= $aos_left_slow ?>>
-                                    <h3 class="no-heading-sm no-mg-20--b">VIP 입원실</h3>
-
-                                    <ul class="swiper-wrapper facility-list">
-										<?php
-										foreach ($arrResultSet as $k => $v) {
-											if (!isset($v['category_name']) || $v['category_name'] !== 'VIP 입원실') continue;
-
-											$title = iconv_substr($v['title'], 0, 2000, "utf-8");
-											$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
-											$contents = iconv_substr($contents, 0, 500, "utf-8");
-											$link = "./board.view.php?board_no=$board_no&no={$v['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
-
-											$imgSrc = "";
-											if (!empty($v['thumb_image'])) {
-												$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-											}
-
-											$target = '_self';
-										?>
-											<li class="swiper-slide">
-												<figure>
-													<img src="<?= $imgSrc ?>" alt="<?= $title ?>">
-												</figure>
-											</li>
-										<?php } ?>
-                                    </ul>
-                                </div>
-
-                                <hgroup class="no-mg-20--t">
-                                    <h3 class="no-body-xl fw300">특별한 당신을 위해<br>
-                                        한 차원 더 높은 기준을 제시합니다.</h3>
-                                    <p class="no-body-lg fw300 no-mg-8--t gray">프라이버시를 보장하는 아늑한 공간에서 몸과 마음을 치유하며, 진정한 휴식을 경험하세요.</p>
-                                </hgroup>
-
-                                <ul class="room-point no-mg-24--t list-js">
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point1.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">모션베드</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point2.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">개인 냉장고</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point3.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">Smart TV</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point4.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">안마의자</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point5.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">Wi-fi</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point6.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">병실 내 샤워실</h3>
-                                    </li>
-                                </ul>
-                            </div>
-                        </section>
-
-                        <section class="no-cancer-sub-thyroid-guide facility no-pd-48--y">
-                            <div class="no-container-sm">
-                                <div class="left-slider" <?= $aos_left_slow ?>>
-                                    <h3 class="no-heading-sm no-mg-20--b">다인입원실</h3>
-
-                                    <ul class="swiper-wrapper facility-list">
-                                        <?php
-										foreach ($arrResultSet as $k => $v) {
-											if (!isset($v['category_name']) || $v['category_name'] !== '다인입원실') continue;
-
-											$title = iconv_substr($v['title'], 0, 2000, "utf-8");
-											$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
-											$contents = iconv_substr($contents, 0, 500, "utf-8");
-											$link = "./board.view.php?board_no=$board_no&no={$v['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
-
-											$imgSrc = "";
-											if (!empty($v['thumb_image'])) {
-												$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-											}
-
-											$target = '_self';
-										?>
-											<li class="swiper-slide">
-												<figure>
-													<img src="<?= $imgSrc ?>" alt="<?= $title ?>">
-												</figure>
-											</li>
-										<?php } ?>
-                                    </ul>
-                                </div>
-
-                                <hgroup class="no-mg-20--t">
-                                    <h3 class="no-body-xl fw300">모두를 위한 편안함과<br>
-                                        세심한 배려를 담았습니다.</h3>
-                                    <p class="no-body-lg fw300 no-mg-8--t gray">아늑한 공간과 효율적인 동선으로 진료와 휴식의 조화를 이루며, 함께하는 시간을 더 편안하게 만들어 드립니다.</p>
-                                </hgroup>
-
-                                <ul class="room-point no-mg-24--t list-js">
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point1.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">모션베드</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point2.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">개인 냉장고</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point3.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">Smart TV</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point2-4.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">개인캐비넷</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point5.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">Wi-fi</h3>
-                                    </li>
-
-                                    <li>
-                                        <figure><img src="/resource/images/icon/blue-room-point6.svg"></figure>
-                                        <h3 class="no-mg-8--t no-body-lg fw300">병실 내 샤워실</h3>
-                                    </li>
-                                </ul>
-                            </div>
-                        </section>
-
-                        <section class="no-cancer-sub-thyroid-guide facility no-pd-48--y">
-                            <div class="no-container-sm">
-                                <div class="left-slider" <?= $aos_left_slow ?>>
-                                    <h3 class="no-heading-sm no-mg-20--b">회복을 끌어 올리는<br>
-                                        다양한 치료공간</h3>
-
-                                    <ul class="swiper-wrapper facility-list">
-                                        <?php
-										foreach ($arrResultSet as $k => $v) {
-											if (!isset($v['category_name']) || $v['category_name'] !== '회복을 끌어 올리는 다양한 치료공간') continue;
-
-											$title = iconv_substr($v['title'], 0, 2000, "utf-8");
-											$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
-											$contents = iconv_substr($contents, 0, 500, "utf-8");
-											$link = "./board.view.php?board_no=$board_no&no={$v['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
-
-											$imgSrc = "";
-											if (!empty($v['thumb_image'])) {
-												$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-											}
-
-											$target = '_self';
-										?>
-											<li class="swiper-slide">
-												<figure>
-													<img src="<?= $imgSrc ?>" alt="<?= $title ?>">
-												</figure>
-											</li>
-										<?php } ?>
-                                    </ul>
-                                </div>
-
-                                <hgroup class="no-mg-20--t">
-                                    <h3 class="no-body-xl fw300">치유를 위한 최적의 공간을 제공합니다.</h3>
-                                    <p class="no-body-lg fw300 no-mg-8--t gray">효율적이고 안락한 치료 환경에서, 몸과 마음의 회복이 조화롭게 이루어질 수 있도록 세심하게 설계했습니다.</p>
-                                </hgroup>
-                            </div>
-                        </section>
-
-                        <section class="no-cancer-sub-thyroid-guide facility no-pd-48--y">
-                            <div class="no-container-sm">
-                                <div class="left-slider" <?= $aos_left_slow ?>>
-                                    <h3 class="no-heading-sm no-mg-20--b">24시간/365일<br>
-                                        힐링 할 수 있는 환경</h3>
-
-                                    <ul class="swiper-wrapper facility-list">
-                                        <?php
-										foreach ($arrResultSet as $k => $v) {
-											if (!isset($v['category_name']) || $v['category_name'] !== '24시간/365일 힐링 할 수 있는 환경') continue;
-
-											$title = iconv_substr($v['title'], 0, 2000, "utf-8");
-											$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
-											$contents = iconv_substr($contents, 0, 500, "utf-8");
-											$link = "./board.view.php?board_no=$board_no&no={$v['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
-
-											$imgSrc = "";
-											if (!empty($v['thumb_image'])) {
-												$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-											}
-
-											$target = '_self';
-										?>
-											<li class="swiper-slide">
-												<figure>
-													<img src="<?= $imgSrc ?>" alt="<?= $title ?>">
-												</figure>
-											</li>
-										<?php } ?>
-                                    </ul>
-                                </div>
-
-                                <hgroup class="no-mg-20--t">
-                                    <h3 class="no-body-xl fw300">몸과 마음이 쉬어가는 힐링의 공간.</h3>
-                                    <p class="no-body-lg fw300 no-mg-8--t gray">편안하고 아늑한 환경에서 진정한 휴식과 재충전을 경험하세요.</p>
-                                </hgroup>
-                            </div>
-                        </section>
-
-                        <?php include_once $STATIC_ROOT . '/inc/layouts/integrate-link.php'; ?>
-                    </div>
-
-                    <?php include_once $STATIC_ROOT . '/inc/layouts/footer.php'; ?>
-
-                    <?php include_once $STATIC_ROOT . '/inc/layouts/floating-bottom.php'; ?>
-                </div>
-            </div>
-        </div>
-    </section>
-</main>
-
-<?php
-	}
-?>
-
-<?php
 	if ($board_no == 11) {
 ?>
 
@@ -394,7 +19,6 @@
                                     <h2 class="no-heading-sm">나와 비슷한 이야기,<br>
                                         회복의 여정을 확인하세요.</h2>
                                 </hgroup>
-
                                 <!-- 검색결과 O -->
                                 <div class="search-success">
                                     <p class="no-body-xl fw700 --tac"><b class="blue">‘00’</b>에 대한 검색 결과 입니다.</p>
@@ -412,7 +36,8 @@
                                 </div>
 
                                 <div class="header-search-box no-mg-32--y">
-                                    <input type="search" name="searchKeyword" placeholder="검색어를 입력해주세요" class="no-body-md">
+                                    <input type="search" name="searchKeyword" placeholder="검색어를 입력해주세요"
+                                        class="no-body-md">
                                     <button type="button">
                                         <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
                                     </button>
@@ -420,23 +45,25 @@
 
                                 <ul class="cartegory-wrap">
                                     <li>
-                                        <a href="javascript:void(0);"  onClick="doCategoryClick(0);" class="<?= empty($category_no) ? 'active' : '' ?> no-body-lg fw300">
+                                        <a href="javascript:void(0);" onClick="doCategoryClick(0);"
+                                            class="<?= empty($category_no) ? 'active' : '' ?> no-body-lg fw300">
                                             전체
                                         </a>
                                     </li>
-									
-									<?php if(count($boardCategory) > 0) : ?>
-										<?php
+
+                                    <?php if(count($boardCategory) > 0) : ?>
+                                    <?php
 										foreach($boardCategory as $k => $v) :
 											$categoryActive = ($category_no == $v['no']) ? "active" : '';
 										?>
-										<li>
-											<a href="javascript:void(0);"  onClick="doCategoryClick(<?= $v['no'] ?>);" class="no-body-lg fw300 <?= $categoryActive ?>">
-												<?= $v['name'] ?>
-											</a>
-										</li>
-										<?php endforeach; ?>
-									<?php endif; ?>
+                                    <li>
+                                        <a href="javascript:void(0);" onClick="doCategoryClick(<?= $v['no'] ?>);"
+                                            class="no-body-lg fw300 <?= $categoryActive ?>">
+                                            <?= $v['name'] ?>
+                                        </a>
+                                    </li>
+                                    <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </section>
@@ -444,37 +71,49 @@
                         <section class="no-review-wrap no-pd-48--y">
                             <div class="no-container-sm">
                                 <ul class="review-list">
-									<?php
-									foreach ($arrResultSet as $k => $v) {
-										$title = iconv_substr($v['title'], 0, 2000, "utf-8");
-										$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
-										$contents = iconv_substr($contents, 0, 500, "utf-8");
-										$link = "./board.view.php?board_no=$board_no&no={$v['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
+                                    <?php foreach ($arrResultSet as $v): ?>
+                                    <?php
+                                            $title = isset($v['title']) && !is_array($v['title']) ? iconv_substr($v['title'], 0, 2000, "utf-8") : '';
 
-										$imgSrc = "";
-										if ($v['thumb_image']) {
-											$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-										}
+                                            $contents = '';
+                                            if (isset($v['contents']) && !is_array($v['contents'])) {
+                                                $decoded = html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8');
+                                                $stripped = strip_tags($decoded);
+                                                $contents = iconv_substr($stripped, 0, 500, "utf-8");
+                                            }
 
-										$target = '_self';
-										$link = $link;
-									?>
+                                            $keywordParam = isset($searchKeyword) && !is_array($searchKeyword) ? base64_encode($searchKeyword) : '';
+                                            $columnParam  = isset($searchColumn) && !is_array($searchColumn) ? base64_encode($searchColumn) : '';
+                                            $link = "./board.view.php?board_no=$board_no&no={$v['no']}". "&searchKeyword={$keywordParam}"
+                                                    . "&searchColumn={$columnParam}";
+
+                                                // 이미지 경로 처리
+                                            $imgSrc = !empty($v['thumb_image']) ? $UPLOAD_WDIR_BOARD . '/' . $v['thumb_image'] : '/assets/img/no-image.png';
+
+                                            // 타겟 설정
+                                            $target = '_self';
+
+                                            // 카테고리 이름
+                                            $categoryName = $v['category_name'] ?? '';
+                                        ?>
+
                                     <li class="fade-up">
-                                        <a href="<?= $link ?>">
+                                        <a href="<?=$link?>" target="<?= $target ?>">
                                             <figure>
-                                                <span class="no-body-xs fw600"><?= $v['category_name'] ?></span>
-                                                <img src="<?= $imgSrc ?>" alt="<?= $title ?>">
+                                                <span
+                                                    class="no-body-xs fw600"><?= htmlspecialchars($categoryName) ?></span>
+                                                <img src="<?= htmlspecialchars($imgSrc) ?>"
+                                                    alt="<?= htmlspecialchars($title) ?>">
                                             </figure>
 
                                             <div class="f-wrap no-gap-8 no-pd-8--x no-mg-16--t">
-                                                <h3 class="no-body-xxl fw600"><?= $title ?></h3>
-                                                <i class=" fa-regular fa-arrow-right i-30"></i>
+                                                <h3 class="no-body-xxl fw600"><?= htmlspecialchars($title) ?></h3>
+                                                <i class="fa-regular fa-arrow-right i-30"></i>
                                             </div>
                                         </a>
                                     </li>
-									<?php } ?>
+                                    <?php endforeach; ?>
                                 </ul>
-
                                 <?php include_once $STATIC_ROOT."/pages/board/components/pagination.php"; ?>
                             </div>
                         </section>
@@ -500,15 +139,15 @@
 ?>
 
 <?php
-$order_by = $_GET['order_by'] ?? 'latest';
-$order_sql = ($order_by === 'views') ? 'read_cnt DESC' : 'regdate DESC';
+    $order_by = $_GET['order_by'] ?? 'latest';
+    $order_sql = ($order_by === 'views') ? 'read_cnt DESC' : 'regdate DESC';
 
-$baseParams = $_GET;
-$baseParams['order_by'] = 'latest';
-$latestUrl = './board.list.php?' . http_build_query($baseParams);
+    $baseParams = $_GET;
+    $baseParams['order_by'] = 'latest';
+    $latestUrl = './board.list.php?' . http_build_query($baseParams);
 
-$baseParams['order_by'] = 'views';
-$viewsUrl = './board.list.php?' . http_build_query($baseParams);
+    $baseParams['order_by'] = 'views';
+    $viewsUrl = './board.list.php?' . http_build_query($baseParams);
 ?>
 
 <main>
@@ -536,44 +175,74 @@ $viewsUrl = './board.list.php?' . http_build_query($baseParams);
                             <div class="no-container-sm">
 
                                 <ul class="array-option no-mg-16--b f-wrap no-gap-8">
-									<li>
-										<a href="<?= $latestUrl ?>" class="no-body-lg fw300 gray <?= ($order_by === 'latest' ? 'active' : '') ?>">최신순</a>
-									</li>
-									<li>
-										<a href="<?= $viewsUrl ?>" class="no-body-lg fw300 gray <?= ($order_by === 'views' ? 'active' : '') ?>">조회순</a>
-									</li>
-								</ul>
+                                    <li>
+                                        <a href="<?= $latestUrl ?>"
+                                            class="no-body-lg fw300 gray <?= ($order_by === 'latest' ? 'active' : '') ?>">최신순</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= $viewsUrl ?>"
+                                            class="no-body-lg fw300 gray <?= ($order_by === 'views' ? 'active' : '') ?>">조회순</a>
+                                    </li>
+                                </ul>
 
                                 <ul class="review-list">
-									<?php
-									foreach ($arrResultSet as $k => $v) {
-										$title = iconv_substr($v['title'], 0, 2000, "utf-8");
-										$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
-										$contents = iconv_substr($contents, 0, 500, "utf-8");
-										$link = "./board.view.php?board_no=$board_no&no={$v['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
+                                    <?php foreach ($arrResultSet as $v): ?>
+                                    <?php
+                                            // 제목 처리
+                                            $title = isset($v['title']) && !is_array($v['title']) 
+                                                ? iconv_substr($v['title'], 0, 2000, "utf-8") 
+                                                : '';
 
-										$imgSrc = "";
-										if ($v['thumb_image']) {
-											$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-										}
+                                            // 본문 요약
+                                            $contents = '';
+                                            if (isset($v['contents']) && !is_array($v['contents'])) {
+                                                $decoded = html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8');
+                                                $stripped = strip_tags($decoded);
+                                                $contents = iconv_substr($stripped, 0, 500, "utf-8");
+                                            }
 
-										$target = '_self';
-										$link = $link;
-									?>
+                                            // URL 파라미터 방어
+                                            $keywordParam   = isset($searchKeyword) && !is_array($searchKeyword) ? base64_encode($searchKeyword) : '';
+                                            $columnParam    = isset($searchColumn)  && !is_array($searchColumn)  ? base64_encode($searchColumn)  : '';
+                                            $pageParam      = is_array($page)        ? 1 : (int)$page;
+                                            $categoryParam  = is_array($category_no) ? '' : $category_no;
+
+                                            // 링크
+                                            $link = "./board.view.php?board_no=$board_no"
+                                                . "&no={$v['no']}"
+                                                . "&searchKeyword={$keywordParam}"
+                                                . "&searchColumn={$columnParam}"
+                                                . "&page={$pageParam}"
+                                                . "&category_no={$categoryParam}";
+
+                                            // 이미지
+                                            $imgSrc = !empty($v['thumb_image']) 
+                                                ? $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'] 
+                                                : '/assets/img/no-image.png';
+
+                                            // 타겟 및 날짜
+                                            $target = '_self';
+                                            $regDate = isset($v['regdate']) ? date("Y.m.d", strtotime($v['regdate'])) : '';
+                                        ?>
+
                                     <li class="fade-up">
-                                        <a href="<?= $link ?>">
+                                        <a href="<?= htmlspecialchars($link) ?>" target="<?= $target ?>">
                                             <figure>
-                                                <img src="<?= $imgSrc ?>" alt="<?= $title ?>">
+                                                <img src="<?= htmlspecialchars($imgSrc) ?>"
+                                                    alt="<?= htmlspecialchars($title) ?>">
                                             </figure>
 
                                             <div class="f-wrap no-gap-8 no-pd-8--x no-mg-16--t">
-                                                <h3 class="no-body-xxl fw600"><?= $title ?></h3>
-                                                <i class=" fa-regular fa-arrow-right i-30"></i>
+                                                <h3 class="no-body-xxl fw600"><?= htmlspecialchars($title) ?></h3>
+                                                <i class="fa-regular fa-arrow-right i-30"></i>
                                             </div>
-                                            <p class="no-body-lg fw300 gray no-pd-8--x no-mg-8--t"><?= date("Y.m.d", strtotime($v['regdate'])) ?></p>
+                                            <p class="no-body-lg fw300 gray no-pd-8--x no-mg-8--t">
+                                                <?= $regDate ?>
+                                            </p>
                                         </a>
                                     </li>
-									<?php } ?>
+                                    <?php endforeach; ?>
+
                                 </ul>
 
                                 <?php include_once $STATIC_ROOT."/pages/board/components/pagination.php"; ?>
@@ -619,24 +288,26 @@ $viewsUrl = './board.list.php?' . http_build_query($baseParams);
                                 </hgroup>
 
                                 <ul class="cartegory-wrap v2 v3">
-									<li>
-                                        <a href="javascript:void(0);"  onClick="doCategoryClick(0);" class="<?= empty($category_no) ? 'active' : '' ?> no-body-lg fw300">
+                                    <li>
+                                        <a href="javascript:void(0);" onClick="doCategoryClick(0);"
+                                            class="<?= empty($category_no) ? 'active' : '' ?> no-body-lg fw300">
                                             전체
                                         </a>
                                     </li>
 
                                     <?php if(count($boardCategory) > 0) : ?>
-										<?php
+                                    <?php
 										foreach($boardCategory as $k => $v) :
 											$categoryActive = ($category_no == $v['no']) ? "active" : '';
 										?>
-										<li>
-											<a href="javascript:void(0);"  onClick="doCategoryClick(<?= $v['no'] ?>);" class="no-body-lg fw300 <?= $categoryActive ?>">
-												<?= $v['name'] ?>
-											</a>
-										</li>
-										<?php endforeach; ?>
-									<?php endif; ?>
+                                    <li>
+                                        <a href="javascript:void(0);" onClick="doCategoryClick(<?= $v['no'] ?>);"
+                                            class="no-body-lg fw300 <?= $categoryActive ?>">
+                                            <?= $v['name'] ?>
+                                        </a>
+                                    </li>
+                                    <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </section>
@@ -644,35 +315,64 @@ $viewsUrl = './board.list.php?' . http_build_query($baseParams);
                         <section class="no-review-wrap no-pd-48--b">
                             <div class="no-container-sm">
                                 <ul class="review-list">
-									<?php
-									foreach ($arrResultSet as $k => $v) {
-										$title = iconv_substr($v['title'], 0, 2000, "utf-8");
-										$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
-										$contents = iconv_substr($contents, 0, 500, "utf-8");
-										$link = "./board.view.php?board_no=$board_no&no={$v['no']}&searchKeyword=" . base64_encode($searchKeyword) . "&searchColumn=" . base64_encode($searchColumn) . "&page=$page&category_no=$category_no";
+                                    <?php foreach ($arrResultSet as $v): ?>
+                                    <?php
+                                        // title 방어 처리
+                                        $title = isset($v['title']) && !is_array($v['title']) 
+                                            ? iconv_substr($v['title'], 0, 2000, "utf-8") 
+                                            : '';
 
-										$imgSrc = "";
-										if ($v['thumb_image']) {
-											$imgSrc = $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'];
-										}
+                                        // contents 요약 (사용 안 하지만 유지)
+                                        $contents = '';
+                                        if (isset($v['contents']) && !is_array($v['contents'])) {
+                                            $decoded = html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8');
+                                            $stripped = strip_tags($decoded);
+                                            $contents = iconv_substr($stripped, 0, 500, "utf-8");
+                                        }
 
-										$target = '_self';
-										$link = $link;
-									?>
+                                        // URL 파라미터 방어 처리
+                                        $keywordParam  = isset($searchKeyword) && !is_array($searchKeyword) ? base64_encode($searchKeyword) : '';
+                                        $columnParam   = isset($searchColumn)  && !is_array($searchColumn)  ? base64_encode($searchColumn) : '';
+                                        $pageParam     = is_array($page) ? 1 : (int)$page;
+                                        $categoryParam = is_array($category_no) ? '' : $category_no;
+
+                                        // 링크 생성
+                                        $link = "./board.view.php?board_no=$board_no"
+                                            . "&no={$v['no']}"
+                                            . "&searchKeyword={$keywordParam}"
+                                            . "&searchColumn={$columnParam}"
+                                            . "&page={$pageParam}"
+                                            . "&category_no={$categoryParam}";
+
+                                        // 이미지 처리
+                                        $imgSrc = !empty($v['thumb_image']) 
+                                            ? $UPLOAD_WDIR_BOARD . "/" . $v['thumb_image'] 
+                                            : '/assets/img/no-image.png';
+
+                                        // 타겟 및 날짜
+                                        $target = '_self';
+                                        $regDate = isset($v['regdate']) ? date("Y.m.d", strtotime($v['regdate'])) : '';
+                                    ?>
+
                                     <li class="fade-up">
-                                        <a href="<?= $link ?>">
+                                        <a href="<?= htmlspecialchars($link) ?>" target="<?= $target ?>">
                                             <figure>
-                                                <img src="<?= $imgSrc ?>" alt="<?= $title ?>">
+                                                <img src="<?= htmlspecialchars($imgSrc) ?>"
+                                                    alt="<?= htmlspecialchars($title) ?>">
                                             </figure>
 
                                             <div class="f-wrap no-gap-8 no-pd-8--x no-mg-16--t">
-                                                <h3 class="no-body-xxl fw600"><?= $title ?></h3>
-                                                <i class=" fa-regular fa-arrow-right i-30"></i>
+                                                <h3 class="no-body-xxl fw600"><?= htmlspecialchars($title) ?></h3>
+                                                <i class="fa-regular fa-arrow-right i-30"></i>
                                             </div>
-                                            <p class="no-body-lg fw300 gray no-pd-8--x no-mg-8--t"><?= date("Y.m.d", strtotime($v['regdate'])) ?></p>
+
+                                            <p class="no-body-lg fw300 gray no-pd-8--x no-mg-8--t">
+                                                <?= $regDate ?>
+                                            </p>
                                         </a>
                                     </li>
-									<?php } ?>
+                                    <?php endforeach; ?>
+
                                 </ul>
 
                                 <?php include_once $STATIC_ROOT."/pages/board/components/pagination.php"; ?>
@@ -735,7 +435,8 @@ $viewsUrl = './board.list.php?' . http_build_query($baseParams);
                                 </div>
 
                                 <div class="header-search-box no-mg-16--y">
-                                    <input type="search" name="searchKeyword" placeholder="검색어를 입력해주세요" class="no-body-md">
+                                    <input type="search" name="searchKeyword" placeholder="검색어를 입력해주세요"
+                                        class="no-body-md">
                                     <button type="button">
                                         <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
                                     </button>
@@ -747,28 +448,30 @@ $viewsUrl = './board.list.php?' . http_build_query($baseParams);
                             <div class="no-container-sm">
 
                                 <ul class="cartegory-wrap">
-									<li>
-                                        <a href="javascript:void(0);"  onClick="doCategoryClick(0);" class="<?= empty($category_no) ? 'active' : '' ?> no-body-lg fw300">
+                                    <li>
+                                        <a href="javascript:void(0);" onClick="doCategoryClick(0);"
+                                            class="<?= empty($category_no) ? 'active' : '' ?> no-body-lg fw300">
                                             전체
                                         </a>
                                     </li>
 
                                     <?php if(count($boardCategory) > 0) : ?>
-										<?php
+                                    <?php
 										foreach($boardCategory as $k => $v) :
 											$categoryActive = ($category_no == $v['no']) ? "active" : '';
 										?>
-										<li>
-											<a href="javascript:void(0);"  onClick="doCategoryClick(<?= $v['no'] ?>);" class="no-body-lg fw300 <?= $categoryActive ?>">
-												<?= $v['name'] ?>
-											</a>
-										</li>
-										<?php endforeach; ?>
-									<?php endif; ?>
+                                    <li>
+                                        <a href="javascript:void(0);" onClick="doCategoryClick(<?= $v['no'] ?>);"
+                                            class="no-body-lg fw300 <?= $categoryActive ?>">
+                                            <?= $v['name'] ?>
+                                        </a>
+                                    </li>
+                                    <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </ul>
 
                                 <ul class="faq-list no-mg-64--t">
-									<?php
+                                    <?php
 									foreach ($arrResultSet as $k => $v) {
 										$title = iconv_substr($v['title'], 0, 2000, "utf-8");
 										$contents = strip_tags(html_entity_decode($v['contents'], ENT_QUOTES, 'UTF-8'));
@@ -802,7 +505,7 @@ $viewsUrl = './board.list.php?' . http_build_query($baseParams);
                                             </p>
                                         </div>
                                     </li>
-									<?php } ?>
+                                    <?php } ?>
                                 </ul>
 
                                 <?php include_once $STATIC_ROOT."/pages/board/components/pagination.php"; ?>

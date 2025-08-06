@@ -1,43 +1,35 @@
 <?php
 
-$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
 $NO_META_URL = $protocol . ($_SERVER['HTTP_HOST'] ?? '') . ($_SERVER['REQUEST_URI'] ?? '');
-
-// 현재 경로에서 상대 경로만 추출 (ex: cancer/female-1.php)
 $current_path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 $relative_path = preg_replace('#^(.*?/)?pages/#', '', $current_path);
 
 $db = DB::getInstance();
 
-$sql = "SELECT * 
-        FROM nb_branch_seos 
-        WHERE path = :path 
-        LIMIT 1";
-$stmt = $db->prepare($sql);
-$stmt->execute(['path' => $relative_path]);
-$data = $stmt->fetch(PDO::FETCH_ASSOC);
+try {
+    $stmt = $db->prepare("SELECT * FROM nb_branch_seos WHERE path = :path LIMIT 1");
+    $stmt->execute(['path' => $relative_path]);
+    $seoData = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $seoData = [];
+    error_log("SEO meta fetch error: " . $e->getMessage());
+}
 
-// 현재 페이지 타이틀
-$NO_PAGE_TITLE = $data['page_title'] ?? "";
+$NO_PAGE_TITLE = $seoData['page_title'] ?? '';
+$NO_STATIC_TITLE = $seoData['meta_title'] ?? '';
+$NO_META_DESCRIPTION = $seoData['meta_description'] ?? $SITEINFO_META_DESCRIPTION;
+$NO_META_KEYWORDS = $seoData['meta_keywords'] ?? $SITEINFO_META_KEYWORDS;
 
-// 메타 타이틀
-$NO_STATIC_TITLE = $data['meta_title'] ?? "";
-$NO_META_DESCRIPTION = $data['meta_description'] ?? $SITEINFO_META_DESCRIPTION;
-$NO_META_KEYWORDS = $data['meta_keywords'] ?? $SITEINFO_META_KEYWORDS;
-
-// 중복 방지 및 조합
-if ($PAGE_TITLE && $NO_PAGE_TITLE) {
-    if ($PAGE_TITLE === $NO_PAGE_TITLE) {
-        $FULL_TITLE = $PAGE_TITLE;
-    } else {
-        $FULL_TITLE = $PAGE_TITLE . ' | ' . $NO_PAGE_TITLE;
-    }
-} elseif ($PAGE_TITLE) {
+$FULL_TITLE = '';
+if (!empty($PAGE_TITLE) && !empty($NO_PAGE_TITLE)) {
+    $FULL_TITLE = ($PAGE_TITLE === $NO_PAGE_TITLE)
+        ? $PAGE_TITLE
+        : $PAGE_TITLE . ' | ' . $NO_PAGE_TITLE;
+} elseif (!empty($PAGE_TITLE)) {
     $FULL_TITLE = $PAGE_TITLE;
-} elseif ($NO_PAGE_TITLE) {
+} elseif (!empty($NO_PAGE_TITLE)) {
     $FULL_TITLE = $NO_PAGE_TITLE;
-} else {
-    $FULL_TITLE = '';
 }
 
 
@@ -93,14 +85,22 @@ $NO_META_APPLE_THOUCH_ICON = "";
 
 <link rel="shortcut icon" href="<?= htmlspecialchars($NO_META_SHORTCUT_ICON) ?>">
 
-<!-- ✅ 외부 TAG BEGIN -->
 <?php
-$stmt = $db->prepare("SELECT tag_content FROM nb_site_tags WHERE is_active = 1 AND sitekey = :sitekey");
-$stmt->execute([':sitekey' => $NO_SITE_UNIQUE_KEY]);
-$tags = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    try {
+        if (!isset($NO_SITE_UNIQUE_KEY) || empty($NO_SITE_UNIQUE_KEY)) {
+            throw new Exception('NO_SITE_UNIQUE_KEY 값이 비어있습니다.');
+        }
 
-foreach ($tags as $tag) {
-    echo $tag . PHP_EOL;
+        $stmt = $db->prepare("SELECT tag_content FROM nb_site_tags WHERE is_active = 1 AND sitekey = :sitekey");
+        $stmt->execute([':sitekey' => $NO_SITE_UNIQUE_KEY]);
+        $tags = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        foreach ($tags as $tag) {
+            echo $tag . PHP_EOL;
+        }
+    } catch (PDOException $e) {
+        echo "💥 DB 오류: " . $e->getMessage();
+    } catch (Exception $e) {
+        echo "⚠️ 예외 발생: " . $e->getMessage();
 }
 ?>
-<!-- ✅ 외부 TAG END -->

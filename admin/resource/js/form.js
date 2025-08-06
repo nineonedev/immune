@@ -103,11 +103,10 @@ const formInit = () => {
   categories.selectmenu();
   isActive.selectmenu();
 
-  department.selectmenu();
-
+  /*
   categoryPrimary.selectmenu();
   categorySecondary.selectmenu();
-
+  */
   bannerType.selectmenu();
   popupType.selectmenu();
   startDatePicker.datepicker();

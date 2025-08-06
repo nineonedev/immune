@@ -85,6 +85,33 @@ include_once "../../inc/admin.js.php";
                                         </select>
                                     </div>
                                 </div>
+
+                                <!-- 대표원장 여부 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">대표원장 여부</h3>
+                                    <div class="no-admin-content">
+                                        <div class="no-radio-form no-list">
+                                            <?php
+                                                foreach ($is_ceo_options as $value => $label):
+                                                    $id = "is_ceo_$value";
+                                                    $checked = ($doctor['is_ceo'] ?? 2) == $value ? 'checked' : '';
+                                            ?>
+                                            <label for="<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="is_ceo" id="<?= $id ?>"
+                                                        value="<?= $value ?>" <?= $checked ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                            </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
                                 <!-- 이름 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title"><label for="title">이름</label></h3>
@@ -162,15 +189,8 @@ include_once "../../inc/admin.js.php";
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title"><label for="department">부서</label></h3>
                                     <div class="no-admin-content">
-                                        <select name="department" id="department">
-                                            <option value="">부서 선택</option>
-                                            <?php foreach ($departments as $key => $label): ?>
-                                            <option value="<?= $key ?>"
-                                                <?= ($doctor['department'] == $key) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($label) ?>
-                                            </option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <input type="text" id="department" name="department"
+                                            value="<?= htmlspecialchars($doctor['department']) ?>">
                                     </div>
                                 </div>
 

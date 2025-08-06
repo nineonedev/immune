@@ -16,7 +16,6 @@ $branches = $branchesStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // GET 파라미터
 $branch_id = $_GET['branch_id'] ?? '';
-$department = $_GET['department'] ?? '';
 $active_filter = $_GET['is_active'] ?? '';  
 $searchColumn = $_GET['searchColumn'] ?? '';
 $searchKeyword = $_GET['searchKeyword'] ?? '';
@@ -30,10 +29,6 @@ if (!empty($branch_id)) {
     $params[':branch_id'] = $branch_id;
 }
 
-if (!empty($department)) {
-    $where .= " AND d.department = :department";
-    $params[':department'] = $department;
-}
 
 if ($active_filter !== '') {
     $where .= " AND d.is_active = :is_active";
@@ -116,21 +111,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
 
-                                <!-- 부서명 선택 -->
-                                <div class="no-admin-block">
-                                    <h3 class="no-admin-title">부서명</h3>
-                                    <div class="no-admin-content">
-                                        <select name="department" id="department">
-                                            <option value="">전체</option>
-                                            <?php foreach ($departments as $code => $label): ?>
-                                            <option value="<?= $code ?>"
-                                                <?= ($department ?? '') == $code ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($label) ?>
-                                            </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
+
 
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title">노출 여부</h3>
@@ -237,7 +218,6 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <th>썸네일</th>
                                                 <th>내부 이미지</th>
                                                 <th>직급</th>
-                                                <th>부서</th>
                                                 <th>정렬</th>
                                                 <th>노출 여부</th>
                                                 <th>관리</th>
@@ -280,7 +260,6 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </td>
 
                                                 <td><?= htmlspecialchars($row['position']) ?></td>
-                                                <td><?= htmlspecialchars($departments[$row['department']] ?? '-') ?>
                                                 </td>
                                                 <td><?= $row['sort_no'] ?></td>
                                                 <td>

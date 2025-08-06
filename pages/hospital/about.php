@@ -15,7 +15,7 @@
 
                 <div class="mobile-visual-wrap">
                     <?php include_once $STATIC_ROOT . '/inc/layouts/header.php'; ?>
-					<?php include_once $STATIC_ROOT . '/inc/shared/sub.nav-board.php'; ?>
+                    <?php include_once $STATIC_ROOT . '/inc/shared/sub.nav-board.php'; ?>
 
                     <div class="no-cancer no-neuro no-rehab no-hospital">
                         <section class="no-cancer-visual hospital">
@@ -100,14 +100,16 @@
                                                 면역 강화 치료로 회복력을 높입니다.</p>
                                         </div>
 
-                                        <img src="/resource/images/accident-special1.jpg" class="no-radius-sm no-mg-16--t">
+                                        <img src="/resource/images/accident-special1.jpg"
+                                            class="no-radius-sm no-mg-16--t">
                                     </li>
 
                                     <li class="fade-up no-mg-48--t">
                                         <div class="txt no-pd-8--x">
                                             <h3 class="no-heading-sm fw300">면역 식이요법</h3>
                                             <span class="no-body-md fw300">(영양 치료)</span>
-                                            <p class="no-body-md fw300 no-mg-16--t">환자의 체질과 현재 상태를 고려한 맞춤형 영양 관리를 제공합니다.</p>
+                                            <p class="no-body-md fw300 no-mg-16--t">환자의 체질과 현재 상태를 고려한 맞춤형 영양 관리를 제공합니다.
+                                            </p>
                                         </div>
 
                                         <img src="/resource/images/cancer-food.jpg" class="no-radius-sm no-mg-16--t">
@@ -117,10 +119,12 @@
                                         <div class="txt no-pd-8--x">
                                             <h3 class="no-heading-sm fw300">재활 치료 프로그램 </h3>
                                             <span class="no-body-md fw300">(대상포진, 안면마비 등 신경계 치료)</span>
-                                            <p class="no-body-md fw300 no-mg-16--t">교통사고, 항암 후 부작용, 신경계 손상으로 어려움을 겪는 분들을 위한 재활 프로그램을 제공합니다.</p>
+                                            <p class="no-body-md fw300 no-mg-16--t">교통사고, 항암 후 부작용, 신경계 손상으로 어려움을 겪는 분들을
+                                                위한 재활 프로그램을 제공합니다.</p>
                                         </div>
 
-                                        <img src="/resource/images/hospital-program.jpg" class="no-radius-sm no-mg-16--t">
+                                        <img src="/resource/images/hospital-program.jpg"
+                                            class="no-radius-sm no-mg-16--t">
                                     </li>
 
                                     <li class="fade-up no-mg-48--t">
@@ -131,12 +135,14 @@
                                                 스트레스 관리 & 심신 안정 프로그램 운영.</p>
                                         </div>
 
-                                        <img src="/resource/images/cancer-program4.jpg" class="no-radius-sm no-mg-16--t">
+                                        <img src="/resource/images/cancer-program4.jpg"
+                                            class="no-radius-sm no-mg-16--t">
                                     </li>
                                 </ul>
                         </section>
 
-                        <section class="no-hospital-about no-pd-48--y" style="background-color: var(--clr-secondary-50);">
+                        <section class="no-hospital-about no-pd-48--y"
+                            style="background-color: var(--clr-secondary-50);">
                             <div class="no-container-sm">
                                 <div class="pd-group no-pd-8--x fade-up">
                                     <img src="/resource/images/icon/quotes-open-v2.svg" class="quotes">
@@ -147,7 +153,8 @@
                                     </h2>
                                 </div>
 
-                                <img src="/resource/images/hospital-about2.jpg" class="no-radius-sm fade-up no-mg-48--t">
+                                <img src="/resource/images/hospital-about2.jpg"
+                                    class="no-radius-sm fade-up no-mg-48--t">
 
                                 <div class="pd-group no-pd-8--x fade-up no-mg-48--t">
                                     <p class="no-body-md fw300 gray">많은 환자분들이 고민하고 걱정하는 부분입니다.
@@ -171,11 +178,13 @@
                                     </h2>
                                 </div>
 
-                                <img src="/resource/images/hospital-about3.jpg" class="no-radius-sm fade-up no-mg-48--t">
+                                <img src="/resource/images/hospital-about3.jpg"
+                                    class="no-radius-sm fade-up no-mg-48--t">
 
                                 <div class="pd-group no-pd-8--x fade-up no-mg-48--t">
                                     <h3 class="no-body-xxl fw600">우리는 <b class="blue">원칙을 지키는 병원</b>입니다.</h3>
-                                    <p class="no-body-md fw300 gray no-mg-16--t">환자분들이 안심하고 치료받을 수 있도록,<br> 이 세 가지 원칙을 지켜가고 있습니다.</p>
+                                    <p class="no-body-md fw300 gray no-mg-16--t">환자분들이 안심하고 치료받을 수 있도록,<br> 이 세 가지 원칙을
+                                        지켜가고 있습니다.</p>
 
                                     <ul class="principle-list no-mg-30--t">
                                         <li class="no-body-lg fw600">
@@ -199,7 +208,8 @@
                                 </div>
                         </section>
 
-                        <section class="no-hospital-about no-pd-48--y" style="background-color: var(--clr-secondary-50);">
+                        <section class="no-hospital-about no-pd-48--y"
+                            style="background-color: var(--clr-secondary-50);">
                             <div class="no-container-sm">
                                 <hgroup class="pd-group no-pd-8--x fade-up">
                                     <span class="no-heading-sm fw300">1</span>
@@ -234,24 +244,30 @@
                                     </p>
                                 </hgroup>
 
-                                <img src="/resource/images/hospital-about4.jpg" class="fade-up no-mg-24--t no-radius-sm">
+                                <img src="/resource/images/hospital-about4.jpg"
+                                    class="fade-up no-mg-24--t no-radius-sm">
 
                                 <div class="pd-group no-pd-8--x fade-up no-mg-48--t">
                                     <h3 class="no-body-xxl fw600 blue">오직 한 분만을 위한 차별화된<br>
                                         서비스 경험</h3>
-                                    <p class="no-body-md fw300 gray no-mg-16--t">환자 한 분을 위해 <b class="black">29명의 의료진, 101명의 간호팀, 7명의 상담사 37명의 영양팀, 14명의 미화팀, 11명의 헬퍼</b>가 유기적으로 협력하며 환자가 치료에만 집중할 수 있도록 돕습니다.
+                                    <p class="no-body-md fw300 gray no-mg-16--t">환자 한 분을 위해 <b class="black">29명의 의료진,
+                                            101명의 간호팀, 7명의 상담사 37명의 영양팀, 14명의 미화팀, 11명의 헬퍼</b>가 유기적으로 협력하며 환자가 치료에만 집중할
+                                        수 있도록 돕습니다.
                                     </p>
                                 </div>
 
-                                <img src="/resource/images/hospital-about4-2.jpg" class="fade-up no-mg-24--t no-radius-sm">
+                                <img src="/resource/images/hospital-about4-2.jpg"
+                                    class="fade-up no-mg-24--t no-radius-sm">
 
                                 <div class="pd-group no-pd-8--x fade-up no-mg-48--t">
                                     <h3 class="no-body-xxl fw600 blue">호텔 수준의 환자 케어</h3>
-                                    <p class="no-body-md fw300 gray no-mg-16--t"><b class="black">호텔 객실팀장 출신 컨시어지가 상주</b>하며,<br> 편안한 환경과 세심한 서비스를 제공합니다.
+                                    <p class="no-body-md fw300 gray no-mg-16--t"><b class="black">호텔 객실팀장 출신 컨시어지가
+                                            상주</b>하며,<br> 편안한 환경과 세심한 서비스를 제공합니다.
                                     </p>
                                 </div>
 
-                                <img src="/resource/images/hospital-about4-3.jpg" class="fade-up no-mg-24--t no-radius-sm">
+                                <img src="/resource/images/hospital-about4-3.jpg"
+                                    class="fade-up no-mg-24--t no-radius-sm">
 
                                 <hgroup class="pd-group no-pd-8--x fade-up no-mg-48--t">
                                     <span class="no-heading-sm fw300">3</span>
@@ -261,23 +277,28 @@
                                     </h2>
                                     <h3 class="no-body-xxl fw300 font-kr no-mg-24--y">“치료 과정이 궁금한데,<br>
                                         솔직하게 알 수 있을까?”</h3>
-                                    <p class="no-body-md fw300 gray">우리는 환자분들의 의견을 소중하게 듣고, 치료 과정 하나하나를 투명하게 공유합니다.<br> <b class="black">처음부터 끝까지 신뢰할 수 있는 치료를
+                                    <p class="no-body-md fw300 gray">우리는 환자분들의 의견을 소중하게 듣고, 치료 과정 하나하나를 투명하게 공유합니다.<br>
+                                        <b class="black">처음부터 끝까지 신뢰할 수 있는 치료를
                                             제공하는 것이 우리의 약속입니다.</b>
                                     </p>
                                 </hgroup>
 
-                                <img src="/resource/images/hospital-about4-4.jpg" class="fade-up no-mg-24--t no-radius-sm">
+                                <img src="/resource/images/hospital-about4-4.jpg"
+                                    class="fade-up no-mg-24--t no-radius-sm">
 
                                 <div class="pd-group no-pd-8--x fade-up no-mg-48--t">
                                     <h3 class="no-body-xxl fw600 blue">병원 최초, CX(서비스 경험)팀 운영</h3>
-                                    <p class="no-body-md fw300 gray no-mg-16--t">환자의 작은 불편함까지 세심하게 챙기기 위해, <b class="black">병원 최초로 CX(서비스 경험)팀을 운영</b>하고 있습니다.
+                                    <p class="no-body-md fw300 gray no-mg-16--t">환자의 작은 불편함까지 세심하게 챙기기 위해, <b
+                                            class="black">병원 최초로 CX(서비스 경험)팀을 운영</b>하고 있습니다.
                                     </p>
                                 </div>
 
-                                <img src="/resource/images/hospital-about4-5.jpg" class="fade-up no-mg-24--t no-radius-sm">
+                                <img src="/resource/images/hospital-about4-5.jpg"
+                                    class="fade-up no-mg-24--t no-radius-sm">
 
                                 <div class="pd-group no-pd-8--x fade-up no-mg-24--t">
-                                    <p class="no-body-md fw300 gray no-mg-16--t">진료뿐만 아니라, 병원에서의 모든 순간이 편안할 수 있도록 의료진과 전문 서비스 팀이 함께하며, 환자의 목소리에 귀 기울입니다.
+                                    <p class="no-body-md fw300 gray no-mg-16--t">진료뿐만 아니라, 병원에서의 모든 순간이 편안할 수 있도록 의료진과
+                                        전문 서비스 팀이 함께하며, 환자의 목소리에 귀 기울입니다.
                                 </div>
                             </div>
                         </section>
@@ -286,7 +307,8 @@
                             <div class="no-container-sm">
                                 <div class="pd-group no-pd-8--x fade-up">
                                     <img src="/resource/images/icon/quotes-open-v2.svg" class="quotes">
-                                    <h2 class="no-heading-sm no-mg-24--y"> <b class="blue fw600">오랜시간, 수많은 환자들의</b><br> 면역회복을 함께했습니다.
+                                    <h2 class="no-heading-sm no-mg-24--y"> <b class="blue fw600">오랜시간, 수많은 환자들의</b><br>
+                                        면역회복을 함께했습니다.
                                     </h2>
                                 </div>
 
@@ -305,14 +327,16 @@
                                         </div>
 
                                         <div class="txt no-pd-24--b">
-                                            <h3 class="no-heading-sm f-wrap no-gap-16">2017년 <p class="no-body-md fw600">면력한방병원 개원</p>
+                                            <h3 class="no-heading-sm f-wrap no-gap-16">2017년 <p
+                                                    class="no-body-md fw600">면력한방병원 개원</p>
                                             </h3>
 
                                             <figure class="no-mg-16--t">
                                                 <img src="/resource/images/hospital-history1.jpg">
                                             </figure>
 
-                                            <p class="no-body-md fw300 no-mg-16--t">국내 암&면역 중점 한방병원 중 가장 오래된 병원 중 하나 재활 치료 전문 병원으로 시작하여 신경계 치료 경험 축적</p>
+                                            <p class="no-body-md fw300 no-mg-16--t">국내 암&면역 중점 한방병원 중 가장 오래된 병원 중 하나 재활
+                                                치료 전문 병원으로 시작하여 신경계 치료 경험 축적</p>
                                         </div>
                                     </li>
 
@@ -323,7 +347,8 @@
                                         </div>
 
                                         <div class="txt no-pd-24--b">
-                                            <h3 class="no-heading-sm f-wrap no-gap-16">2019년 <p class="no-body-md fw600">면역병동 오픈</p>
+                                            <h3 class="no-heading-sm f-wrap no-gap-16">2019년 <p
+                                                    class="no-body-md fw600">면역병동 오픈</p>
                                             </h3>
 
                                             <figure class="no-mg-16--t">
@@ -342,14 +367,16 @@
                                         </div>
 
                                         <div class="txt no-pd-24--b">
-                                            <h3 class="no-heading-sm f-wrap no-gap-16">2020년 <p class="no-body-md fw600">면역센터 오픈</p>
+                                            <h3 class="no-heading-sm f-wrap no-gap-16">2020년 <p
+                                                    class="no-body-md fw600">면역센터 오픈</p>
                                             </h3>
 
                                             <figure class="no-mg-16--t">
                                                 <img src="/resource/images/hospital-history3.jpg">
                                             </figure>
 
-                                            <p class="no-body-md fw300 no-mg-16--t">암 치료 후 면역 회복을 위한 한·양방 통합 치료 시스템 구축<br>
+                                            <p class="no-body-md fw300 no-mg-16--t">암 치료 후 면역 회복을 위한 한·양방 통합 치료 시스템
+                                                구축<br>
                                                 대상포진, 안면마비 등 항암 부작용 관리 노하우 발전</p>
                                         </div>
                                     </li>
@@ -361,14 +388,16 @@
                                         </div>
 
                                         <div class="txt no-pd-24--b">
-                                            <h3 class="no-heading-sm f-wrap no-gap-16">2021년 <p class="no-body-md fw600">광명면력한방병원 개원</p>
+                                            <h3 class="no-heading-sm f-wrap no-gap-16">2021년 <p
+                                                    class="no-body-md fw600">광명면력한방병원 개원</p>
                                             </h3>
 
                                             <figure class="no-mg-16--t">
                                                 <img src="/resource/images/hospital-history4.jpg">
                                             </figure>
 
-                                            <p class="no-body-md fw300 no-mg-16--t">암 치료 후 면역 회복을 위한 한·양방 통합 치료 시스템 구축<br>
+                                            <p class="no-body-md fw300 no-mg-16--t">암 치료 후 면역 회복을 위한 한·양방 통합 치료 시스템
+                                                구축<br>
                                                 대상포진, 안면마비 등 항암 부작용 관리 노하우 발전</p>
                                         </div>
                                     </li>
@@ -380,7 +409,8 @@
                                         </div>
 
                                         <div class="txt no-pd-24--b">
-                                            <h3 class="no-heading-sm f-wrap no-gap-16">2023년 <p class="no-body-md fw600">광명면력한방병원 병동 확장</p>
+                                            <h3 class="no-heading-sm f-wrap no-gap-16">2023년 <p
+                                                    class="no-body-md fw600">광명면력한방병원 병동 확장</p>
                                             </h3>
 
                                             <figure class="no-mg-16--t">
@@ -399,7 +429,8 @@
                                         </div>
 
                                         <div class="txt no-pd-24--b">
-                                            <h3 class="no-heading-sm f-wrap no-gap-16">2023년 <p class="no-body-md fw600">신촌면력한방병원 개원</p>
+                                            <h3 class="no-heading-sm f-wrap no-gap-16">2023년 <p
+                                                    class="no-body-md fw600">신촌면력한방병원 개원</p>
                                             </h3>
 
                                             <figure class="no-mg-16--t">
@@ -422,7 +453,8 @@
                             </div>
                         </section>
 
-                        <section class="no-hospital-about no-pd-48--y" style="background-color: var(--clr-secondary-50);">
+                        <section class="no-hospital-about no-pd-48--y"
+                            style="background-color: var(--clr-secondary-50);">
                             <div class="no-container-sm">
                                 <div class="pd-group no-pd-8--x fade-up">
                                     <img src="/resource/images/icon/quotes-open-v2.svg" class="quotes">

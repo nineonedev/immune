@@ -1,5 +1,6 @@
 import { fetcher } from "../Core/fetcher.js";
 import { API } from "../core/apiRoutes.js";
+import { summernoteInit } from "../core/summernoteInit.js";
 import { initCheckboxManager } from "../utils/initCheckboxManager.js";
 import { attachRadioToggle } from "../utils/initRadioToggle.js";
 
@@ -21,6 +22,7 @@ export class BannerController {
 
     this.bindFormEvents();
     this.attachDeleteEvents();
+    this.initEditors();
 
     initCheckboxManager(async (selectedIds) => {
       const formData = new FormData();
@@ -42,6 +44,10 @@ export class BannerController {
       toggleOnValue: "2",
       mode: "visibility",
     });
+  }
+
+  initEditors() {
+    summernoteInit("#description");
   }
 
   bindFormEvents() {

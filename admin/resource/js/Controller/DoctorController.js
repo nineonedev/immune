@@ -1,6 +1,6 @@
 import { fetcher } from "../Core/fetcher.js";
 import { API } from "../core/apiRoutes.js";
-import { summernoteInit } from "../Core/summernoteInit.js";
+import { summernoteInit } from "../core/summernoteInit.js";
 import { initCheckboxManager } from "../utils/initCheckboxManager.js";
 
 export class DoctorController {

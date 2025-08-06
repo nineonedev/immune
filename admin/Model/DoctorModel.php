@@ -11,13 +11,13 @@ class DoctorModel
                 career, activity, education,
                 publication_visible, publications,
                 thumb_image, detail_image,
-                sort_no, is_active, created_at, updated_at
+                sort_no, is_active, is_ceo, created_at, updated_at
             ) VALUES (
                 :title, :branch_id, :position, :department, :keywords,
                 :career, :activity, :education,
                 :publication_visible, :publications,
                 :thumb_image, :detail_image,
-                :sort_no, :is_active, NOW(), NOW()
+                :sort_no, :is_active, :is_ceo, NOW(), NOW()
             )
         ";
 
@@ -37,8 +37,10 @@ class DoctorModel
             ':detail_image'        => $data['detail_image'],
             ':sort_no'             => $data['sort_no'],
             ':is_active'           => $data['is_active'],
+            ':is_ceo'              => $data['is_ceo'],
         ]);
     }
+
 
     public static function update($id, $data)
     {
@@ -48,7 +50,7 @@ class DoctorModel
             'title', 'branch_id', 'position', 'department', 'keywords',
             'career', 'activity', 'education',
             'publication_visible', 'publications',
-            'sort_no', 'is_active'
+            'sort_no', 'is_active', 'is_ceo'
         ];
 
         if (!empty($data['thumb_image'])) $fields[] = 'thumb_image';
@@ -63,6 +65,7 @@ class DoctorModel
         $data['id'] = $id;
         return $stmt->execute($data);
     }
+
 
     public static function delete($id)
     {

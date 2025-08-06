@@ -101,21 +101,21 @@ if ($mode == "save") {
 
 } elseif ($mode == "edit") {
 	try {
-		$no = $_POST['no'];
-		$title = $_POST['title'];
-		$skin = $_POST['skin'];
-		$content = $_POST['content'];
-		$view_yn = $_POST['view_yn'];
-		$secret_yn = $_POST['secret_yn'];
+		$no = $_POST['no'] ?? null;
+		$title = $_POST['title'] ?? '';
+		$skin = $_POST['skin'] ?? '';
+		$content = $_POST['content'] ?? ''; // ← 수정
+		$view_yn = $_POST['view_yn'] ?? 'N';
+		$secret_yn = $_POST['secret_yn'] ?? 'N';
 		$list_size = isset($_POST['list_size']) && $_POST['list_size'] !== '' ? (int)$_POST['list_size'] : $BOARD_DEFAULT_LIST_SIZE;
 		$fileattach_yn = $_POST['fileattach_yn'] ?? 'N';
 		$fileattach_cnt = $_POST['fileattach_cnt'] ?? 0;
-		$comment_yn = $_POST['comment_yn'];
-		$category_yn = $_POST['category_yn'];
-		$depth1 = $_POST['depth1'];
-		$depth2 = $_POST['depth2'];
-		$depth3 = $_POST['depth3'];
-		$lnb_path = $_POST['lnb_path'];
+		$comment_yn = $_POST['comment_yn'] ?? 'N';
+		$category_yn = $_POST['category_yn'] ?? 'N';
+		$depth1 = $_POST['depth1'] ?? ''; // ← 수정
+		$depth2 = $_POST['depth2'] ?? ''; // ← 수정
+		$depth3 = $_POST['depth3'] ?? ''; // ← 수정
+		$lnb_path = $_POST['lnb_path'] ?? ''; // ← 수정
 
 		$extra_match_fields = [];
 		for ($i = 1; $i <= 15; $i++) {

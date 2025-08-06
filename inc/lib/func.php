@@ -1,5 +1,258 @@
 <?php
 
+function getBannersByBranch($branchName, $bannerType = null, $limit = 0, $return_type = 'array') {
+    $db = DB::getInstance();
+    
+    $params = [
+        ':branchName' => $branchName
+    ];
+
+    $query = "
+        SELECT 
+            b.*, 
+            br.name AS branch_code, 
+            br.name_kr AS branch_name
+        FROM nb_banners AS b
+        INNER JOIN nb_branches AS br ON b.branch_id = br.id
+        WHERE 
+            b.is_active = 1
+            AND (
+                b.is_unlimited = 1
+                OR (
+                    b.is_unlimited = 2
+                    AND b.start_at <= CURDATE()
+                    AND b.end_at >= CURDATE()
+                )
+            )
+            AND br.name = :branchName
+    ";
+
+
+    if (!is_null($bannerType)) {
+        $query .= " AND b.banner_type = :bannerType";
+        $params[':bannerType'] = $bannerType;
+    }
+
+    $query .= " ORDER BY b.sort_no ASC";
+
+    if ($limit > 0) {
+        $query .= " LIMIT :limit";
+    }
+
+    $stmt = $db->prepare($query);
+
+    foreach ($params as $key => $value) {
+        $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+        $stmt->bindValue($key, $value, $type);
+    }
+
+    if ($limit > 0) {
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    }
+
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($return_type === 'json') {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'success' => true,
+            'data' => $results
+        ]);
+        return;
+    }
+
+    return $results;
+}
+
+
+function getDoctors($branchName = null, $department = null, $limit = 0, $return_type = 'array') {
+    $db = DB::getInstance();
+
+    $params = [];
+
+    $query = "
+        SELECT 
+            d.*, 
+            br.name AS branch_code, 
+            br.name_kr AS branch_name
+        FROM nb_doctors AS d
+        LEFT JOIN nb_branches AS br ON d.branch_id = br.id
+        WHERE d.is_active = 1
+    ";
+
+    // 지점 필터
+    if (!is_null($branchName)) {
+        $query .= " AND br.name = :branchName";
+        $params[':branchName'] = $branchName;
+    }
+
+    // 부서 필터
+    if (!is_null($department)) {
+        $query .= " AND d.department = :department";
+        $params[':department'] = $department;
+    }
+
+    $query .= " ORDER BY d.sort_no ASC";
+
+    if ($limit > 0) {
+        $query .= " LIMIT :limit";
+    }
+
+    $stmt = $db->prepare($query);
+
+    // 파라미터 바인딩
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+    }
+
+    if ($limit > 0) {
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    }
+
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($return_type === 'json') {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['success' => true, 'data' => $results]);
+        return;
+    }
+
+    return $results;
+}
+
+
+function getFacilities($branchName, $category = null, $limit = 0, $return_type = 'array') {
+    $db = DB::getInstance();
+    $params = [':branchName' => $branchName];
+
+    $query = "
+        SELECT 
+            f.*, 
+            br.name AS branch_code, 
+            br.name_kr AS branch_name
+        FROM nb_facilities AS f
+        INNER JOIN nb_branches AS br ON f.branch_id = br.id
+        WHERE f.is_active = 1
+          AND br.name = :branchName
+    ";
+
+    if (!is_null($category)) {
+        $query .= " AND f.categories = :category";
+        $params[':category'] = $category;
+    }
+
+    $query .= " ORDER BY f.sort_no ASC";
+
+    if ($limit > 0) {
+        $query .= " LIMIT :limit";
+    }
+
+    $stmt = $db->prepare($query);
+
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+    }
+
+    if ($limit > 0) {
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    }
+
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($return_type === 'json') {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'success' => true,
+            'data' => $results
+        ]);
+        return;
+    }
+
+    return $results;
+}
+
+
+function getNonpayItemsByPrimaryCategory(int $primaryCategory, int $limit = 0, string $return_type = 'array')
+{
+    global $nonpay_primary_categories, $nonpay_secondary_categories;
+
+    if (!isset($nonpay_primary_categories[$primaryCategory])) {
+        return $return_type === 'json'
+            ? json_encode(['success' => false, 'error' => 'Invalid primary category'])
+            : [];
+    }
+
+    $db = DB::getInstance();
+
+    // 해당 primary의 모든 secondary key 추출
+    $secondaryKeys = array_keys($nonpay_secondary_categories[$primaryCategory] ?? []);
+
+    if (empty($secondaryKeys)) {
+        return $return_type === 'json'
+            ? json_encode(['success' => false, 'error' => 'No secondary categories found'])
+            : [];
+    }
+
+    // IN 절 구성
+    $inClause = implode(',', array_fill(0, count($secondaryKeys), '?'));
+
+    $query = "
+        SELECT category_secondary, title, cost
+        FROM nb_nonpay_items
+        WHERE is_active = 1
+          AND category_primary = ?
+          AND category_secondary IN ($inClause)
+        ORDER BY category_secondary ASC, sort_no ASC
+    ";
+
+    $stmt = $db->prepare($query);
+
+    // Bind primary + secondary
+    $bindParams = array_merge([$primaryCategory], $secondaryKeys);
+
+    foreach ($bindParams as $i => $value) {
+        $stmt->bindValue($i + 1, $value, PDO::PARAM_INT);
+    }
+
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // 그룹핑 결과
+    $grouped = [];
+
+    foreach ($results as $row) {
+        $sec = (int)$row['category_secondary'];
+        $secTitle = $nonpay_secondary_categories[$primaryCategory][$sec] ?? '기타';
+
+        $grouped[$secTitle][] = [
+            'title' => $row['title'],
+            'cost' => $row['cost'],
+        ];
+    }
+
+    // JSON 응답 처리
+    if ($return_type === 'json') {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'success' => true,
+            'data' => $grouped
+        ]);
+        return;
+    }
+
+    return $grouped;
+}
+
+
+
+
+
+
+
+
 // 페이지 이동
 function location($go_url) {
     echo "<script>document.location='$go_url';</script>";

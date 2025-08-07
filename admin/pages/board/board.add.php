@@ -8,8 +8,8 @@ try {
     exit;
 }
 
-$depthnum = 1;
-$pagenum = 2;
+$depthnum = 2;
+$pagenum = 1;
 
 
 

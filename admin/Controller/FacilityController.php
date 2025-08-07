@@ -15,18 +15,32 @@ try {
     // INSERT
     if ($mode === 'insert') {
         $data = [
-            'title'      => trim($input['title'] ?? ''),
             'branch_id'  => (int)($input['branch_id'] ?? 0),
+            'title'      => trim($input['title'] ?? ''),
             'categories' => (int)($input['categories'] ?? 0),
-            'sort_no'    => (int)($input['sort_no'] ?? 0),
             'is_active'  => (int)($input['is_active'] ?? 1),
         ];
 
+        // ✅ sort_no 자동 지정
+        $sortNo = isset($input['sort_no']) && (int)$input['sort_no'] > 0
+            ? (int)$input['sort_no']
+            : FacilityModel::getMaxSortNo() + 1;
+
+        $data['sort_no'] = $sortNo;
+
         $validator->require('title', $data['title'], '시설명');
         $validator->require('branch_id', $data['branch_id'], '지점');
+        $validator->require('categories', $data['categories'], '시설 카테고리');
+
+        if (empty($_FILES['thumb_image']) || $_FILES['thumb_image']['error'] === UPLOAD_ERR_NO_FILE) {
+            $validator->require('thumb_image', '', '썸네일 이미지');
+        }
 
         if ($validator->fails()) {
-            echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
             exit;
         }
 
@@ -42,6 +56,8 @@ try {
         exit;
     }
 
+
+
     // UPDATE
     if ($mode === 'update') {
         $id = (int)($input['id'] ?? 0);
@@ -51,17 +67,15 @@ try {
             'title'      => trim($input['title'] ?? ''),
             'branch_id'  => (int)($input['branch_id'] ?? 0),
             'categories' => (int)($input['categories'] ?? 0),
-            'sort_no'    => (int)($input['sort_no'] ?? 0),
             'is_active'  => (int)($input['is_active'] ?? 1),
         ];
 
+        $newSortNo = (int)($input['sort_no'] ?? 0);
+        $data['sort_no'] = $newSortNo;
+
         $validator->require('title', $data['title'], '시설명');
         $validator->require('branch_id', $data['branch_id'], '지점');
-
-        if ($validator->fails()) {
-            echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
-            exit;
-        }
+        $validator->require('categories', $data['categories'], '시설 카테고리');
 
         $existing = FacilityModel::find($id);
         if (!$existing) {
@@ -69,7 +83,26 @@ try {
             exit;
         }
 
-        if (!empty($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        // ✅ 정렬 충돌 처리
+        $oldSortNo = (int)$existing['sort_no'];
+        if ($newSortNo !== $oldSortNo && $newSortNo > 0) {
+            FacilityModel::shiftSortNosForUpdate($oldSortNo, $newSortNo, $id);
+        }
+
+        $hasNewThumb = !empty($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] !== UPLOAD_ERR_NO_FILE;
+        if (!$hasNewThumb && empty($existing['thumb_image'])) {
+            $validator->require('thumb_image', '', '썸네일 이미지');
+        }
+
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
+            exit;
+        }
+
+        if ($hasNewThumb) {
             imageDelete($upload_path . '/' . $existing['thumb_image']);
             $thumb = imageUpload($upload_path, $_FILES['thumb_image']);
             $data['thumb_image'] = $thumb['saved'];
@@ -83,6 +116,8 @@ try {
         ]);
         exit;
     }
+
+
 
     // DELETE
     if ($mode === 'delete') {

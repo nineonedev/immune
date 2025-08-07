@@ -1,6 +1,7 @@
 <?php
 require_once "../../inc/lib/base.class.php";
 require_once "../Model/FaqModel.php";
+require_once "../core/Validator.php";
 
 header('Content-Type: application/json');
 
@@ -10,19 +11,32 @@ try {
 
     // INSERT
     if ($mode === 'insert') {
-        $data = [
-            'branch_id'   => (int)($input['branch_id'] ?? 0),
-            'categories'  => (int)($input['categories'] ?? 0),
-            'question'    => trim($input['question'] ?? ''),
-            'answer'      => trim($input['answer'] ?? ''),
-            'sort_no'     => (int)($input['sort_no'] ?? 0),
-            'is_active'   => (int)($input['is_active'] ?? 1)
-        ];
+        $validator = new Validator();
+        $validator->require('branch_id', $input['branch_id'] ?? '', '지점');
+        $validator->require('categories', $input['categories'] ?? '', '카테고리');
+        $validator->require('question', $input['question'] ?? '', '질문');
+        $validator->require('answer', $input['answer'] ?? '', '답변');
 
-        if (!$data['branch_id'] || !$data['categories'] || !$data['question']) {
-            echo json_encode(['success' => false, 'message' => '지점, 카테고리, 질문은 필수입니다.']);
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
             exit;
         }
+
+        $sortNo = isset($input['sort_no']) && (int)$input['sort_no'] > 0
+            ? (int)$input['sort_no']
+            : FaqModel::getMaxSortNo() + 1;
+
+        $data = [
+            'branch_id'   => (int)$input['branch_id'],
+            'categories'  => (int)$input['categories'],
+            'question'    => trim($input['question']),
+            'answer'      => trim($input['answer']),
+            'sort_no'     => $sortNo,
+            'is_active'   => (int)($input['is_active'] ?? 1)
+        ];
 
         $result = FaqModel::insert($data);
 
@@ -33,29 +47,50 @@ try {
         exit;
     }
 
+
     // UPDATE
     if ($mode === 'update') {
-        
-        $id = ($input['id'] ?? 0);
-     
+        $id = (int)($input['id'] ?? 0);
+
         if (!$id) {
             echo json_encode(['success' => false, 'message' => 'ID가 없습니다.']);
             exit;
         }
 
-        $data = [
-            'branch_id'   => (int)($input['branch_id'] ?? 0),
-            'categories'  => (int)($input['categories'] ?? 0),
-            'question'    => trim($input['question'] ?? ''),
-            'answer'      => trim($input['answer'] ?? ''),
-            'sort_no'     => (int)($input['sort_no'] ?? 0),
-            'is_active'   => (int)($input['is_active'] ?? 1)
-        ];
+        $validator = new Validator();
+        $validator->require('branch_id', $input['branch_id'] ?? '', '지점');
+        $validator->require('categories', $input['categories'] ?? '', '카테고리');
+        $validator->require('question', $input['question'] ?? '', '질문');
+        $validator->require('answer', $input['answer'] ?? '', '답변');
 
-        if (!$data['branch_id'] || !$data['categories'] || !$data['question']) {
-            echo json_encode(['success' => false, 'message' => '지점, 카테고리, 질문은 필수입니다.']);
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
             exit;
         }
+
+        $newSortNo = (int)($input['sort_no'] ?? 0);
+
+        // ✅ 현재 sort_no 조회
+        $stmt = DB::getInstance()->prepare("SELECT sort_no FROM nb_faqs WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $oldSortNo = (int) $stmt->fetchColumn();
+
+        // ✅ sort_no 변경 시 밀어내기 처리
+        if ($newSortNo !== $oldSortNo && $newSortNo > 0) {
+            FaqModel::shiftSortNosForUpdate($oldSortNo, $newSortNo, $id);
+        }
+
+        $data = [
+            'branch_id'   => (int)$input['branch_id'],
+            'categories'  => (int)$input['categories'],
+            'question'    => trim($input['question']),
+            'answer'      => trim($input['answer']),
+            'sort_no'     => $newSortNo,
+            'is_active'   => (int)($input['is_active'] ?? 1)
+        ];
 
         $result = FaqModel::update($id, $data);
 
@@ -65,6 +100,8 @@ try {
         ]);
         exit;
     }
+
+
 
     // DELETE
     if ($mode === 'delete') {

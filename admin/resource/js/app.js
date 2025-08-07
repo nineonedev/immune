@@ -9,7 +9,7 @@ import { previewImage } from "./Core/previewImage.js";
 import { FacilityController } from "./Controller/FacilityController.js";
 import { BannerController } from "./Controller/BannerController.js";
 import { PopupController } from "./Controller/PopupController.js";
-
+import { EtcController } from "./Controller/EtcController.js";
 document.addEventListener("DOMContentLoaded", () => {
   const page = document.body.dataset.page;
 
@@ -62,6 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
     case "popup":
       const popupController = new PopupController();
       popupController.init();
+      break;
+
+    case "etc":
+      const etcController = new EtcController();
+      etcController.init();
       break;
 
     default:

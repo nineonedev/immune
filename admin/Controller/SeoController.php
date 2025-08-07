@@ -2,6 +2,7 @@
 
 require_once "../../inc/lib/base.class.php";
 require_once "../Model/SeoModel.php";
+require_once "../core/Validator.php";
 
 header('Content-Type: application/json');
 
@@ -11,32 +12,32 @@ try {
 
     // ============ INSERT ============
     if ($mode === 'insert') {
-        $branch_id = (int)($input['branch_id'] ?? 0);
-        $path = trim($input['path'] ?? '');
-        $page_title = trim($input['page_title'] ?? '');
-        $meta_title = trim($input['meta_title'] ?? '');
-        $meta_description = trim($input['meta_description'] ?? '');
-        $meta_keywords = trim($input['meta_keywords'] ?? '');
-        $section_title = trim($input['section_title'] ?? '');
-        $topic_title = trim($input['topic_title'] ?? '');
+        $validator = new Validator();
+        $validator->require('branch_id', $input['branch_id'] ?? '', '지점');
+        $validator->require('path', $input['path'] ?? '', '경로');
+        $validator->require('page_title', $input['page_title'] ?? '', '페이지 제목');
+        $validator->require('meta_title', $input['meta_title'] ?? '', '메타 타이틀');
+        $validator->require('meta_description', $input['meta_description'] ?? '', '메타 설명');
+        $validator->require('meta_keywords', $input['meta_keywords'] ?? '', '메타 키워드');
 
-        if (!$branch_id || !$path || !$page_title) {
+        if ($validator->fails()) {
             echo json_encode([
                 'success' => false,
-                'message' => '지점, 경로, 페이지 제목은 필수입니다.'
+                'message' => implode("\n", $validator->getErrors())
             ]);
             exit;
         }
 
+        // 유효성 통과 후 실제 저장
         $result = SeoModel::insert([
-            'branch_id' => $branch_id,
-            'path' => $path,
-            'page_title' => $page_title,
-            'meta_title' => $meta_title,
-            'meta_description' => $meta_description,
-            'meta_keywords' => $meta_keywords,
-            'section_title' => $section_title,
-            'topic_title' => $topic_title
+            'branch_id' => (int)$input['branch_id'],
+            'path' => trim($input['path']),
+            'page_title' => trim($input['page_title']),
+            'meta_title' => trim($input['meta_title']),
+            'meta_description' => trim($input['meta_description']),
+            'meta_keywords' => trim($input['meta_keywords']),
+            'section_title' => trim($input['section_title'] ?? ''),
+            'topic_title' => trim($input['topic_title'] ?? '')
         ]);
 
         echo json_encode([
@@ -45,6 +46,7 @@ try {
         ]);
         exit;
     }
+
 
     // ============ UPDATE ============
     if ($mode === 'update') {
@@ -55,24 +57,32 @@ try {
             exit;
         }
 
-        $data = [
-            'branch_id' => (int)($input['branch_id'] ?? 0),
-            'path' => trim($input['path'] ?? ''),
-            'page_title' => trim($input['page_title'] ?? ''),
-            'meta_title' => trim($input['meta_title'] ?? ''),
-            'meta_description' => trim($input['meta_description'] ?? ''),
-            'meta_keywords' => trim($input['meta_keywords'] ?? ''),
-            'section_title' => trim($input['section_title'] ?? ''),
-            'topic_title' => trim($input['topic_title'] ?? '')
-        ];
+        $validator = new Validator();
+        $validator->require('branch_id', $input['branch_id'] ?? '', '지점');
+        $validator->require('path', $input['path'] ?? '', '경로');
+        $validator->require('page_title', $input['page_title'] ?? '', '페이지 제목');
+        $validator->require('meta_title', $input['meta_title'] ?? '', '메타 타이틀');
+        $validator->require('meta_description', $input['meta_description'] ?? '', '메타 설명');
+        $validator->require('meta_keywords', $input['meta_keywords'] ?? '', '메타 키워드');
 
-        if (!$data['branch_id'] || !$data['path'] || !$data['page_title']) {
+        if ($validator->fails()) {
             echo json_encode([
                 'success' => false,
-                'message' => '지점, 경로, 페이지 제목은 필수 입력 항목입니다.'
+                'message' => implode("\n", $validator->getErrors())
             ]);
             exit;
         }
+
+        $data = [
+            'branch_id' => (int)$input['branch_id'],
+            'path' => trim($input['path']),
+            'page_title' => trim($input['page_title']),
+            'meta_title' => trim($input['meta_title']),
+            'meta_description' => trim($input['meta_description']),
+            'meta_keywords' => trim($input['meta_keywords']),
+            'section_title' => trim($input['section_title'] ?? ''),
+            'topic_title' => trim($input['topic_title'] ?? '')
+        ];
 
         $result = SeoModel::update($id, $data);
 

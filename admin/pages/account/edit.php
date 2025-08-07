@@ -66,6 +66,29 @@ include_once "../../inc/admin.js.php";
 
                             <div class="no-card-body no-admin-column no-admin-column--detail">
 
+                                <!-- 권한 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">권한</h3>
+                                    <div class="no-admin-content">
+                                        <div class="no-radio-form no-list">
+                                            <?php foreach ($admin_roles as $id => $info): ?>
+                                            <label for="role<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="role_id" id="role<?= $id ?>"
+                                                        value="<?= $id ?>"
+                                                        <?= ($account['role_id'] ?? 3) == $id ? 'checked' : '' ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span
+                                                    class="no-radio-text"><?= htmlspecialchars($info['name']) ?></span>
+                                            </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                                 <!-- 아이디 -->
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title"><label for="uid">아이디</label></h3>
@@ -130,6 +153,7 @@ include_once "../../inc/admin.js.php";
                                             title="올바른 휴대폰 번호를 입력해주세요. (예: 01012345678)">
                                     </div>
                                 </div>
+
 
                                 <!-- 상태 -->
                                 <div class="no-admin-block">

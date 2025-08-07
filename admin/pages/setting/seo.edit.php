@@ -7,6 +7,8 @@ $depthnum = 10;
 $id = $_GET['id'] ?? null;
 $seo = null;
 
+$page = (int)($_GET['page'] ?? $_POST['page'] ?? 1);
+
 try {
     $db = DB::getInstance(); 
 
@@ -48,6 +50,7 @@ include_once "../../inc/admin.js.php";
             <form id="frm" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="mode" value="update">
                 <input type="hidden" name="id" value="<?= (int)($seo['id'] ?? 0) ?>">
+                <input type="hidden" name="page" value="<?= $_GET['page'] ?? 1 ?>">
 
                 <section class="no-content">
                     <div class="no-toolbar">
@@ -133,7 +136,7 @@ include_once "../../inc/admin.js.php";
 
                                 <!-- Meta Title -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="meta_title">Meta Title</label></h3>
+                                    <h3 class="no-admin-title"><label for="meta_title">메타 타이틀</label></h3>
                                     <div class="no-admin-content">
                                         <input type="text" id="meta_title" name="meta_title"
                                             value="<?= htmlspecialchars($seo['meta_title'] ?? '') ?>"
@@ -143,7 +146,7 @@ include_once "../../inc/admin.js.php";
 
                                 <!-- Meta Description -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="meta_description">Meta Description</label>
+                                    <h3 class="no-admin-title"><label for="meta_description">메타 설명글</label>
                                     </h3>
                                     <div class="no-admin-content">
                                         <textarea name="meta_description" id="meta_description"
@@ -154,7 +157,7 @@ include_once "../../inc/admin.js.php";
 
                                 <!-- Meta Keywords -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="meta_keywords">Meta Keywords</label></h3>
+                                    <h3 class="no-admin-title"><label for="meta_keywords">메타 키워드</label></h3>
                                     <div class="no-admin-content">
                                         <input type="text" id="meta_keywords" name="meta_keywords"
                                             value="<?= htmlspecialchars($seo['meta_keywords'] ?? '') ?>"
@@ -164,7 +167,8 @@ include_once "../../inc/admin.js.php";
 
                                 <!-- 버튼 -->
                                 <div class="no-items-center center">
-                                    <a href="./seo.php" class="no-btn no-btn--big no-btn--normal">목록</a>
+                                    <a href="./seo.php?page=<?= $page ?>"
+                                        class="no-btn no-btn--big no-btn--normal">목록</a>
                                     <button type="submit" class="no-btn no-btn--big no-btn--main"
                                         id="editBtn">수정</button>
                                 </div>

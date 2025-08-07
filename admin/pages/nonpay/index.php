@@ -4,17 +4,20 @@ include_once "../../../inc/lib/base.class.php";
 $pageName = "비급여 항목";
 $depthnum = 6;
 
-// 페이지네이션 필수 변수
-$Page = $Page ?? 1;
-$listCurPage = $listCurPage ?? 1;
-$pageBlock = $pageBlock ?? 2;
-
 $db = DB::getInstance();
 
+// 페이지네이션 변수 설정
+$perpage = 10; // 한 페이지에 보여줄 항목 수
+$listCurPage = isset($_POST['page']) ? (int)$_POST['page'] : (isset($_GET['page']) ? (int)$_GET['page'] : 1);
+$pageBlock = 2; // 좌우 페이지 넘버 표시 개수
+$count = ($listCurPage - 1) * $perpage; // LIMIT 시작 인덱스
+
+// 필터 입력값
 $category_primary = $_GET['category_primary'] ?? '';
 $searchKeyword = $_GET['searchKeyword'] ?? '';
-$active_filter = $_GET['is_active'] ?? '';  
+$active_filter = $_GET['is_active'] ?? '';
 
+// WHERE 절 및 파라미터 구성
 $where = "WHERE 1=1";
 $params = [];
 
@@ -28,24 +31,29 @@ if ($active_filter !== '') {
     $params[':is_active'] = (int)$active_filter;
 }
 
-
 if (!empty($searchKeyword)) {
     $where .= " AND f.title LIKE :searchKeyword";
     $params[':searchKeyword'] = "%{$searchKeyword}%";
 }
+
+$totalSql = "SELECT COUNT(*) FROM nb_nonpay_items f {$where}";
+$totalStmt = $db->prepare($totalSql);
+$totalStmt->execute($params);
+$totalCount = (int)$totalStmt->fetchColumn();
+$Page = ceil($totalCount / $perpage); // 전체 페이지 수 계산
 
 $sql = "
     SELECT f.*
     FROM nb_nonpay_items f
     {$where}
     ORDER BY f.sort_no ASC
+    LIMIT {$count}, {$perpage}
 ";
-
 $stmt = $db->prepare($sql);
 $stmt->execute($params);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
+
 
 
 <!--=====================HEAD========================= -->
@@ -77,9 +85,11 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </ul>
                                 </div>
                             </div>
+                            <?php if($role->canDelete()):?>
                             <div class="no-items-center">
                                 <a href="./new.php" class="no-btn no-btn--main no-btn--big"> <?=$pageName?> 생성 </a>
                             </div>
+                            <?php endif;?>
                         </div>
                     </div>
 
@@ -180,6 +190,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="no-card-body">
+                                <?php if($role->canDelete()) :?>
                                 <!-- 체크 컨트롤 -->
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
@@ -197,11 +208,13 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </li>
                                     </ul>
                                 </div>
+                                <?php endif;?>
 
                                 <div class="no-table-responsive">
                                     <table class="no-table">
                                         <thead>
                                             <tr>
+                                                <?php if($role->canDelete()) :?>
                                                 <th class="no-width-25 no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
@@ -210,6 +223,8 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         </label>
                                                     </div>
                                                 </th>
+                                                <?php endif;?>
+
                                                 <th>번호</th>
                                                 <th>1차 카테고리</th>
                                                 <th>2차 카테고리</th>
@@ -225,6 +240,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (count($rows) > 0): ?>
                                             <?php foreach ($rows as $row): ?>
                                             <tr>
+                                                <?php if($role->canDelete()):?>
                                                 <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
@@ -234,6 +250,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         </label>
                                                     </div>
                                                 </td>
+                                                <?php endif;?>
                                                 <td><?= $row['id'] ?></td>
                                                 <td><?= $nonpay_primary_categories[$row['category_primary']] ?? '-' ?>
                                                 </td>
@@ -255,10 +272,12 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
                                                             <a href="edit.php?id=<?= $row['id'] ?>"
-                                                                class="no-btn no-btn--sm no-btn--normal">수정</a>
+                                                                class="no-btn no-btn--sm no-btn--normal">보기</a>
+                                                            <?php if($role->canDelete()) :?>
                                                             <button type="button"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline delete-btn"
                                                                 data-id="<?= $row['id'] ?>">삭제</button>
+                                                            <?php endif;?>
                                                         </div>
                                                     </div>
                                                 </td>

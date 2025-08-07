@@ -23,6 +23,20 @@ $popup_types = [
     6 => '면력채널',
 ];
 
+$banner_rollingtimes = [
+    1 => "4",
+    2 => "6",
+    3 => "8"
+];
+
+
+$admin_roles = [
+    1 => ['code' => 'superadmin', 'name' => '최고 관리자'],
+    2 => ['code' => 'manager',    'name' => '중간 관리자'],
+    3 => ['code' => 'external',   'name' => '외부인'],
+];
+
+
 $link_targets = [
     0 => ['label' => '현재창', 'target' => '_self'],
     1 => ['label' => '새창', 'target' => '_blank'],

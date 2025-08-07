@@ -5,23 +5,29 @@ $pageName = "페이지별 SEO";
 $depthnum = 10;
 $pagenum = 3;
 
-// 페이지네이션 필수 변수
-$Page = $Page ?? 1;
-$listCurPage = $listCurPage ?? 1;
-$pageBlock = $pageBlock ?? 2;
-
+$perpage = 10;
+$listCurPage = (int)($_REQUEST['page'] ?? 1);
+$pageBlock = 2;
+$count = ($listCurPage - 1) * $perpage;
 
 $db = DB::getInstance();
 
+$totalStmt = $db->query("SELECT COUNT(*) FROM nb_branch_seos");
+$totalCount = (int)$totalStmt->fetchColumn();
+$Page = ceil($totalCount / $perpage);
+
+// 데이터 조회
 $sql = "
     SELECT s.id, s.branch_id, b.name_kr AS branch_label, s.path, s.page_title, s.meta_title, s.updated_at
     FROM nb_branch_seos s
     LEFT JOIN nb_branches b ON s.branch_id = b.id
     ORDER BY s.id DESC
+    LIMIT {$count}, {$perpage}
 ";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 $seoRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -123,7 +129,7 @@ $seoRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <span class="no-role-btn"><i
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
-                                                            <a href="seo.edit.php?id=<?= $row['id'] ?>"
+                                                            <a href="seo.edit.php?id=<?= $row['id'] ?>&page=<?= $listCurPage ?>"
                                                                 class="no-btn no-btn--sm no-btn--normal">수정</a>
                                                             <button type="button"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline delete-btn"

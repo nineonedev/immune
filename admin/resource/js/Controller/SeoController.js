@@ -56,7 +56,15 @@ export class SeoController {
     const formData = new FormData(this.form);
     formData.set("mode", "update");
 
-    await this.sendRequest(formData, "수정되었습니다.");
+    const page = this.form.querySelector("input[name='page']")?.value || 1;
+
+    try {
+      const res = await fetcher(API.SEO, formData);
+      alert(res.message || "수정되었습니다.");
+      location.href = `/admin/pages/setting/seo.php?page=${page}`;
+    } catch (err) {
+      alert(err.message || "처리 중 오류가 발생했습니다.");
+    }
   }
 
   attachDeleteEvents() {

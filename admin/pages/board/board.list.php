@@ -1,8 +1,18 @@
-<?php include_once "../../../inc/lib/base.class.php";
+<?php
+include_once "../../../inc/lib/base.class.php";
 
 $depthnum = 2;
-$pagenum = 2;
+$pagenum = 1;
 
+// 페이지네이션 기본 변수 처리
+$page = $_REQUEST['page'] ?? 1;
+$perpage = $_REQUEST['perpage'] ?? 20;
+$listCurPage = (int)$page;
+$listRowCnt = (int)$perpage;
+$pageBlock = $pageBlock ?? 5;
+$count = ($listCurPage - 1) * $listRowCnt;
+
+// 검색 파라미터
 $searchKeyword = $_REQUEST['searchKeyword'] ?? '';
 $searchColumn = $_REQUEST['searchColumn'] ?? '';
 $sdate = $_REQUEST['sdate'] ?? '';
@@ -30,13 +40,7 @@ try {
         $params[':edate'] = $edate;
     }
 
-    $page = $_REQUEST['page'] ?? 1;
-    $perpage = $_REQUEST['perpage'] ?? 20;
-
-    $listRowCnt = (int)$perpage;
-    $listCurPage = (int)$page;
-    $count = ($listCurPage - 1) * $listRowCnt;
-
+    // 전체 게시물 수 조회
     $query = "SELECT COUNT(*) AS cnt FROM nb_board a $mainqry";
     $stmt = $connect->prepare($query);
     $stmt->execute($params);
@@ -44,7 +48,7 @@ try {
     $totalCnt = $data['cnt'] ?? 0;
     $Page = ceil($totalCnt / $listRowCnt);
 
-    $pageBlock = 5;
+    // 데이터 조회
     $query = "
         SELECT 
             a.no, a.sort_no, a.board_no, a.user_no, a.category_no, a.comment_cnt, a.title, a.contents, 
@@ -71,8 +75,11 @@ try {
     $stmt->execute();
 
     $arrResultSet = $stmt->fetchAll(PDO::FETCH_ASSOC);
-   
+
+    // 역순 번호
     $rnumber = $totalCnt - ($listCurPage - 1) * $listRowCnt;
+
+    // 검색 파라미터 유지용
     $searchParam = http_build_query([
         'board_no' => $board_no,
         'page' => $page,
@@ -84,6 +91,7 @@ try {
     exit;
 }
 ?>
+
 
 <!--=====================HEAD========================= -->
 <?php include_once "../../inc/admin.head.php"; ?>
@@ -115,9 +123,11 @@ try {
                                     </ul>
                                 </div>
                             </div>
+                            <?php if($role->canDelete()) : ?>
                             <div class="no-items-center">
                                 <a href="./board.add.php" class="no-btn no-btn--main no-btn--big"> 글등록 </a>
                             </div>
+                            <?php endif;?>
                         </div>
                     </div>
 
@@ -207,6 +217,8 @@ try {
                             </div>
                             <div class="no-card-body">
                                 <div class="no-table-option">
+
+                                    <?php if ($role->canDelete()): ?>
                                     <ul class="no-table-check-control">
                                         <li>
                                             <a href="javascript:void(0);" class="no-btn no-btn--sm no-btn--check active"
@@ -221,7 +233,8 @@ try {
                                                 onClick="doDeleteArray();">선택삭제</a>
                                         </li>
                                     </ul>
-
+                                    <?php endif; ?>
+                                    <!--
                                     <div class="no-perpage">
                                         <select name="perpage" id="perpage">
                                             <option value="20" <?php if ($perpage == "20") echo "selected"; ?>>20개씩
@@ -231,13 +244,13 @@ try {
                                             <option value="100" <?php if ($perpage == "100") echo "selected"; ?>>100개씩
                                             </option>
                                         </select>
-                                    </div>
-
+                                    </div>-->
                                 </div>
                                 <div class="no-table-responsive">
                                     <table class="no-table">
                                         <thead>
                                             <tr>
+                                                <?php if($role->canDelete()): ?>
                                                 <th scope="col" class="no-width-25 no-check">
                                                     <div class="no-checkbox-form">
                                                         <label for="chkAll">
@@ -249,6 +262,8 @@ try {
                                                         </label>
                                                     </div>
                                                 </th>
+                                                <?php endif;?>
+
                                                 <th>번호</th>
                                                 <th>게시판 이름</th>
                                                 <th>공지</th>
@@ -261,6 +276,8 @@ try {
                                         <tbody id="sort-list">
                                             <?php foreach ($arrResultSet as $v): ?>
                                             <tr data-no=<?=$v['no']?> data-sort-no=<?=$v['sort_no']?>>
+
+                                                <?php if($role->canDelete()): ?>
                                                 <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label for="<?= $v['no'] ?>">
@@ -273,6 +290,8 @@ try {
                                                         </label>
                                                     </div>
                                                 </td>
+                                                <?php endif ; ?>
+
                                                 <td><?= $rnumber-- ?></td>
                                                 <td><?= htmlspecialchars($v['board_name']) ?></td>
                                                 <td><?= $v['is_notice'] == "Y" ? "<span class='no-btn no-btn--notice'> 공지 </span>" : "" ?>
@@ -289,9 +308,11 @@ try {
                                                         </span>
                                                         <div class="no-table-action">
                                                             <a href="./board.view.php?no=<?= $v['no'] ?>&<?= $searchParam ?>"
-                                                                class="no-btn no-btn--sm no-btn--normal">수정</a>
+                                                                class="no-btn no-btn--sm no-btn--normal"> 보기</a>
+                                                            <?php if($role->canDelete()) : ?>
                                                             <a href="javascript:doDelete(<?= $v['no'] ?>);"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline">삭제</a>
+                                                            <?php endif ;?>
                                                         </div>
                                                     </div>
                                                 </td>

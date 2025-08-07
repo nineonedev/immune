@@ -4,6 +4,11 @@
     $data1 = getNonpayItemsByPrimaryCategory(1); // 행위료
     $data2 = getNonpayItemsByPrimaryCategory(2); // 약제비
     
+    $sql = "SELECT non_pay_last_modified FROM nb_etcs LIMIT 1";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
 ?>
 <!-- dev -->
 
@@ -50,8 +55,8 @@
                                         </a>
                                     </li>
                                 </ul>
-
-                                <p class="no-body-xs fw300 wgray --tar no-mg-8--t edit">최종변경일.00.00.00</p>
+                                <p class="no-body-xs fw300 wgray --tar no-mg-8--t edit">최종변경일
+                                    <?=$result['non_pay_last_modified']?></p>
                             </div>
                         </section>
 

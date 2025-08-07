@@ -5,19 +5,26 @@ $pageName = "사이트 외부 태그";
 $depthnum = 10;
 $pagenum = 2;
 
-$Page = $Page ?? 1;
-$listCurPage = $listCurPage ?? 1;
-$pageBlock = $pageBlock ?? 2;
+$perpage = 10;
+$listCurPage = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+$pageBlock = 2;
+$count = ($listCurPage - 1) * $perpage;
 
 $db = DB::getInstance();
 
-$sql = "SELECT id, title,tag_content, is_active 
-        FROM nb_site_tags 
-        ORDER BY id DESC";
+// 총 데이터 수
+$totalStmt = $db->query("SELECT COUNT(*) FROM nb_site_tags");
+$totalCount = (int)$totalStmt->fetchColumn();
+$Page = ceil($totalCount / $perpage);
+
+// 실제 데이터 조회
+$sql = "SELECT id, title, tag_content, is_active
+        FROM nb_site_tags
+        ORDER BY id DESC
+        LIMIT {$count}, {$perpage}";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 <!--=====================HEAD========================= -->
@@ -118,7 +125,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <span class="no-role-btn"><i
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
-                                                            <a href="edit.php?id=<?= $row['id'] ?>"
+                                                            <a href="edit.php?id=<?= $row['id'] ?>&page=<?= $listCurPage ?>"
                                                                 class="no-btn no-btn--sm no-btn--normal">수정</a>
                                                             <button type="button"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline delete-btn"

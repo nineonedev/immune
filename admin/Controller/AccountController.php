@@ -103,6 +103,21 @@ try {
             exit;
         }
 
+        $validator = new Validator();
+        $validator->require('uid', $input['uid'] ?? '', '아이디');
+        $validator->require('uname', $input['uname'] ?? '', '이름');
+        $validator->email('email', $input['email'] ?? '', '이메일');
+        $validator->phone('phone', $input['phone'] ?? '', '휴대폰');
+
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors()) ?: '입력값 오류가 있습니다.'
+            ]);
+            exit;
+        }
+
+        // 중복 검사
         if (AccountModel::existsExceptSelf(['uid' => $input['uid']], $id)) {
             echo json_encode(['success' => false, 'message' => '이미 사용 중인 아이디입니다.']);
             exit;
@@ -116,7 +131,7 @@ try {
             exit;
         }
 
-        // 비밀번호 재확인 유효성 검사
+        // 비밀번호 처리
         $upwd = $input['upwd'] ?? '';
         $upwdConfirm = $input['upwd_confirm'] ?? '';
 
@@ -142,6 +157,7 @@ try {
         ]);
         exit;
     }
+
 
 
     // DELETE_ARRAY

@@ -7,9 +7,9 @@ class NonPayModel
         $db = DB::getInstance();
         $sql = "
             INSERT INTO nb_nonpay_items 
-                (category_primary, category_secondary, title, cost, notice, sort_no, is_active, created_at, updated_at)
+                (category_primary, category_secondary, title, cost, sort_no, is_active, created_at, updated_at)
             VALUES 
-                (:category_primary, :category_secondary, :title, :cost, :notice, :sort_no, :is_active, NOW(), NOW())
+                (:category_primary, :category_secondary, :title, :cost, :sort_no, :is_active, NOW(), NOW())
         ";
 
         $stmt = $db->prepare($sql);
@@ -18,7 +18,6 @@ class NonPayModel
             ':category_secondary' => $data['category_secondary'],
             ':title'              => $data['title'],
             ':cost'               => $data['cost'],
-            ':notice'             => $data['notice'],
             ':sort_no'            => $data['sort_no'],
             ':is_active'          => $data['is_active'],
         ]);
@@ -33,7 +32,6 @@ class NonPayModel
                 category_secondary = :category_secondary,
                 title              = :title,
                 cost               = :cost,
-                notice             = :notice,
                 sort_no            = :sort_no,
                 is_active          = :is_active,
                 updated_at         = NOW()
@@ -46,7 +44,6 @@ class NonPayModel
             ':category_secondary' => $data['category_secondary'],
             ':title'              => $data['title'],
             ':cost'               => $data['cost'],
-            ':notice'             => $data['notice'],
             ':sort_no'            => $data['sort_no'],
             ':is_active'          => $data['is_active'],
             ':id'                 => $id
@@ -73,6 +70,36 @@ class NonPayModel
         return $stmt->execute($ids);
     }
 
+    public static function getMaxSortNo(): int
+    {
+        $db = DB::getInstance();
+        $stmt = $db->query("SELECT MAX(sort_no) FROM nb_nonpay_items");
+        return (int) $stmt->fetchColumn();
+    }
+
+    public static function shiftSortNosForUpdate(int $oldNo, int $newNo, int $id): void
+    {
+        $db = DB::getInstance();
+
+        if ($newNo === $oldNo) return;
+
+        if ($newNo < $oldNo) {
+            // 위로 올리기
+            $sql = "UPDATE nb_nonpay_items SET sort_no = sort_no + 1 
+                    WHERE sort_no >= :newNo AND sort_no < :oldNo AND id != :id";
+        } else {
+            // 아래로 내리기
+            $sql = "UPDATE nb_nonpay_items SET sort_no = sort_no - 1 
+                    WHERE sort_no > :oldNo AND sort_no <= :newNo AND id != :id";
+        }
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':newNo' => $newNo,
+            ':oldNo' => $oldNo,
+            ':id'    => $id,
+        ]);
+    }
 
 
 }

@@ -1,64 +1,65 @@
+<?php
+    $prevDisabled = ($listCurPage <= 1);
+    $nextDisabled = ($listCurPage >= $Page);
+?>
 <?php if ($Page > 0): ?>
 <div class="no-pagination">
     <ul class="no-page-list">
-        <?php if ($listCurPage > 1): 
-            $prevpage = $listCurPage - 1;
-        ?>
-        <li class="no-page-item">
+        <!-- 이전 페이지 -->
+        <li class="no-page-item <?= $prevDisabled ? 'disabled' : '' ?>">
+            <?php if (!$prevDisabled): ?>
             <a href="javascript:void(0);" class="no-page-link"
-                onClick="goListMove(<?= $prevpage ?>, '<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') ?>');">
+                onClick="goListMove(<?= $listCurPage - 1 ?>, '<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') ?>');">
                 <i class="bx bx-chevron-left"></i>
             </a>
-        </li>
-        <?php else: ?>
-        <li class="no-page-item">
-            <a href="javascript:void(0);" class="no-page-link">
+            <?php else: ?>
+            <a href="javascript:void(0);" class="no-page-link" aria-disabled="true">
                 <i class="bx bx-chevron-left"></i>
             </a>
+            <?php endif; ?>
         </li>
-        <?php endif; ?>
 
+        <!-- 숫자 페이지 -->
         <?php
         for ($x = ($listCurPage - $pageBlock); $x < (($listCurPage + $pageBlock) + 1); $x++) {
-            if ($x > 0 && $x <= $Page) {
-                if ($x == $listCurPage) {
+            if ($x > 0 && $x <= $Page):
         ?>
-        <li class="no-page-item">
+        <li class="no-page-item <?= $x == $listCurPage ? 'active' : '' ?>">
+            <?php if ($x == $listCurPage): ?>
             <a href="javascript:void(0);" class="no-page-link active"><?= $x ?></a>
-        </li>
-        <?php 
-                } else {
-        ?>
-        <li class="no-page-item">
+            <?php else: ?>
             <a href="javascript:void(0);"
                 onClick="goListMove(<?= $x ?>, '<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') ?>');"
                 class="no-page-link"><?= $x ?></a>
+            <?php endif; ?>
         </li>
-        <?php
-                }
-            }
-        }
-        ?>
+        <?php endif; } ?>
 
-        <?php if ($listCurPage != $Page): 
-            $nextpage = $listCurPage + 1;
-        ?>
-        <li class="no-page-item">
+        <!-- 다음 페이지 -->
+        <li class="no-page-item <?= $nextDisabled ? 'disabled' : '' ?>">
+            <?php if (!$nextDisabled): ?>
             <a href="javascript:void(0);" class="no-page-link"
-                onClick="goListMove(<?= $nextpage ?>, '<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') ?>');">
+                onClick="goListMove(<?= $listCurPage + 1 ?>, '<?= htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') ?>');">
                 <i class="bx bx-chevron-right"></i>
             </a>
-        </li>
-        <?php else: ?>
-        <li class="no-page-item">
-            <a href="javascript:void(0);" class="no-page-link">
+            <?php else: ?>
+            <a href="javascript:void(0);" class="no-page-link" aria-disabled="true">
                 <i class="bx bx-chevron-right"></i>
             </a>
+            <?php endif; ?>
         </li>
-        <?php endif; ?>
     </ul>
 </div>
 <?php endif; ?>
+
+
+<style>
+.no-page-item.disabled a {
+    pointer-events: none;
+    opacity: 0.4;
+    cursor: default;
+}
+</style>
 
 <script>
 function goListMove(start, url) {

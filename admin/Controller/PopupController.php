@@ -14,31 +14,45 @@ try {
 
     // INSERT
     if ($mode === 'insert') {
-            $data = [
-                'title'         => trim($input['title'] ?? ''),
-                'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
-                'popup_type'    => (int)($input['popup_type'] ?? 0),
-                'has_link'      => (int)($input['has_link'] ?? 2),
-                'link_url'      => trim($input['link_url'] ?? ''),
-                'is_target'     => (int)($input['is_target'] ?? 1), // ✅ 추가
-                'sort_no'       => (int)($input['sort_no'] ?? 0),
-                'is_active'     => (int)($input['is_active'] ?? 1),
-                'description'   => trim($input['description'] ?? ''),
-                'start_at'      => trim($input['start_at'] ?? null),
-                'end_at'        => trim($input['end_at'] ?? null),
-                'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
-            ];
+        $data = [
+            'title'         => trim($input['title'] ?? ''),
+            'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
+            'popup_type'    => (int)($input['popup_type'] ?? 0),
+            'has_link'      => (int)($input['has_link'] ?? 2),
+            'link_url'      => trim($input['link_url'] ?? ''),
+            'is_target'     => (int)($input['is_target'] ?? 1),
+            'is_active'     => (int)($input['is_active'] ?? 1),
+            'description'   => trim($input['description'] ?? ''),
+            'start_at'      => trim($input['start_at'] ?? null),
+            'end_at'        => trim($input['end_at'] ?? null),
+            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
+        ];
+
+        // ✅ sort_no 자동 처리
+        $sortNo = isset($input['sort_no']) && (int)$input['sort_no'] > 0
+            ? (int)$input['sort_no']
+            : PopupModel::getMaxSortNo() + 1;
+
+        $data['sort_no'] = $sortNo;
 
         $validator->require('title', $data['title'], '제목');
+        $validator->require('branch_id', $data['branch_id'], '지점');
         $validator->require('popup_type', $data['popup_type'], '팝업 위치');
 
-        if ($validator->fails()) {
-            echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
-            exit;
+        $image = imageUpload($upload_path, $_FILES['popup_image'] ?? []);
+        if (empty($image['saved'])) {
+            $validator->require('popup_image', '', '팝업 이미지');
+        } else {
+            $data['popup_image'] = $image['saved'];
         }
 
-        $image = imageUpload($upload_path, $_FILES['popup_image'] ?? []);
-        $data['popup_image'] = $image['saved'] ?? '';
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
+            exit;
+        }
 
         $result = PopupModel::insert($data);
 
@@ -49,19 +63,20 @@ try {
         exit;
     }
 
+
+
     // UPDATE
     if ($mode === 'update') {
         $id = (int)($input['id'] ?? 0);
         if (!$id) throw new Exception("ID가 없습니다.");
 
-         $data = [
+        $data = [
             'title'         => trim($input['title'] ?? ''),
             'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
             'popup_type'    => (int)($input['popup_type'] ?? 0),
             'has_link'      => (int)($input['has_link'] ?? 2),
             'link_url'      => trim($input['link_url'] ?? ''),
-            'is_target'     => (int)($input['is_target'] ?? 1), // ✅ 추가
-            'sort_no'       => (int)($input['sort_no'] ?? 0),
+            'is_target'     => (int)($input['is_target'] ?? 1),
             'is_active'     => (int)($input['is_active'] ?? 1),
             'description'   => trim($input['description'] ?? ''),
             'start_at'      => trim($input['start_at'] ?? null),
@@ -69,13 +84,12 @@ try {
             'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
         ];
 
-        $validator->require('title', $data['title'], '제목');
-        $validator->require('popup_type', $data['popup_type'], '팝업 위치');
+        $newSortNo = (int)($input['sort_no'] ?? 0);
+        $data['sort_no'] = $newSortNo;
 
-        if ($validator->fails()) {
-            echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
-            exit;
-        }
+        $validator->require('title', $data['title'], '제목');
+        $validator->require('branch_id', $data['branch_id'], '지점');
+        $validator->require('popup_type', $data['popup_type'], '팝업 위치');
 
         $existing = PopupModel::find($id);
         if (!$existing) {
@@ -83,10 +97,28 @@ try {
             exit;
         }
 
-        if (!empty($_FILES['popup_image']) && $_FILES['popup_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        // ✅ 정렬 충돌 처리
+        $oldSortNo = (int)$existing['sort_no'];
+        if ($newSortNo !== $oldSortNo && $newSortNo > 0) {
+            PopupModel::shiftSortNosForUpdate($oldSortNo, $newSortNo, $id);
+        }
+
+        $hasNewImage = !empty($_FILES['popup_image']) && $_FILES['popup_image']['error'] !== UPLOAD_ERR_NO_FILE;
+
+        if ($hasNewImage) {
             imageDelete($upload_path . '/' . $existing['popup_image']);
             $image = imageUpload($upload_path, $_FILES['popup_image']);
             $data['popup_image'] = $image['saved'];
+        } elseif (empty($existing['popup_image'])) {
+            $validator->require('popup_image', '', '팝업 이미지');
+        }
+
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
+            exit;
         }
 
         $result = PopupModel::update($id, $data);
@@ -97,6 +129,7 @@ try {
         ]);
         exit;
     }
+
 
     // DELETE
     if ($mode === 'delete') {

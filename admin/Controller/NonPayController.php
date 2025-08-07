@@ -2,6 +2,7 @@
 
 require_once "../../inc/lib/base.class.php";
 require_once "../Model/NonPayModel.php";
+require_once "../core/Validator.php";
 
 header('Content-Type: application/json');
 
@@ -11,20 +12,33 @@ try {
 
     // INSERT
     if ($mode === 'insert') {
-        $data = [
-            'category_primary'   => (int)($input['category_primary'] ?? 0),
-            'category_secondary' => (int)($input['category_secondary'] ?? 0),
-            'title'              => trim($input['title'] ?? ''),
-            'cost'               => (int)($input['cost'] ?? 0),
-            'notice'             => trim($input['notice'] ?? ''),
-            'sort_no'            => (int)($input['sort_no'] ?? 0),
-            'is_active'          => (int)($input['is_active'] ?? 1), 
-        ];
+        $validator = new Validator();
+        $validator->require('category_primary', $input['category_primary'] ?? '', '1차 카테고리');
+        $validator->require('category_secondary', $input['category_secondary'] ?? '', '2차 카테고리');
+        $validator->require('title', $input['title'] ?? '', '항목명');
+        $validator->require('cost', $input['cost'] ?? '', '금액');
 
-        if (!$data['category_primary'] || !$data['category_secondary'] || !$data['title']) {
-            echo json_encode(['success' => false, 'message' => '카테고리와 항목명은 필수입니다.']);
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
             exit;
         }
+
+        // ✅ sort_no 자동 할당
+        $sortNo = isset($input['sort_no']) && (int)$input['sort_no'] > 0
+            ? (int)$input['sort_no']
+            : NonPayModel::getMaxSortNo() + 1;
+
+        $data = [
+            'category_primary'   => (int)$input['category_primary'],
+            'category_secondary' => (int)$input['category_secondary'],
+            'title'              => trim($input['title']),
+            'cost'               => (int)$input['cost'],
+            'sort_no'            => $sortNo,
+            'is_active'          => (int)($input['is_active'] ?? 1)
+        ];
 
         $result = NonPayModel::insert($data);
 
@@ -35,30 +49,50 @@ try {
         exit;
     }
 
+
     // UPDATE
     if ($mode === 'update') {
-        
         $id = (int)($input['id'] ?? 0);
-     
+
         if (!$id) {
             echo json_encode(['success' => false, 'message' => 'ID가 없습니다.']);
             exit;
         }
 
-        $data = [
-            'category_primary'   => (int)($input['category_primary'] ?? 0),
-            'category_secondary' => (int)($input['category_secondary'] ?? 0),
-            'title'              => trim($input['title'] ?? ''),
-            'cost'               => (int)($input['cost'] ?? 0),
-            'notice'             => trim($input['notice'] ?? ''),
-            'sort_no'            => (int)($input['sort_no'] ?? 0),
-            'is_active'          => (int)($input['is_active'] ?? 1), 
-        ];
+        $validator = new Validator();
+        $validator->require('category_primary', $input['category_primary'] ?? '', '1차 카테고리');
+        $validator->require('category_secondary', $input['category_secondary'] ?? '', '2차 카테고리');
+        $validator->require('title', $input['title'] ?? '', '항목명');
+        $validator->require('cost', $input['cost'] ?? '', '금액');
 
-        if (!$data['category_primary'] || !$data['category_secondary'] || !$data['title']) {
-            echo json_encode(['success' => false, 'message' => '카테고리와 항목명은 필수입니다.']);
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
             exit;
         }
+
+        $newSortNo = (int)($input['sort_no'] ?? 0);
+
+        // ✅ 기존 sort_no 조회
+        $stmt = DB::getInstance()->prepare("SELECT sort_no FROM nb_nonpay_items WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $oldSortNo = (int) $stmt->fetchColumn();
+
+        // ✅ 정렬번호 충돌 처리
+        if ($newSortNo !== $oldSortNo && $newSortNo > 0) {
+            NonPayModel::shiftSortNosForUpdate($oldSortNo, $newSortNo, $id);
+        }
+
+        $data = [
+            'category_primary'   => (int)$input['category_primary'],
+            'category_secondary' => (int)$input['category_secondary'],
+            'title'              => trim($input['title']),
+            'cost'               => (int)$input['cost'],
+            'sort_no'            => $newSortNo,
+            'is_active'          => (int)($input['is_active'] ?? 1)
+        ];
 
         $result = NonPayModel::update($id, $data);
 
@@ -68,6 +102,7 @@ try {
         ]);
         exit;
     }
+
 
     // DELETE
     if ($mode === 'delete') {
@@ -86,7 +121,7 @@ try {
         exit;
     }
 
-        // DELETE_ARRAY
+    // DELETE_ARRAY
     if ($mode === 'delete_array') {
         $ids = json_decode($input['ids'] ?? '[]', true);
 
@@ -103,7 +138,6 @@ try {
         ]);
         exit;
     }
-
 
     echo json_encode(['success' => false, 'message' => '유효하지 않은 요청입니다.']);
     exit;

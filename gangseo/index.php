@@ -1,5 +1,6 @@
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/inc/lib/base.class.php'; ?>
 
+
 <!-- dev -->
 
 <?php include_once $STATIC_ROOT . '/inc/layouts/head.php'; ?>
@@ -7,6 +8,7 @@
 <!-- 팝업입니다============================================== -->
 <?php
     $branchId = 2;
+    // var.php에서 poppu_type 확인
     $popupType = 1;
     include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
 ?>
@@ -16,7 +18,17 @@
 <main>
     <?php
         $banners = getBannersByBranch('gangseo', 1);
+        $sql = "SELECT banner_rolling_times FROM nb_etcs LIMIT 1";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        // 6000 (6초)
+        $rollingTime = isset($result['banner_rolling_times']) ? (int)$result['banner_rolling_times'] * 1000 : 5000; // ms로 변환
+        
+        // swiper div에 data-rolling=<?=$rollingTime.. 이거넣고 js에서 상수 등록 후 autoplay delay에 해당 값을 넣으세요.
     ?>
+
+
     <section class="no-cetner-visual">
         <div class="no-container-pc">
             <div class="visual-wrap">
@@ -193,7 +205,7 @@
                         </section>
 
                         <?php
-                            $doctors = getDoctors('ganseo'); 
+                            $doctors = getDoctors('gangseo'); 
                         ?>
                         <section class="no-main-doctor no-pd-48--y">
                             <div class="no-container-sm">
@@ -292,7 +304,7 @@
 
 
                         <?php
-                            $facilities = getFacilities('ganseo', 1, 4);
+                            $facilities = getFacilities('gangseo', 1, 4);
                         ?>
 
                         <section class="no-main-facility no-pd-48--y">
@@ -317,8 +329,7 @@
                                     </ul>
                                 </div>
 
-                                <a href="/pages/board/board.list.php?board_no=10"
-                                    class="basic-btn no-body-lg fw600 no-mg-40--t">
+                                <a href="pages/hospital/facility.php" class="basic-btn no-body-lg fw600 no-mg-40--t">
                                     시설 더보기
                                 </a>
                             </div>

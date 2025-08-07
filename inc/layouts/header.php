@@ -331,7 +331,7 @@
         </div>-->
 
         <div class="header-search-box no-mg-32--y">
-            <form action="/<?= htmlspecialchars($area) ?>/search.php" method="GET">
+            <form id="searchForm" action="/<?= htmlspecialchars($area) ?>/search.php" method="GET">
                 <input type="search" name="keyword" placeholder="검색어를 입력해주세요" class="no-body-md" required>
                 <button type="submit">
                     <i class="fa-regular fa-magnifying-glass"></i>
@@ -370,3 +370,122 @@
             </div>
         </div>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('searchForm');
+        const searchList = document.querySelector('.search-list');
+        const deleteAllBtn = document.querySelector('.search-history .top a');
+        const userId = <?= isset($_SESSION['id']) ? (int)$_SESSION['id'] : 'null' ?>;
+
+        async function loadSearchHistory() {
+            if (!userId || !searchList) return;
+
+            try {
+                const response = await fetch(`/api/get_search_history.php?user_id=${userId}`);
+                const keywords = await response.json();
+
+                searchList.innerHTML = '';
+
+                if (!keywords.length) {
+                    searchList.innerHTML = '<li class="no-body-xs fw300">검색 기록이 없습니다.</li>';
+                    return;
+                }
+
+                keywords.forEach(keyword => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                    <a href="/search.php?keyword=${encodeURIComponent(keyword)}" class="no-body-lg fw300">${keyword}</a>
+                    <i class="fa-solid fa-xmark" data-keyword="${keyword}"></i>
+                `;
+                    searchList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('검색어 불러오기 실패:', error);
+            }
+        }
+
+        // ✅ 검색어 저장
+        async function saveSearch(keyword) {
+            if (!userId || !keyword) return;
+            try {
+                const response = await fetch('/api/save_search.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `user_id=${userId}&keyword=${encodeURIComponent(keyword)}`
+                });
+                return await response.json();
+            } catch (err) {
+                console.error('검색어 저장 실패:', err);
+            }
+        }
+
+        // ✅ 개별 검색어 삭제
+        async function deleteSearch(keyword) {
+            try {
+                await fetch('/api/delete_search.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `user_id=${userId}&keyword=${encodeURIComponent(keyword)}`
+                });
+                loadSearchHistory();
+            } catch (error) {
+                console.error('검색어 삭제 실패:', error);
+            }
+        }
+
+        // ✅ 전체 검색어 삭제
+        async function deleteAllSearch() {
+            try {
+                await fetch('/api/delete_all_search.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `user_id=${userId}`
+                });
+                loadSearchHistory();
+            } catch (error) {
+                console.error('전체 삭제 실패:', error);
+            }
+        }
+
+        // 🔹 폼 전송 이벤트
+        if (form) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const keyword = this.keyword.value.trim();
+                if (!keyword) return;
+
+                const result = await saveSearch(keyword);
+                console.log('검색어 저장 결과:', result);
+
+                this.submit(); // 저장 후 검색 페이지 이동
+            });
+        }
+
+        // 🔹 개별 삭제 클릭 이벤트 (이벤트 위임)
+        if (searchList) {
+            searchList.addEventListener('click', (e) => {
+                if (e.target.matches('.fa-xmark')) {
+                    const keyword = e.target.getAttribute('data-keyword');
+                    deleteSearch(keyword);
+                }
+            });
+        }
+
+        // 🔹 전체 삭제 버튼 클릭
+        if (deleteAllBtn) {
+            deleteAllBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                deleteAllSearch();
+            });
+        }
+
+        // 페이지 로드 시 최근 검색어 불러오기
+        loadSearchHistory();
+    });
+    </script>

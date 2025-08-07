@@ -80,4 +80,38 @@ class FacilityModel
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public static function getMaxSortNo(): int
+    {
+        $db = DB::getInstance();
+        $stmt = $db->query("SELECT MAX(sort_no) FROM nb_facilities");
+        return (int)$stmt->fetchColumn();
+    }
+
+    public static function shiftSortNosForUpdate(int $oldNo, int $newNo, int $id): void
+    {
+        if ($newNo === $oldNo) return;
+
+        $db = DB::getInstance();
+
+        if ($newNo < $oldNo) {
+            // 위로 이동 → 기존 항목들 한 칸씩 뒤로
+            $sql = "UPDATE nb_facilities SET sort_no = sort_no + 1
+                    WHERE sort_no >= :newNo AND sort_no < :oldNo AND id != :id";
+        } else {
+            // 아래로 이동 → 기존 항목들 한 칸씩 앞으로
+            $sql = "UPDATE nb_facilities SET sort_no = sort_no - 1
+                    WHERE sort_no > :oldNo AND sort_no <= :newNo AND id != :id";
+        }
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':newNo' => $newNo,
+            ':oldNo' => $oldNo,
+            ':id'    => $id,
+        ]);
+    }
+
+
+
 }

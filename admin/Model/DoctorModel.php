@@ -101,4 +101,38 @@ class DoctorModel
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public static function getMaxSortNo(): int
+    {
+        $db = DB::getInstance();
+        $stmt = $db->query("SELECT MAX(sort_no) FROM nb_doctors");
+        return (int) $stmt->fetchColumn();
+    }
+
+    public static function shiftSortNosForUpdate(int $oldNo, int $newNo, int $id): void
+    {
+        $db = DB::getInstance();
+
+        if ($newNo === $oldNo) return;
+
+        if ($newNo < $oldNo) {
+            // 위로 이동 → 사이 값 +1
+            $sql = "UPDATE nb_doctors SET sort_no = sort_no + 1 
+                    WHERE sort_no >= :newNo AND sort_no < :oldNo AND id != :id";
+        } else {
+            // 아래로 이동 → 사이 값 -1
+            $sql = "UPDATE nb_doctors SET sort_no = sort_no - 1 
+                    WHERE sort_no > :oldNo AND sort_no <= :newNo AND id != :id";
+        }
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':newNo' => $newNo,
+            ':oldNo' => $oldNo,
+            ':id'    => $id,
+        ]);
+    }
+
+
+
 }

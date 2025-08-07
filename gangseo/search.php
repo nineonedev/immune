@@ -5,6 +5,7 @@ $conn = DB::getInstance();
 
 $searchKeyword = $_GET['keyword'] ?? '';
 $results = [];
+$groupedResults = [];
 
 // 1. 지점 정보 매핑 (id => name)
 $branchMap = [];
@@ -17,7 +18,7 @@ foreach ($branches as $branch) {
     $branchMap[$branch['id']] = $branch['name'];
 }
 
-// 2. 검색 실행
+// 2. 검색 실행 및 이중 그룹화: page_title → section_title → topic_title
 if (!empty($searchKeyword)) {
     $sql = "
         SELECT * FROM nb_branch_seos 
@@ -32,8 +33,28 @@ if (!empty($searchKeyword)) {
     $stmt = $conn->prepare($sql);
     $stmt->execute([':keyword' => '%' . $searchKeyword . '%']);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($results as $row) {
+        if (empty($row['topic_title'])) continue;
+
+        $branchId = $row['branch_id'];
+        $branchCode = $branchMap[$branchId] ?? 'unknown';
+        $url = '/' . $branchCode . '/pages/' . $row['path'];
+
+        $pageTitle = $row['page_title'] ?? '기타';
+        $sectionTitle = $row['section_title'] ?? '기타';
+
+        // 이중 배열 구조로 그룹화
+        $groupedResults[$pageTitle][$sectionTitle][] = [
+            'url' => $url,
+            'topic_title' => $row['topic_title']
+        ];
+    }
 }
 ?>
+
+
+
 
 
 <?php include_once $STATIC_ROOT . '/inc/layouts/head.php'; ?>
@@ -62,7 +83,7 @@ if (!empty($searchKeyword)) {
 
                                 <div class="search-section">
                                     <?php if (!empty($searchKeyword)): ?>
-                                    <?php if (!empty($results)): ?>
+                                    <?php if (!empty($groupedResults)): ?>
                                     <div class="search-success">
                                         <p class="no-body-xl fw700 --tac">
                                             <b class="blue">‘<?= htmlspecialchars($searchKeyword) ?>’</b>에 대한 검색 결과입니다.
@@ -71,32 +92,33 @@ if (!empty($searchKeyword)) {
 
                                     <div class="search-wrap no-mg-32--t">
                                         <ul class="search-list">
-                                            <?php foreach ($results as $row): ?>
-                                            <?php
-                                                if (empty($row['topic_title'])) continue;
-
-                                                $branchId = $row['branch_id'];
-                                                $branchCode = $branchMap[$branchId] ?? 'unknown';
-                                                $url = '/' . $branchCode . '/pages/' . $row['path'];
-                                            ?>
+                                            <?php foreach ($groupedResults as $pageTitle => $sections): ?>
                                             <li>
-                                                <h3 class="no-body-xl fw700"><?= htmlspecialchars($row['page_title']) ?>
-                                                </h3>
+                                                <h3 class="no-body-xl fw700"><?= htmlspecialchars($pageTitle) ?></h3>
                                                 <ul class="dept2">
+                                                    <?php foreach ($sections as $sectionTitle => $items): ?>
                                                     <li>
-                                                        <a href="<?= htmlspecialchars($url) ?>">
-                                                            <h4 class="no-body-xl fw400">
-                                                                <?= htmlspecialchars($row['section_title']) ?></h4>
-                                                        </a>
-                                                        <p class="no-body-lg fw300">
-                                                            <?= htmlspecialchars($row['topic_title']) ?></p>
+                                                        <h4 class="no-body-xl fw400">
+                                                            <?= htmlspecialchars($sectionTitle) ?></h4>
+                                                        <ul>
+                                                            <?php foreach ($items as $item): ?>
+                                                            <li>
+
+                                                                <p class="no-body-lg fw300">
+                                                                    <a href="<?= htmlspecialchars($item['url']) ?>">
+                                                                        <?= htmlspecialchars($item['topic_title']) ?>
+                                                                    </a>
+                                                                </p>
+                                                            </li>
+                                                            <?php endforeach; ?>
+                                                        </ul>
                                                     </li>
+                                                    <?php endforeach; ?>
                                                 </ul>
                                             </li>
                                             <?php endforeach; ?>
                                         </ul>
                                     </div>
-
                                     <?php else: ?>
                                     <div class="no-search-result">
                                         <p class="no-body-xl fw300 --tac">‘<?= htmlspecialchars($searchKeyword) ?>’에 대한
@@ -109,6 +131,8 @@ if (!empty($searchKeyword)) {
                                     </div>
                                     <?php endif; ?>
                                     <?php endif; ?>
+
+
                                 </div>
 
                                 <form method="GET" action="">

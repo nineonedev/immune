@@ -14,6 +14,10 @@ try {
 $id = $_GET['id'] ?? null;
 $tag = null;
 
+$page = (int)($_GET['page'] ?? $_POST['page'] ?? 1);
+
+
+
 if ($id) {
     $stmt = $db->prepare("SELECT * FROM nb_site_tags WHERE id = :id");
     $stmt->execute([':id' => $id]);
@@ -45,6 +49,7 @@ include_once "../../inc/admin.js.php";
             <form id="frm" method="post">
                 <input type="hidden" name="mode" value="update">
                 <input type="hidden" name="id" value="<?= htmlspecialchars($tag['id']) ?>">
+                <input type="hidden" name="page" value="<?= $_GET['page'] ?? 1 ?>">
 
                 <section class="no-content">
                     <div class="no-toolbar">
@@ -121,7 +126,8 @@ include_once "../../inc/admin.js.php";
 
                                 <!-- buttons -->
                                 <div class="no-items-center center">
-                                    <a href="./external.tag.php" class="no-btn no-btn--big no-btn--normal">목록</a>
+                                    <a href="./external.tag.php?page=<?= $page ?>"
+                                        class="no-btn no-btn--big no-btn--normal">목록</a>
                                     <button type="submit" class="no-btn no-btn--big no-btn--main"
                                         id="editBtn">수정</button>
                                 </div>

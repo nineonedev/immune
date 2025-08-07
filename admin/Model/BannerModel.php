@@ -96,4 +96,35 @@ class BannerModel
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public static function getMaxSortNo(): int
+    {
+        $db = DB::getInstance();
+        $stmt = $db->query("SELECT MAX(sort_no) FROM nb_banners");
+        return (int)$stmt->fetchColumn();
+    }
+
+    public static function shiftSortNosForUpdate(int $oldNo, int $newNo, int $id): void
+    {
+        if ($oldNo === $newNo) return;
+
+        $db = DB::getInstance();
+
+        if ($newNo < $oldNo) {
+            $sql = "UPDATE nb_banners SET sort_no = sort_no + 1
+                    WHERE sort_no >= :newNo AND sort_no < :oldNo AND id != :id";
+        } else {
+            $sql = "UPDATE nb_banners SET sort_no = sort_no - 1
+                    WHERE sort_no > :oldNo AND sort_no <= :newNo AND id != :id";
+        }
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':newNo' => $newNo,
+            ':oldNo' => $oldNo,
+            ':id'    => $id,
+        ]);
+    }
+
+
 }

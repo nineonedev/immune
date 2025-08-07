@@ -2,6 +2,7 @@
 
 require_once "../../inc/lib/base.class.php";
 require_once "../Model/SettingModel.php";
+require_once "../core/Validator.php";
 
 header('Content-Type: application/json');
 
@@ -11,20 +12,21 @@ try {
 
     // ============ insert ============
     if ($mode === 'insert') {
-        $title = trim($input['title'] ?? '');
-        $tag = trim($input['tag_content'] ?? '');
+        $validator = new Validator();
+        $validator->require('title', $input['title'] ?? '', '제목');
+        $validator->require('tag_content', $input['tag_content'] ?? '', '태그 내용');
 
-        if (empty($title) || empty($tag)) {
+        if ($validator->fails()) {
             echo json_encode([
                 'success' => false,
-                'message' => '제목과 태그 내용을 모두 입력해주세요.'
+                'message' => implode("\n", $validator->getErrors())
             ]);
             exit;
         }
 
         $result = SiteTagModel::insert([
-            'title' => $title,
-            'tag_content' => $tag,
+            'title' => trim($input['title']),
+            'tag_content' => trim($input['tag_content']),
             'is_active' => 1
         ]);
 
@@ -35,25 +37,32 @@ try {
         exit;
     }
 
+
     // ============ update ============
     if ($mode === 'update') {
         $id = (int)($input['id'] ?? 0);
-        $title = trim($input['title'] ?? '');
-        $tag = trim($input['tag_content'] ?? '');
-        $is_active = isset($input['is_active']) ? (int)$input['is_active'] : 1;
+        $validator = new Validator();
 
-        if (!$id || empty($title) || empty($tag)) {
+        $validator->require('title', $input['title'] ?? '', '제목');
+        $validator->require('tag_content', $input['tag_content'] ?? '', '태그 내용');
+
+        if (!$id) {
+            echo json_encode(['success' => false, 'message' => 'ID가 없습니다.']);
+            exit;
+        }
+
+        if ($validator->fails()) {
             echo json_encode([
                 'success' => false,
-                'message' => 'ID, 제목, 태그 내용은 필수입니다.'
+                'message' => implode("\n", $validator->getErrors())
             ]);
             exit;
         }
 
         $result = SiteTagModel::update($id, [
-            'title' => $title,
-            'tag_content' => $tag,
-            'is_active' => $is_active
+            'title' => trim($input['title']),
+            'tag_content' => trim($input['tag_content']),
+            'is_active' => isset($input['is_active']) ? (int)$input['is_active'] : 1
         ]);
 
         echo json_encode([
@@ -62,6 +71,7 @@ try {
         ]);
         exit;
     }
+
 
     // ============ delete ============
     if ($mode === 'delete') {

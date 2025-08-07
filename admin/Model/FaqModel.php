@@ -50,6 +50,39 @@ class FaqModel
         ]);
     }
 
+    public static function getMaxSortNo(): int
+    {
+        $db = DB::getInstance();
+        $stmt = $db->query("SELECT MAX(sort_no) FROM nb_faqs");
+        return (int) $stmt->fetchColumn();
+    }
+
+
+    public static function shiftSortNosForUpdate(int $oldNo, int $newNo, int $id): void
+    {
+        $db = DB::getInstance();
+
+        if ($newNo === $oldNo) return;
+
+        // 큰 → 작은 번호로 이동 (위로 올리기): 뒤에 있는 항목들을 밀어야 함
+        if ($newNo < $oldNo) {
+            $sql = "UPDATE nb_faqs SET sort_no = sort_no + 1 
+                    WHERE sort_no >= :newNo AND sort_no < :oldNo AND id != :id";
+        } 
+        // 작은 → 큰 번호로 이동 (아래로 내리기): 앞 항목들을 당겨야 함
+        else {
+            $sql = "UPDATE nb_faqs SET sort_no = sort_no - 1 
+                    WHERE sort_no > :oldNo AND sort_no <= :newNo AND id != :id";
+        }
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':newNo' => $newNo,
+            ':oldNo' => $oldNo,
+            ':id'    => $id,
+        ]);
+    }
+
     public static function delete($id)
     {
         $db = DB::getInstance();

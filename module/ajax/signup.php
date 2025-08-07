@@ -54,6 +54,21 @@ try {
         exit;
     }
 
+    // 이메일 중복 검사
+    $emailCheckQuery = "SELECT COUNT(*) FROM nb_users WHERE email = :email";
+    $stmt = $db->prepare($emailCheckQuery);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $emailExists = $stmt->fetchColumn();
+
+    if ($emailExists > 0) {
+        echo json_encode([
+            "success" => false,
+            "message" => "이미 사용 중인 이메일입니다. 다른 이메일을 입력해주세요."
+        ]);
+        exit;
+    }
+
     // 비밀번호 해싱
     $hashed_pwd = password_hash($user_pwd, PASSWORD_DEFAULT);
 

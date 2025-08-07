@@ -1,6 +1,7 @@
 <?php
 include_once "../../../inc/lib/base.class.php";
 
+
 $pageName = "배너";
 $depthnum = 3;
 $pagenum = 1;
@@ -269,8 +270,10 @@ include_once "../../inc/admin.js.php";
                                 <!-- 버튼 -->
                                 <div class="no-items-center center">
                                     <a href="./banner.list.php" class="no-btn no-btn--big no-btn--normal">목록</a>
+                                    <?php if($role->canDelete()) :?>
                                     <button type="submit" class="no-btn no-btn--big no-btn--main"
                                         id="editBtn">수정</button>
+                                    <?php endif;?>
                                 </div>
 
                             </div>

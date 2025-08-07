@@ -1,8 +1,9 @@
 <?php
     include_once "../../../inc/lib/base.class.php";
+    
 
-    $depthnum = 1;
-    $pagenum = 2;
+    $depthnum = 2;
+    $pagenum = 1;
 
     // PDO 인스턴스 가져오기
     $pdo = DB::getInstance();
@@ -325,12 +326,17 @@
                                 <!-- admin-block -->
 
                                 <div class="no-items-center center">
+                                    <?php if($role->canDelete()) : ?>
                                     <a href="javascript:void(0);" class="no-btn no-btn--big no-btn--delete-outline"
                                         onClick="doDelete(<?= htmlspecialchars($data['no']) ?>);">삭제</a>
+                                    <?php endif ;?>
                                     <a href="./board.list.php?<?= $searchParam ?>"
                                         class="no-btn no-btn--big no-btn--normal">목록</a>
+                                    <?php if($role->canDelete()) : ?>
                                     <a href="javascript:void(0);" class="no-btn no-btn--big no-btn--main"
                                         onClick="doEditSave();">수정</a>
+                                    <?php endif ;?>
+
                                 </div>
                             </div>
                             <!-- card-body -->

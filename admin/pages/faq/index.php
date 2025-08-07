@@ -4,27 +4,25 @@ include_once "../../../inc/lib/base.class.php";
 $pageName = "FAQ";
 $depthnum = 7;
 
-// 페이지네이션 필수 변수
-$Page = $Page ?? 1;
-$listCurPage = $listCurPage ?? 1;
-$pageBlock = $pageBlock ?? 2;
-
 $db = DB::getInstance();
+
+// 기본 페이지네이션 변수
+$perpage = 10;
+$listCurPage = isset($_POST['page']) ? (int)$_POST['page'] : (isset($_GET['page']) ? (int)$_GET['page'] : 1);
+$pageBlock = 2;
+$count = ($listCurPage - 1) * $perpage;
 
 // 지점 데이터
 $branchesStmt = $db->prepare("SELECT id, name_kr FROM nb_branches WHERE id IN (2, 3, 4) ORDER BY id ASC");
 $branchesStmt->execute();
-$branches = $branchesStmt->fetchAll(PDO::FETCH_ASSOC); 
+$branches = $branchesStmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-// WHERE ========================================================
-
+// ========================= WHERE 조건 구성 =========================
 $branch_id = $_GET['branch_id'] ?? '';
-$active_filter = $_GET['is_active'] ?? '';  
+$active_filter = $_GET['is_active'] ?? '';
 $categories = $_GET['categories'] ?? '';
 $searchColumn = $_GET['searchColumn'] ?? '';
 $searchKeyword = $_GET['searchKeyword'] ?? '';
-
 
 $where = "WHERE 1=1";
 $params = [];
@@ -51,11 +49,24 @@ if (!empty($searchColumn) && !empty($searchKeyword)) {
         $params[':searchKeyword'] = "%{$searchKeyword}%";
     }
 }
+// ========================= END WHERE =========================
 
 
-// WHERE ========================================================
+// ========================= 전체 개수 조회 =========================
+$totalSql = "
+    SELECT COUNT(*) 
+    FROM nb_faqs f
+    LEFT JOIN nb_branches b ON f.branch_id = b.id
+    {$where}
+";
+$totalStmt = $db->prepare($totalSql);
+$totalStmt->execute($params);
+$totalCount = (int)$totalStmt->fetchColumn();
+$Page = ceil($totalCount / $perpage);
+// ========================= END 카운트 =========================
 
-// FAQ 데이터 조회
+
+// ========================= 실제 데이터 조회 =========================
 $sql = "
     SELECT f.id, f.branch_id, f.categories, f.question, f.sort_no, f.is_active, f.updated_at,
            b.name_kr AS branch_label
@@ -63,12 +74,13 @@ $sql = "
     LEFT JOIN nb_branches b ON f.branch_id = b.id
     {$where}
     ORDER BY f.sort_no ASC
+    LIMIT {$count}, {$perpage}
 ";
 
 $stmt = $db->prepare($sql);
-$stmt->execute($params); 
+$stmt->execute($params);
 $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+// ========================= END =========================
 ?>
 
 <!--=====================HEAD========================= -->
@@ -100,9 +112,11 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </ul>
                                 </div>
                             </div>
+                            <?php if($role->canDelete()):?>
                             <div class="no-items-center">
                                 <a href="./new.php" class="no-btn no-btn--main no-btn--big"> <?=$pageName?> 생성 </a>
                             </div>
+                            <?php endif;?>
                         </div>
                     </div>
 
@@ -219,6 +233,7 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="no-card-body">
+                                <?php if($role->canDelete()):?>
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
                                         <li><a href="#" class="no-btn no-btn--sm no-btn--check active "
@@ -229,11 +244,12 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 data-action="deleteSelected">선택삭제</a></li>
                                     </ul>
                                 </div>
-
+                                <?php endif;?>
                                 <div class="no-table-responsive">
                                     <table class="no-table">
                                         <thead>
                                             <tr>
+                                                <?php if($role->canDelete()):?>
                                                 <th class="no-width-25 no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
@@ -242,6 +258,7 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         </label>
                                                     </div>
                                                 </th>
+                                                <?php endif;?>
                                                 <th>번호</th>
                                                 <th>지점</th>
                                                 <th>카테고리</th>
@@ -256,6 +273,7 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (count($faqRows) > 0): ?>
                                             <?php foreach ($faqRows as $row): ?>
                                             <tr>
+                                                <?php if($role->canDelete()) :?>
                                                 <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
@@ -265,6 +283,7 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         </label>
                                                     </div>
                                                 </td>
+                                                <?php endif;?>
                                                 <td><?= $row['id'] ?></td>
                                                 <td><?= htmlspecialchars($row['branch_label']) ?></td>
                                                 <td><?= $faq_categories[$row['categories']] ?? '기타' ?></td>
@@ -283,12 +302,14 @@ $faqRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
                                                             <a href="edit.php?id=<?= $row['id'] ?>"
-                                                                class="no-btn no-btn--sm no-btn--normal">수정</a>
+                                                                class="no-btn no-btn--sm no-btn--normal">보기</a>
+                                                            <?php if($role->canDelete()) :?>
                                                             <button type="button"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline delete-btn"
                                                                 data-id="<?= $row['id'] ?>">
                                                                 삭제
                                                             </button>
+                                                            <?php endif;?>
                                                         </div>
                                                     </div>
                                                 </td>

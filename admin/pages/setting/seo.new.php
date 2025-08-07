@@ -123,7 +123,7 @@ include_once "../../inc/admin.js.php";
 
                                 <!-- Meta Title -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="meta_title">Meta Title</label></h3>
+                                    <h3 class="no-admin-title"><label for="meta_title">메타 타이틀</label></h3>
                                     <div class="no-admin-content">
                                         <input type="text" id="meta_title" name="meta_title" placeholder="검색결과 제목">
                                     </div>
@@ -131,7 +131,7 @@ include_once "../../inc/admin.js.php";
 
                                 <!-- Meta Description -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="meta_description">Meta Description</label>
+                                    <h3 class="no-admin-title"><label for="meta_description">메타 설명글</label>
                                     </h3>
                                     <div class="no-admin-content">
                                         <textarea name="meta_description" id="meta_description"
@@ -141,7 +141,7 @@ include_once "../../inc/admin.js.php";
 
                                 <!-- Meta Keywords -->
                                 <div class="no-admin-block">
-                                    <h3 class="no-admin-title"><label for="meta_keywords">Meta Keywords</label></h3>
+                                    <h3 class="no-admin-title"><label for="meta_keywords">메타 키워드</label></h3>
                                     <div class="no-admin-content">
                                         <input type="text" id="meta_keywords" name="meta_keywords"
                                             placeholder="예: 여성암, 자궁경부암, 건강검진">

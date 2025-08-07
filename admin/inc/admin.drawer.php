@@ -1,4 +1,8 @@
 <?php
+
+
+$restrictedMenuKeys = $role->getRestrictedMenuKeys();
+
 $BASE_URL = '/admin/pages/';
 
 $gnbActive = array_fill(1, 11, "");
@@ -19,7 +23,6 @@ $menus = [
         'title' => '게시판',
         'icon' => 'fa-list',
         'subs' => [
-            ['title' => '게시판 관리', 'url' => 'board/board.manage.list.php'],
             ['title' => '게시글 관리', 'url' => 'board/board.list.php'],
         ]
     ],
@@ -90,6 +93,12 @@ $menus = [
             ['title' => '예진표 (맞춤한약)', 'url' => 'inquiry/prescription.php'],
         ]
     ],
+     12 => [
+        'key' => 'etc',
+        'title' => '기타 관리',
+        'icon' => 'fa-circle-info',
+        'url'  => '/admin/pages/etc',
+    ],
 ];
 
 // 메뉴 활성화 설정 함수
@@ -125,7 +134,10 @@ if (isset($menus[$depthnum])) {
         <nav class="no-sidebar-menu__inner">
             <ul class="no-menu-list">
                 <?php foreach ($menus as $index => $menu): ?>
-                <?php $hasSub = !empty($menu['subs']); ?>
+                <?php
+                        if (in_array($menu['key'], $restrictedMenuKeys)) continue;
+                        $hasSub = !empty($menu['subs']);
+                    ?>
                 <li class="no-menu-item <?=$gnbActive[$index] ?? ''?>">
                     <?php if ($hasSub): ?>
                     <span class="no-menu-link">
@@ -136,9 +148,9 @@ if (isset($menus[$depthnum])) {
                     <ul class="no-menu-sub">
                         <?php foreach ($menu['subs'] as $i => $sub): ?>
                         <?php
-                            $subUrl = $BASE_URL . $sub['url'];
-                            $isActive = $pageActive[$menu['key']][$i] ?? '';
-                        ?>
+                                        $subUrl = $BASE_URL . $sub['url'];
+                                        $isActive = $pageActive[$menu['key']][$i] ?? '';
+                                    ?>
                         <li class="no-menu-item">
                             <a href="<?=$NO_IS_SUBDIR . $subUrl?>" class="no-menu-link <?=$isActive?>">
                                 <span class="no-menu-bullet"><span class="no-menu-bullet-dot"></span></span>

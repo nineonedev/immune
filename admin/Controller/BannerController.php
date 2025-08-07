@@ -14,32 +14,43 @@ try {
 
     // INSERT
     if ($mode === 'insert') {
-          $data = [
+        $data = [
             'title'         => trim($input['title'] ?? ''),
             'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
             'banner_type'   => (int)($input['banner_type'] ?? 0),
             'has_link'      => (int)($input['has_link'] ?? 2),
             'link_url'      => trim($input['link_url'] ?? ''),
-            'is_target'     => (int)($input['is_target'] ?? 1), // ✅ 추가
-            'sort_no'       => (int)($input['sort_no'] ?? 0),
+            'is_target'     => (int)($input['is_target'] ?? 1),
             'is_active'     => (int)($input['is_active'] ?? 1),
             'description'   => trim($input['description'] ?? ''),
             'start_at'      => trim($input['start_at'] ?? null),
             'end_at'        => trim($input['end_at'] ?? null),
-            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1), 
+            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
         ];
 
+        // ✅ sort_no 자동 처리
+        $data['sort_no'] = isset($input['sort_no']) && (int)$input['sort_no'] > 0
+            ? (int)$input['sort_no']
+            : BannerModel::getMaxSortNo() + 1;
 
         $validator->require('title', $data['title'], '제목');
         $validator->require('banner_type', $data['banner_type'], '배너 위치');
-
-        if ($validator->fails()) {
-            echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
-            exit;
-        }
+        $validator->require('branch_id', $data['branch_id'], '지점');
 
         $image = imageUpload($upload_path, $_FILES['banner_image'] ?? []);
-        $data['banner_image'] = $image['saved'] ?? '';
+        if (empty($image['saved'])) {
+            $validator->require('banner_image', '', '배너 이미지');
+        } else {
+            $data['banner_image'] = $image['saved'];
+        }
+
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
+            exit;
+        }
 
         $result = BannerModel::insert($data);
 
@@ -55,29 +66,26 @@ try {
         $id = (int)($input['id'] ?? 0);
         if (!$id) throw new Exception("ID가 없습니다.");
 
-         $data = [
+        $data = [
             'title'         => trim($input['title'] ?? ''),
             'branch_id'     => !empty($input['branch_id']) ? (int)$input['branch_id'] : null,
             'banner_type'   => (int)($input['banner_type'] ?? 0),
             'has_link'      => (int)($input['has_link'] ?? 2),
             'link_url'      => trim($input['link_url'] ?? ''),
-            'is_target'     => (int)($input['is_target'] ?? 1), // ✅ 추가
-            'sort_no'       => (int)($input['sort_no'] ?? 0),
+            'is_target'     => (int)($input['is_target'] ?? 1),
             'is_active'     => (int)($input['is_active'] ?? 1),
             'description'   => trim($input['description'] ?? ''),
             'start_at'      => trim($input['start_at'] ?? null),
             'end_at'        => trim($input['end_at'] ?? null),
-            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1), 
+            'is_unlimited'  => (int)($input['is_unlimited'] ?? 1),
         ];
 
+        $newSortNo = (int)($input['sort_no'] ?? 0);
+        $data['sort_no'] = $newSortNo;
 
         $validator->require('title', $data['title'], '제목');
         $validator->require('banner_type', $data['banner_type'], '배너 위치');
-
-        if ($validator->fails()) {
-            echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
-            exit;
-        }
+        $validator->require('branch_id', $data['branch_id'], '지점');
 
         $existing = BannerModel::find($id);
         if (!$existing) {
@@ -85,10 +93,27 @@ try {
             exit;
         }
 
-        if (!empty($_FILES['banner_image']) && $_FILES['banner_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        // ✅ 정렬 밀어내기 처리
+        $oldSortNo = (int)$existing['sort_no'];
+        if ($newSortNo !== $oldSortNo && $newSortNo > 0) {
+            BannerModel::shiftSortNosForUpdate($oldSortNo, $newSortNo, $id);
+        }
+
+        $hasNewImage = !empty($_FILES['banner_image']) && $_FILES['banner_image']['error'] !== UPLOAD_ERR_NO_FILE;
+        if ($hasNewImage) {
             imageDelete($upload_path . '/' . $existing['banner_image']);
             $image = imageUpload($upload_path, $_FILES['banner_image']);
             $data['banner_image'] = $image['saved'];
+        } elseif (empty($existing['banner_image'])) {
+            $validator->require('banner_image', '', '배너 이미지');
+        }
+
+        if ($validator->fails()) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
+            exit;
         }
 
         $result = BannerModel::update($id, $data);

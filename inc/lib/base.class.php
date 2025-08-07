@@ -217,6 +217,10 @@ if (!in_array($NO_MAKE_KEY, Lisence::getAll())) {
 
 include_once $_path_str.'/menu/menu.init.php';
 
+// ROLE 검사
+require_once $_SERVER['DOCUMENT_ROOT'] . '/admin/lib/Role.php';
+
+$role = new Role();
 
 
 ?>

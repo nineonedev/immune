@@ -51,6 +51,28 @@ include_once "../../inc/admin.js.php";
 
                             <div class="no-card-body no-admin-column no-admin-column--detail">
 
+
+
+                                <!-- 권한 -->
+                                <div class="no-admin-block">
+                                    <h3 class="no-admin-title">권한</h3>
+                                    <div class="no-admin-content">
+                                        <div class="no-radio-form no-list">
+                                            <?php foreach ($admin_roles as $id => $info): ?>
+                                            <label for="role<?= $id ?>">
+                                                <div class="no-radio-box">
+                                                    <input type="radio" name="role_id" id="role<?= $id ?>"
+                                                        value="<?= $id ?>" <?= $id === 3 ? 'checked' : '' ?>>
+                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                </div>
+                                                <span
+                                                    class="no-radio-text"><?= htmlspecialchars($info['name']) ?></span>
+                                            </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="no-admin-block">
                                     <h3 class="no-admin-title"><label for="uid">아이디</label></h3>
                                     <div class="no-admin-content">

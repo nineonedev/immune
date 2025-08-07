@@ -20,24 +20,39 @@ try {
             'position'            => trim($input['position'] ?? ''),
             'department'          => trim($input['department'] ?? ''),
             'keywords'            => trim($input['keywords'] ?? ''),
+            'is_ceo'              => (int)($input['is_ceo'] ?? 2),
             'career'              => trim($input['career'] ?? ''),
             'activity'            => trim($input['activity'] ?? ''),
             'education'           => trim($input['education'] ?? ''),
-            'publication_visible' => (int)($input['publication_visible'] ?? 1),
             'publications'        => trim($input['publications'] ?? ''),
-            'sort_no'             => (int)($input['sort_no'] ?? 0),
+            'publication_visible' => (int)($input['publication_visible'] ?? 1),
             'is_active'           => (int)($input['is_active'] ?? 1),
-            'is_ceo'              => (int)($input['is_ceo'] ?? 2),
         ];
 
+        // ✅ sort_no 자동 지정
+        $sortNo = isset($input['sort_no']) && (int)$input['sort_no'] > 0
+            ? (int)$input['sort_no']
+            : DoctorModel::getMaxSortNo() + 1;
+
+        $data['sort_no'] = $sortNo;
+
+        // 유효성 검사
         $validator->require('title', $data['title'], '이름');
         $validator->require('branch_id', $data['branch_id'], '지점');
+        $validator->require('position', $data['position'], '직책');
+        $validator->require('department', $data['department'], '진료과');
+        $validator->require('keywords', $data['keywords'], '키워드');
+        $validator->require('is_ceo', $data['is_ceo'], '대표 여부');
 
         if ($validator->fails()) {
-            echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
             exit;
         }
 
+        // 이미지 업로드
         $thumb = imageUpload($upload_path, $_FILES['thumb_image'] ?? []);
         $detail = imageUpload($upload_path, $_FILES['detail_image'] ?? []);
         $data['thumb_image'] = $thumb['saved'] ?? '';
@@ -66,27 +81,46 @@ try {
             'career'              => trim($input['career'] ?? ''),
             'activity'            => trim($input['activity'] ?? ''),
             'education'           => trim($input['education'] ?? ''),
-            'publication_visible' => (int)($input['publication_visible'] ?? 1),
             'publications'        => trim($input['publications'] ?? ''),
-            'sort_no'             => (int)($input['sort_no'] ?? 0),
+            'publication_visible' => (int)($input['publication_visible'] ?? 1),
             'is_active'           => (int)($input['is_active'] ?? 1),
             'is_ceo'              => (int)($input['is_ceo'] ?? 2),
         ];
 
+        $newSortNo = (int)($input['sort_no'] ?? 0);
+        $data['sort_no'] = $newSortNo;
+
+        // 유효성 검사
         $validator->require('title', $data['title'], '이름');
         $validator->require('branch_id', $data['branch_id'], '지점');
+        $validator->require('position', $data['position'], '직책');
+        $validator->require('department', $data['department'], '진료과');
+        $validator->require('keywords', $data['keywords'], '키워드');
+        $validator->require('is_ceo', $data['is_ceo'], '대표 여부');
 
         if ($validator->fails()) {
-            echo json_encode(['success' => false, 'errors' => $validator->getErrors()]);
+            echo json_encode([
+                'success' => false,
+                'message' => implode("\n", $validator->getErrors())
+            ]);
             exit;
         }
 
+        // 기존 데이터
         $existing = DoctorModel::find($id);
         if (!$existing) {
             echo json_encode(['success' => false, 'message' => '데이터를 찾을 수 없습니다.']);
             exit;
         }
 
+        $oldSortNo = (int)$existing['sort_no'];
+
+        // ✅ 정렬 충돌 처리
+        if ($newSortNo !== $oldSortNo && $newSortNo > 0) {
+            DoctorModel::shiftSortNosForUpdate($oldSortNo, $newSortNo, $id);
+        }
+
+        // 이미지 교체 처리
         if (!empty($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] !== UPLOAD_ERR_NO_FILE) {
             imageDelete($upload_path . '/' . $existing['thumb_image']);
             $thumb = imageUpload($upload_path, $_FILES['thumb_image']);
@@ -114,7 +148,7 @@ try {
         if (!$id) throw new Exception("ID가 없습니다.");
 
         $existing = DoctorModel::find($id);
-        
+
         if ($existing) {
             imageDelete($upload_path . '/' . $existing['thumb_image']);
             imageDelete($upload_path . '/' . $existing['detail_image']);
@@ -137,7 +171,6 @@ try {
             throw new Exception("삭제할 ID 목록이 없습니다.");
         }
 
-        // 이미지 삭제
         foreach ($ids as $id) {
             $existing = DoctorModel::find((int)$id);
             if ($existing) {
@@ -154,7 +187,6 @@ try {
         ]);
         exit;
     }
-
 
     echo json_encode(['success' => false, 'message' => '유효하지 않은 요청입니다.']);
     exit;

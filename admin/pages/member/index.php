@@ -1,18 +1,17 @@
 <?php include_once "../../../inc/lib/base.class.php";
 
 $pageName = "회원";
+$depthnum = 9;
 
-$depthnum = 9; 
-
-$Page = $Page ?? 1;
-$listCurPage = $listCurPage ?? 1;
-$pageBlock = $pageBlock ?? 2;
+$perpage = 10;
+$listCurPage = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+$pageBlock = 2;
+$count = ($listCurPage - 1) * $perpage;
 
 $searchColumn = $_GET['searchColumn'] ?? '';
 $searchKeyword = $_GET['searchKeyword'] ?? '';
 $active_status = $_GET['active_status'] ?? '';
 $sns_type = $_GET['sns_type'] ?? '';
-
 
 $db = DB::getInstance();
 
@@ -31,7 +30,6 @@ if ($sns_type === 'normal') {
     $where .= " AND kakao_id IS NOT NULL";
 }
 
-// 검색 조건 필터
 if (!empty($searchColumn) && !empty($searchKeyword)) {
     $allowedColumns = ['user_id', 'name', 'email'];
     if (in_array($searchColumn, $allowedColumns)) {
@@ -41,19 +39,27 @@ if (!empty($searchColumn) && !empty($searchKeyword)) {
 }
 // WHERE ==============================================
 
+// 총 데이터 수 가져오기
+$totalStmt = $db->prepare("SELECT COUNT(*) FROM nb_users {$where}");
+$totalStmt->execute($params);
+$totalCount = (int)$totalStmt->fetchColumn();
+$Page = ceil($totalCount / $perpage);
+
+
+// 실제 데이터 조회
 $sql = "
     SELECT id, user_id, name, email, phone, regdate, active_status 
     FROM nb_users 
     {$where}
     ORDER BY id DESC
+    LIMIT {$count}, {$perpage}
 ";
 
 $stmt = $db->prepare($sql);
 $stmt->execute($params);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
 ?>
+
 
 <!--=====================HEAD========================= -->
 <?php include_once "../../inc/admin.head.php"; ?>

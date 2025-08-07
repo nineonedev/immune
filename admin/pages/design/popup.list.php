@@ -5,17 +5,18 @@ $pageName = "팝업";
 $depthnum = 3;
 $pagenum = 2;
 
-$Page = $Page ?? 1;
-$listCurPage = $listCurPage ?? 1;
-$pageBlock = $pageBlock ?? 2;
-
 $db = DB::getInstance();
+
+// 페이지네이션 설정
+$perpage = 10;
+$listCurPage = isset($_POST['page']) ? (int)$_POST['page'] : (isset($_GET['page']) ? (int)$_GET['page'] : 1);
+$pageBlock = 2;
+$count = ($listCurPage - 1) * $perpage;
 
 // 지점 목록
 $branchesStmt = $db->prepare("SELECT * FROM nb_branches WHERE id IN (2,3,4) ORDER BY id ASC");
 $branchesStmt->execute();
 $branches = $branchesStmt->fetchAll(PDO::FETCH_ASSOC); 
-
 
 // GET 파라미터 처리
 $branch_id     = $_GET['branch_id']    ?? '';
@@ -45,12 +46,12 @@ if ($active_filter !== '') {
 }
 
 if (!empty($start_at)) {
-    $where .= " AND (b.end_at IS NULL OR b.end_at >= :start_at)";
+    $where .= " AND (p.end_at IS NULL OR p.end_at >= :start_at)";
     $params[':start_at'] = $start_at;
 }
 
 if (!empty($end_at)) {
-    $where .= " AND (b.start_at IS NULL OR b.start_at <= :end_at)";
+    $where .= " AND (p.start_at IS NULL OR p.start_at <= :end_at)";
     $params[':end_at'] = $end_at;
 }
 
@@ -59,19 +60,32 @@ if (!empty($searchKeyword)) {
     $params[':searchKeyword'] = '%' . $searchKeyword . '%';
 }
 
-// SQL 실행
+// 전체 개수 조회
+$totalSql = "
+    SELECT COUNT(*) 
+    FROM nb_popups p
+    LEFT JOIN nb_branches br ON p.branch_id = br.id
+    $where
+";
+$totalStmt = $db->prepare($totalSql);
+$totalStmt->execute($params);
+$totalCount = (int)$totalStmt->fetchColumn();
+$Page = ceil($totalCount / $perpage);
+
+// 실제 데이터 조회
 $sql = "
     SELECT p.*, br.name_kr AS branch_name
     FROM nb_popups p
     LEFT JOIN nb_branches br ON p.branch_id = br.id
     $where
     ORDER BY p.sort_no ASC, p.id DESC
+    LIMIT {$count}, {$perpage}
 ";
-
 $stmt = $db->prepare($sql);
 $stmt->execute($params);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 
 <?php include_once "../../inc/admin.head.php"; ?>
@@ -97,10 +111,12 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </ul>
                                 </div>
                             </div>
+                            <?php if($role->canDelete()) : ?>
                             <div class="no-items-center">
                                 <a href="./popup.new.php" class="no-btn no-btn--main no-btn--big"> <?= $pageName ?> 생성
                                 </a>
                             </div>
+                            <?php endif;?>
                         </div>
                     </div>
 
@@ -222,6 +238,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="no-card-body">
+                                <?php if($role->canDelete()) : ?>
                                 <div class="no-table-option">
                                     <ul class="no-table-check-control">
                                         <ul class="no-table-check-control">
@@ -235,12 +252,14 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </ul>
                                     </ul>
                                 </div>
+                                <?php endif;?>
 
                                 <div class="no-table-responsive">
 
                                     <table class="no-table">
                                         <thead>
                                             <tr>
+                                                <?php if($role->canDelete()) : ?>
                                                 <th class="no-width-25 no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
@@ -249,6 +268,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         </label>
                                                     </div>
                                                 </th>
+                                                <?php endif;?>
                                                 <th>번호</th>
                                                 <th>지점</th>
                                                 <th>팝업명</th>
@@ -264,6 +284,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php if (count($rows) > 0): ?>
                                             <?php foreach ($rows as $row): ?>
                                             <tr>
+                                                <?php if($role->canDelete()) :?>
                                                 <td class="no-check">
                                                     <div class="no-checkbox-form">
                                                         <label>
@@ -273,6 +294,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         </label>
                                                     </div>
                                                 </td>
+                                                <?php endif ;?>
                                                 <td><?= $row['id'] ?></td>
                                                 <td><?= htmlspecialchars($row['branch_name'] ?? '-') ?></td>
                                                 <td><?= htmlspecialchars($row['title']) ?></td>
@@ -310,10 +332,12 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
                                                             <a href="popup.edit.php?id=<?= $row['id'] ?>"
-                                                                class="no-btn no-btn--sm no-btn--normal">수정</a>
+                                                                class="no-btn no-btn--sm no-btn--normal">보기</a>
+                                                            <?php if($role->canDelete() ) : ?>
                                                             <button type="button"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline delete-btn"
                                                                 data-id="<?= $row['id'] ?>">삭제</button>
+                                                            <?php endif;?>
                                                         </div>
                                                     </div>
                                                 </td>

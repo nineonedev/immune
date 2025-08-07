@@ -49,7 +49,9 @@ export class SettingController {
     const formData = new FormData(this.form);
     formData.set("mode", "update");
 
-    await this.sendRequest(formData, "수정되었습니다.");
+    const page = this.form.querySelector("input[name='page']")?.value || 1;
+
+    await this.sendRequest(formData, "수정되었습니다.", page);
   }
 
   attachDeleteEvents() {

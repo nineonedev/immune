@@ -1,24 +1,32 @@
 <?php include_once "../../../inc/lib/base.class.php";
 
 $pageName = "계정";
+$depthnum = 8;
 
-$depthnum = 8; 
-
-$Page = $Page ?? 1;
-$listCurPage = $listCurPage ?? 1;
-$pageBlock = $pageBlock ?? 2;
+$perpage = 10;
+$listCurPage = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+$pageBlock = 2;
+$count = ($listCurPage - 1) * $perpage;
 
 $db = DB::getInstance();
 
-$sql = "SELECT no, uid, uname, email, phone, active_status, role_id, created_at 
-        FROM nb_admin 
-        ORDER BY no DESC";
+// 총 개수 구하기
+$totalStmt = $db->query("SELECT COUNT(*) FROM nb_admin");
+$totalCount = (int)$totalStmt->fetchColumn();
+$Page = ceil($totalCount / $perpage);
+
+// 실제 데이터 조회
+$sql = "SELECT a.no, a.uid, a.uname, a.email, a.phone, a.active_status, a.role_id, r.role_name, a.created_at 
+        FROM nb_admin a
+        LEFT JOIN nb_roles r ON a.role_id = r.role_id
+        ORDER BY a.no DESC
+        LIMIT {$count}, {$perpage}";
 
 $stmt = $db->prepare($sql);
 $stmt->execute();
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
+
 
 <!--=====================HEAD========================= -->
 <?php include_once "../../inc/admin.head.php"; ?>
@@ -112,13 +120,15 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?= htmlspecialchars($row['uid']) ?></td>
                                                 <td><?= htmlspecialchars($row['uname']) ?></td>
                                                 <td><?= htmlspecialchars($row['email']) ?></td>
-                                                <td><?= htmlspecialchars($row['role_id']) ?></td>
+                                                <td><?= htmlspecialchars($admin_roles[$row['role_id']]['name'] ?? '알 수 없음') ?>
+                                                </td>
                                                 <td><?= htmlspecialchars($row['created_at']) ?></td>
                                                 <td>
                                                     <span
-                                                        class="no-badge <?= $row['active_status'] === 'Y' ? 'no-badge--success' : 'no-badge--gray' ?>">
+                                                        class="no-btn <?= $row['active_status'] === 'Y' ? 'no-btn--notice' : 'no-btn--normal' ?>">
                                                         <?= $row['active_status'] === 'Y' ? '활성' : '비활성' ?>
                                                     </span>
+
                                                 </td>
                                                 <td>
                                                     <div class="no-table-role">
@@ -126,9 +136,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
                                                             <a href="edit.php?no=<?= $row['no'] ?>"
-                                                                class="no-btn no-btn--sm no-btn--normal">수정</a>
-                                                            <a href="edit.php?no=<?= $row['no'] ?>"
-                                                                class="no-btn no-btn--sm no-btn--normal">권한 관리</a>
+                                                                class="no-btn no-btn--sm no-btn--normal">권한 및 수정 </a>
                                                             <button type="button"
                                                                 class="no-btn no-btn--sm no-btn--delete-outline delete-btn"
                                                                 data-id="<?= $row['no'] ?>">

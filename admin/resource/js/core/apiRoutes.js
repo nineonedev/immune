@@ -10,4 +10,5 @@ export const API = {
   FACILITY: "/admin/Controller/FacilityController.php",
   BANNER: "/admin/Controller/BannerController.php",
   POPUP: "/admin/Controller/PopupController.php",
+  ETC: "/admin/Controller/EtcController.php",
 };

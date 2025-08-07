@@ -4,12 +4,11 @@ class AccountModel {
     
     public static function insert($data) {
         $db = DB::getInstance();
-
         global $NO_SITE_UNIQUE_KEY;
 
         $sql = "
-            INSERT INTO nb_admin (uid, upwd, uname, email, phone, active_status, sitekey, created_at)
-            VALUES (:uid, :upwd, :uname, :email, :phone, :active_status, :sitekey, :created_at)
+            INSERT INTO nb_admin (uid, upwd, uname, email, phone, active_status, role_id, sitekey, created_at)
+            VALUES (:uid, :upwd, :uname, :email, :phone, :active_status, :role_id, :sitekey, :created_at)
         ";
 
         $stmt = $db->prepare($sql);
@@ -20,12 +19,14 @@ class AccountModel {
             ':email' => $data['email'],
             ':phone' => $data['phone'],
             ':active_status' => $data['active_status'] ?? 'Y',
+            ':role_id' => $data['role_id'] ?? 3, // 기본값: 외부인
             ':sitekey' => $NO_SITE_UNIQUE_KEY,
             ':created_at' => date('Y-m-d H:i:s'),
         ]);
 
         return $db->lastInsertId();
     }
+
     
     public static function delete($id) 
     {
@@ -52,18 +53,18 @@ class AccountModel {
         $db = DB::getInstance();
 
         $fields = [
+            'uid' => $data['uid'], 
             'uname' => $data['uname'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'active_status' => $data['active_status'] ?? 'Y',
+            'role_id' => $data['role_id'] ?? 3,
         ];
 
-        // 비밀번호 입력이 있는 경우에만 변경
         if (!empty($data['upwd'])) {
             $fields['upwd'] = $data['upwd'];
         }
 
-        // SET 절 동적 생성
         $set = implode(', ', array_map(fn($key) => "$key = :$key", array_keys($fields)));
         $fields['no'] = $id;
 
@@ -71,6 +72,7 @@ class AccountModel {
         $stmt = $db->prepare($sql);
         return $stmt->execute($fields);
     }
+
 
     public static function exists(array $conditions): bool
     {

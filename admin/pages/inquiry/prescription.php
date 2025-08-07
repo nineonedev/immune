@@ -158,8 +158,8 @@ $inquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <span class="no-role-btn"><i
                                                                 class="bx bx-dots-vertical-rounded"></i></span>
                                                         <div class="no-table-action">
-                                                            <a href="prescription.view.php?id=<?= $row['id'] ?>"
-                                                                class="no-btn no-btn--sm no-btn--normal">자세히 보기</a>
+                                                            <a href="prescription.view.php?id=<?= $row['id'] ?>&page=<?= $listCurPage ?>"
+                                                                class=" no-btn no-btn--sm no-btn--normal">자세히 보기</a>
                                                         </div>
                                                     </div>
                                                 </td>

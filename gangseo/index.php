@@ -362,7 +362,7 @@ include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
 
                             <div class="no-container-sm">
                                 <a href="#" class="basic-btn no-body-lg fw600 no-mg-24--t">
-                                    오시는 길hello
+                                    오시는 길hell
                                 </a>
                             </div>
                         </section>

@@ -7,25 +7,25 @@
 
 <!-- 팝업입니다============================================== -->
 <?php
-    $branchId = 2;
-    // var.php에서 poppu_type 확인
-    $popupType = 1;
-    include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
+$branchId = 2;
+// var.php에서 poppu_type 확인
+$popupType = 1;
+include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
 ?>
 <!-- 팝업입니다============================================== -->
 
 <!-- contents -->
 <main>
     <?php
-        $banners = getBannersByBranch('gangseo', 1);
-        $sql = "SELECT banner_rolling_times FROM nb_etcs LIMIT 1";
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        // 6000 (6초)
-        $rollingTime = isset($result['banner_rolling_times']) ? (int)$result['banner_rolling_times'] * 1000 : 5000; // ms로 변환
-        
-        // swiper div에 data-rolling=<?=$rollingTime.. 이거넣고 js에서 상수 등록 후 autoplay delay에 해당 값을 넣으세요.
+    $banners = getBannersByBranch('gangseo', 1);
+    $sql = "SELECT banner_rolling_times FROM nb_etcs LIMIT 1";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    // 6000 (6초)
+    $rollingTime = isset($result['banner_rolling_times']) ? (int)$result['banner_rolling_times'] * 1000 : 5000; // ms로 변환
+
+    // swiper div에 data-rolling=<?=$rollingTime.. 이거넣고 js에서 상수 등록 후 autoplay delay에 해당 값을 넣으세요.
     ?>
 
 
@@ -40,21 +40,21 @@
                     <div class="no-main">
                         <section class="no-main-visual">
                             <?php if (!empty($banners)): ?>
-                            <?php foreach ($banners as $banner): ?>
-                            <?php
+                                <?php foreach ($banners as $banner): ?>
+                                    <?php
                                     $imgSrc = '/uploads/banners/' . $banner['banner_image'];
                                     $alt = htmlspecialchars($banner['title']);
                                     $imgTag = "<img src=\"{$imgSrc}\" alt=\"{$alt}\">";
 
                                     if ($banner['has_link'] == 1 && !empty($banner['link_url'])) {
                                         $href = htmlspecialchars($banner['link_url']);
-                                        $target = ((int)$banner['is_target'] === 1) ? '_blank' : '_self'; 
+                                        $target = ((int)$banner['is_target'] === 1) ? '_blank' : '_self';
                                         echo "<a href=\"{$href}\" target=\"{$target}\">{$imgTag}</a>";
                                     } else {
                                         echo $imgTag;
                                     }
-                                ?>
-                            <?php endforeach; ?>
+                                    ?>
+                                <?php endforeach; ?>
                             <?php endif; ?>
                         </section>
 
@@ -205,7 +205,7 @@
                         </section>
 
                         <?php
-                            $doctors = getDoctors('gangseo'); 
+                        $doctors = getDoctors('gangseo');
                         ?>
                         <section class="no-main-doctor no-pd-48--y">
                             <div class="no-container-sm">
@@ -216,30 +216,30 @@
                                 <div class="basic-slider" <?= $aos_left_slow ?>>
                                     <ul class="swiper-wrapper doctor-list">
                                         <?php foreach ($doctors as $doctor): ?>
-                                        <?php
+                                            <?php
                                             $name = htmlspecialchars($doctor['title']);
                                             $position = htmlspecialchars($doctor['position']);
-                                            $imgSrc = !empty($doctor['thumb_image']) 
-                                            ? "/uploads/doctors/" . $doctor['thumb_image'] 
-                                            : "";
+                                            $imgSrc = !empty($doctor['thumb_image'])
+                                                ? "/uploads/doctors/" . $doctor['thumb_image']
+                                                : "";
                                             $link = "pages/hospital/doctor.view.php?id=" . urlencode($doctor['id']);
-                                        ?>
-                                        <li class="swiper-slide">
-                                            <a href="<?= $link ?>">
-                                                <figure>
-                                                    <img src="<?= $imgSrc ?>" alt="<?= $name ?>">
-                                                </figure>
+                                            ?>
+                                            <li class="swiper-slide">
+                                                <a href="<?= $link ?>">
+                                                    <figure>
+                                                        <img src="<?= $imgSrc ?>" alt="<?= $name ?>">
+                                                    </figure>
 
-                                                <div class="f-wrap no-mg-16--t">
-                                                    <div class="txt">
-                                                        <h3 class="no-heading-sm no-mg-8--b"><?= $name ?></h3>
-                                                        <p class="no-body-lg fw600"><?= $position ?></p>
+                                                    <div class="f-wrap no-mg-16--t">
+                                                        <div class="txt">
+                                                            <h3 class="no-heading-sm no-mg-8--b"><?= $name ?></h3>
+                                                            <p class="no-body-lg fw600"><?= $position ?></p>
+                                                        </div>
+
+                                                        <i class="fa-regular fa-arrow-right i-30"></i>
                                                     </div>
-
-                                                    <i class="fa-regular fa-arrow-right i-30"></i>
-                                                </div>
-                                            </a>
-                                        </li>
+                                                </a>
+                                            </li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>
@@ -304,7 +304,7 @@
 
 
                         <?php
-                            $facilities = getFacilities('gangseo', 1, 4);
+                        $facilities = getFacilities('gangseo', 1, 4);
                         ?>
 
                         <section class="no-main-facility no-pd-48--y">
@@ -317,14 +317,14 @@
                                 <div class="basic-slider" <?= $aos_left_slow ?>>
                                     <ul class="swiper-wrapper facility-list">
                                         <?php foreach ($facilities as $facility): ?>
-                                        <?php if (!empty($facility['thumb_image'])): ?>
-                                        <li class="swiper-slide">
-                                            <figure>
-                                                <img src="/uploads/facilities/<?= htmlspecialchars($facility['thumb_image']) ?>"
-                                                    alt="<?= htmlspecialchars($facility['title']) ?>">
-                                            </figure>
-                                        </li>
-                                        <?php endif; ?>
+                                            <?php if (!empty($facility['thumb_image'])): ?>
+                                                <li class="swiper-slide">
+                                                    <figure>
+                                                        <img src="/uploads/facilities/<?= htmlspecialchars($facility['thumb_image']) ?>"
+                                                            alt="<?= htmlspecialchars($facility['title']) ?>">
+                                                    </figure>
+                                                </li>
+                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>
@@ -352,17 +352,17 @@
                                 src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
 
                             <script charset="UTF-8">
-                            new daum.roughmap.Lander({
-                                "timestamp": "1752029358628",
-                                "key": "4x538kgm8z4",
-                                "mapWidth": "100%",
-                                "mapHeight": "200"
-                            }).render();
+                                new daum.roughmap.Lander({
+                                    "timestamp": "1752029358628",
+                                    "key": "4x538kgm8z4",
+                                    "mapWidth": "100%",
+                                    "mapHeight": "200"
+                                }).render();
                             </script>
 
                             <div class="no-container-sm">
                                 <a href="#" class="basic-btn no-body-lg fw600 no-mg-24--t">
-                                    오시는 길
+                                    오시는 길hello
                                 </a>
                             </div>
                         </section>

@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   web:
@@ -8,14 +8,14 @@ services:
     volumes:
       - ./:/var/www/html
     ports:
-      - "8080:80"
+      - '8080:80'
     depends_on:
       - db
       - phpmyadmin
   db:
     image: mysql:8.0
     ports:
-      - "3306:3306"
+      - '3307:3306'
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: nineonelabs
@@ -27,7 +27,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - "8081:80"
+      - '8081:80'
     environment:
       PMA_HOST: db
       PMA_PORT: 3306

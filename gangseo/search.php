@@ -53,10 +53,6 @@ if (!empty($searchKeyword)) {
 }
 ?>
 
-
-
-
-
 <?php include_once $STATIC_ROOT . '/inc/layouts/head.php'; ?>
 
 <script src="<?= $ROOT ?>/resource/js/sub.js" <?= date('YmdHis') ?> defer></script>
@@ -83,53 +79,53 @@ if (!empty($searchKeyword)) {
 
                                 <div class="search-section">
                                     <?php if (!empty($searchKeyword)): ?>
-                                    <?php if (!empty($groupedResults)): ?>
-                                    <div class="search-success">
-                                        <p class="no-body-xl fw700 --tac">
-                                            <b class="blue">‘<?= htmlspecialchars($searchKeyword) ?>’</b>에 대한 검색 결과입니다.
-                                        </p>
-                                    </div>
+                                        <?php if (!empty($groupedResults)): ?>
+                                            <div class="search-success">
+                                                <p class="no-body-xl fw700 --tac">
+                                                    <b class="blue">‘<?= htmlspecialchars($searchKeyword) ?>’</b>에 대한 검색 결과입니다.
+                                                </p>
+                                            </div>
 
-                                    <div class="search-wrap no-mg-32--t">
-                                        <ul class="search-list">
-                                            <?php foreach ($groupedResults as $pageTitle => $sections): ?>
-                                            <li>
-                                                <h3 class="no-body-xl fw700"><?= htmlspecialchars($pageTitle) ?></h3>
-                                                <ul class="dept2">
-                                                    <?php foreach ($sections as $sectionTitle => $items): ?>
-                                                    <li>
-                                                        <h4 class="no-body-xl fw400">
-                                                            <?= htmlspecialchars($sectionTitle) ?></h4>
-                                                        <ul>
-                                                            <?php foreach ($items as $item): ?>
-                                                            <li>
+                                            <div class="search-wrap no-mg-32--t">
+                                                <ul class="search-list">
+                                                    <?php foreach ($groupedResults as $pageTitle => $sections): ?>
+                                                        <li>
+                                                            <h3 class="no-body-xl fw700"><?= htmlspecialchars($pageTitle) ?></h3>
+                                                            <ul class="dept2">
+                                                                <?php foreach ($sections as $sectionTitle => $items): ?>
+                                                                    <li>
+                                                                        <h4 class="no-body-lg fw500">
+                                                                            <?= htmlspecialchars($sectionTitle) ?></h4>
+                                                                        <ul>
+                                                                            <?php foreach ($items as $item): ?>
+                                                                                <li>
 
-                                                                <p class="no-body-lg fw300">
-                                                                    <a href="<?= htmlspecialchars($item['url']) ?>">
-                                                                        <?= htmlspecialchars($item['topic_title']) ?>
-                                                                    </a>
-                                                                </p>
-                                                            </li>
-                                                            <?php endforeach; ?>
-                                                        </ul>
-                                                    </li>
+                                                                                    <p class="no-body-md fw300">
+                                                                                        <a href="<?= htmlspecialchars($item['url']) ?>">
+                                                                                            <?= htmlspecialchars($item['topic_title']) ?>
+                                                                                        </a>
+                                                                                    </p>
+                                                                                </li>
+                                                                            <?php endforeach; ?>
+                                                                        </ul>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        </li>
                                                     <?php endforeach; ?>
                                                 </ul>
-                                            </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                    <?php else: ?>
-                                    <div class="no-search-result">
-                                        <p class="no-body-xl fw300 --tac">‘<?= htmlspecialchars($searchKeyword) ?>’에 대한
-                                            검색 결과가 없습니다.</p>
-                                        <div class="search-guide bg no-mg-32--t">
-                                            <p class="bullet no-body-lg fw300">단어의 철자가 정확한지 확인해 주세요.</p>
-                                            <p class="bullet no-body-lg fw300">검색어의 수를 줄여서 검색해 보세요.</p>
-                                            <p class="bullet no-body-lg fw300">일반적인 검색어로 다시 검색해 보세요.</p>
-                                        </div>
-                                    </div>
-                                    <?php endif; ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="no-search-result">
+                                                <p class="no-body-xl fw300 --tac">‘<?= htmlspecialchars($searchKeyword) ?>’에 대한
+                                                    검색 결과가 없습니다.</p>
+                                                <div class="search-guide bg no-mg-32--t">
+                                                    <p class="bullet no-body-lg fw300">단어의 철자가 정확한지 확인해 주세요.</p>
+                                                    <p class="bullet no-body-lg fw300">검색어의 수를 줄여서 검색해 보세요.</p>
+                                                    <p class="bullet no-body-lg fw300">일반적인 검색어로 다시 검색해 보세요.</p>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
                                     <?php endif; ?>
 
 
@@ -146,45 +142,45 @@ if (!empty($searchKeyword)) {
                                 </form>
 
                                 <?php if (empty($searchKeyword)): ?>
-                                <!-- 검색어 없을 때 더미 데이터 표시 -->
-                                <div class="search-wrap no-mg-32--t">
-                                    <ul class="search-list">
-                                        <li>
-                                            <h3 class="no-body-xl fw700">암면역센터 (3건)</h3>
-                                            <ul class="dept2">
-                                                <li>
-                                                    <a href="#">
-                                                        <h4 class="no-body-xl fw400">유방/자궁/난소암</h4>
-                                                    </a>
-                                                    <p class="no-body-lg fw300">수술전후</p>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <h4 class="no-body-xl fw400">폐암</h4>
-                                                    </a>
-                                                    <p class="no-body-lg fw300">항암방사선</p>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <h4 class="no-body-xl fw400">기타암</h4>
-                                                    </a>
-                                                    <p class="no-body-lg fw300">항암식이</p>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <h3 class="no-body-xl fw700">신경면역센터 (1건)</h3>
-                                            <ul class="dept2">
-                                                <li>
-                                                    <a href="#">
-                                                        <h4 class="no-body-xl fw400">대상포진</h4>
-                                                    </a>
-                                                    <p class="no-body-lg fw300">면역관리</p>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <!-- 검색어 없을 때 더미 데이터 표시 -->
+                                    <div class="search-wrap no-mg-32--t">
+                                        <ul class="search-list">
+                                            <li>
+                                                <h3 class="no-body-xl fw700">암면역센터 (3건)</h3>
+                                                <ul class="dept2">
+                                                    <li>
+                                                        <a href="#">
+                                                            <h4 class="no-body-xl fw400">유방/자궁/난소암</h4>
+                                                        </a>
+                                                        <p class="no-body-lg fw300">수술전후</p>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <h4 class="no-body-xl fw400">폐암</h4>
+                                                        </a>
+                                                        <p class="no-body-lg fw300">항암방사선</p>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <h4 class="no-body-xl fw400">기타암</h4>
+                                                        </a>
+                                                        <p class="no-body-lg fw300">항암식이</p>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <h3 class="no-body-xl fw700">신경면역센터 (1건)</h3>
+                                                <ul class="dept2">
+                                                    <li>
+                                                        <a href="#">
+                                                            <h4 class="no-body-xl fw400">대상포진</h4>
+                                                        </a>
+                                                        <p class="no-body-lg fw300">면역관리</p>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                         </section>

@@ -1,69 +1,68 @@
 <footer class="no-footer no-pd-32--t no-pd-120--b">
 
-    <a href="#" class="top_btn">
-        <i class="fa-regular fa-angle-up i-24"></i>
-        <p class="no-body-sm fw600">TOP</p>
-    </a>
+	<a href="#" class="top_btn">
+		<i class="fa-regular fa-angle-up i-24"></i>
+		<p class="no-body-sm fw600">TOP</p>
+	</a>
 
+	<div class="no-container-sm">
+		<div class="no-footer_call no-boyd-xl fw600">
+			<h3>진료안내 및 예약</h3>
+			<a href="tel:<?= $SITEINFO_FOOTER_PHONE ?>" /><?= $SITEINFO_FOOTER_PHONE ?></a>
+		</div>
 
-    <div class="no-container-sm">
-        <div class="no-footer_call no-boyd-xl fw600">
-            <h3>진료안내 및 예약</h3>
-            <a href="tel:<?=$SITEINFO_FOOTER_PHONE?>" /><?=$SITEINFO_FOOTER_PHONE?></a>
-        </div>
+		<div class="no-footer_time no-mg-24--y">
+			<h3 class="no-boyd-xl fw600 no-mg-8--b">진료시간 안내</h3>
+			<p class="no-body-sm no-mg-4--b fw300">평일 <span>오전 09:00 - 오후 20:00(야간진료)</span></p>
+			<p class="no-body-sm no-mg-4--b fw300">점심시간 <span>오후 13:00 - 오후 14:00</span></p>
+			<p class="no-body-sm fw300">토•일•공휴일 <span>오전 09:00 - 오후 15:00</span></p>
+		</div>
 
-        <div class="no-footer_time no-mg-24--y">
-            <h3 class="no-boyd-xl fw600 no-mg-8--b">진료시간 안내</h3>
-            <p class="no-body-sm no-mg-4--b fw300">평일 <span>오전 09:00 - 오후 20:00(야간진료)</span></p>
-            <p class="no-body-sm no-mg-4--b fw300">점심시간 <span>오후 13:00 - 오후 14:00</span></p>
-            <p class="no-body-sm fw300">토•일•공휴일 <span>오전 09:00 - 오후 15:00</span></p>
-        </div>
+		<div class="no-footer_logo">
+			<a href="/<?= htmlspecialchars($area) ?>">
+				<img src="/resource/images/gray-logo.svg">
+			</a>
+		</div>
 
-        <div class="no-footer_logo">
-            <a href="/<?= htmlspecialchars($area) ?>">
-                <img src="/resource/images/gray-logo.svg">
-            </a>
-        </div>
+		<ul class="no-footer_menu no-mg-8--t">
+			<li class="no-body-sm fw300">
+				대표자 : <?= $SITEINFO_FOOTER_OWNER ?>
+			</li>
 
-        <ul class="no-footer_menu no-mg-8--t">
-            <li class="no-body-sm fw300">
-                대표자 : <?=$SITEINFO_FOOTER_OWNER?>
-            </li>
+			<li class="no-body-sm fw300">
+				사업자등록번호 : <?= $SITEINFO_FOOTER_SSN ?>
+			</li>
 
-            <li class="no-body-sm fw300">
-                사업자등록번호 : <?=$SITEINFO_FOOTER_SSN?>
-            </li>
+			<li class="no-body-sm fw300">
+				주소 : <?= $SITEINFO_FOOTER_ADDRESS ?>
+			</li>
 
-            <li class="no-body-sm fw300">
-                주소 : <?=$SITEINFO_FOOTER_ADDRESS?>
-            </li>
+			<li class="no-body-sm fw300">
+				대표번호 : <?= $SITEINFO_FOOTER_PHONE ?>
+			</li>
+		</ul>
 
-            <li class="no-body-sm fw300">
-                대표번호 : <?=$SITEINFO_FOOTER_PHONE?>
-            </li>
-        </ul>
+		<ul class="no-footer_sns no-mg-24--y">
+			<li>
+				<a href="<?= $SITEINFO_HP ?>" target="_blank">
+					<img src="/resource/images/icon/blog.svg">
+				</a>
+			</li>
 
-        <ul class="no-footer_sns no-mg-24--y">
-            <li>
-                <a href="<?=$SITEINFO_HP?>" target="_blank">
-                    <img src="/resource/images/icon/blog.svg">
-                </a>
-            </li>
+			<li>
+				<a href="<?= $SITEINFO_CUSTOMER_CENTER_ABLE_TIME ?>" target="_blank">
+					<img src="/resource/images/icon/insta.svg">
+				</a>
+			</li>
 
-            <li>
-                <a href="<?=$SITEINFO_CUSTOMER_CENTER_ABLE_TIME?>" target="_blank">
-                    <img src="/resource/images/icon/insta.svg">
-                </a>
-            </li>
+			<li>
+				<a href="<?= $SITEINFO_PHONE ?>" target="_blank">
+					<img src="/resource/images/icon/youtube.svg">
+				</a>
+			</li>
+		</ul>
 
-            <li>
-                <a href="<?=$SITEINFO_PHONE?>" target="_blank">
-                    <img src="/resource/images/icon/youtube.svg">
-                </a>
-            </li>
-        </ul>
-
-        <ul class="no-footer_legal">
+		<ul class="no-footer_legal">
 			<li class="check-wrap">
 				<a href="#" class="no-body-sm fw300" data-target=".term">이용약관</a>
 			</li>
@@ -75,18 +74,22 @@
 			</li>
 		</ul>
 
-        <copyright class="no-body-xs fw300 copyright no-mg-24--t">Copyright © 2025 면력한방병원. All rights reserved.</copyright>
-    </div>
+		<copyright class="no-body-xs fw300 copyright no-mg-24--t">Copyright © 2025 면력한방병원. All rights reserved.</copyright>
+	</div>
 
 </footer>
 
+<a href="#" class="top_btn_scroll">
+	<i class="fa-regular fa-angle-up i-24"></i>
+</a>
+
 <div class="form-popup term">
-    <i class="fa-sharp fa-light fa-xmark-large p-close" style="color: #000000;"></i>
-    <h2 class="title">
-        <p>이용약관</p>
-    </h2>
-    <div class="content" data-lenis-prevent-wheel>
-        <div class="scroll-box" data-lenis-prevent-wheel>
+	<i class="fa-sharp fa-light fa-xmark-large p-close" style="color: #000000;"></i>
+	<h2 class="title">
+		<p>이용약관</p>
+	</h2>
+	<div class="content" data-lenis-prevent-wheel>
+		<div class="scroll-box" data-lenis-prevent-wheel>
 			<p c>제1조 (개인정보의 처리 목적)
 				면력한방병원(이하 "병원")은 다음의 목적을 위해 필요한 최소한의 개인정보를 수집·이용합니다.<br>
 				<b>1.</b> 진료 서비스 제공 및 의료비 청구<br>
@@ -127,17 +130,17 @@
 				제9조 (고지의 의무)<br>
 				본 개인정보처리방침은 시행일로부터 적용되며, 법령 또는 내부 방침의 변경 등으로 내용이 추가, 삭제 및 수정될 수 있습니다. 변경 사항은 병원 홈페이지를 통해 공지합니다.
 			</p>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 <div class="form-popup policy">
-    <i class="fa-sharp fa-light fa-xmark-large p-close" style="color: #000000;"></i>
-    <h2 class="title">
-        <p>개인정보처리방침</p>
-    </h2>
-    <div class="content" data-lenis-prevent-wheel>
-        <div class="scroll-box" data-lenis-prevent-wheel>
+	<i class="fa-sharp fa-light fa-xmark-large p-close" style="color: #000000;"></i>
+	<h2 class="title">
+		<p>개인정보처리방침</p>
+	</h2>
+	<div class="content" data-lenis-prevent-wheel>
+		<div class="scroll-box" data-lenis-prevent-wheel>
 			<p c>제1조 (개인정보의 처리 목적)
 				면력한방병원(이하 "병원")은 다음의 목적을 위해 필요한 최소한의 개인정보를 수집·이용합니다.<br>
 				<b>1.</b> 진료 서비스 제공 및 의료비 청구<br>
@@ -178,17 +181,17 @@
 				제9조 (고지의 의무)<br>
 				본 개인정보처리방침은 시행일로부터 적용되며, 법령 또는 내부 방침의 변경 등으로 내용이 추가, 삭제 및 수정될 수 있습니다. 변경 사항은 병원 홈페이지를 통해 공지합니다.
 			</p>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 <div class="form-popup email">
-    <i class="fa-sharp fa-light fa-xmark-large p-close" style="color: #000000;"></i>
-    <h2 class="title">
-        <p>이메일무단수집거부</p>
-    </h2>
-    <div class="content" data-lenis-prevent-wheel>
-        <div class="scroll-box" data-lenis-prevent-wheel>
+	<i class="fa-sharp fa-light fa-xmark-large p-close" style="color: #000000;"></i>
+	<h2 class="title">
+		<p>이메일무단수집거부</p>
+	</h2>
+	<div class="content" data-lenis-prevent-wheel>
+		<div class="scroll-box" data-lenis-prevent-wheel>
 			<p c>제1조 (개인정보의 처리 목적)
 				면력한방병원(이하 "병원")은 다음의 목적을 위해 필요한 최소한의 개인정보를 수집·이용합니다.<br>
 				<b>1.</b> 진료 서비스 제공 및 의료비 청구<br>
@@ -229,8 +232,8 @@
 				제9조 (고지의 의무)<br>
 				본 개인정보처리방침은 시행일로부터 적용되며, 법령 또는 내부 방침의 변경 등으로 내용이 추가, 삭제 및 수정될 수 있습니다. 변경 사항은 병원 홈페이지를 통해 공지합니다.
 			</p>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 <div class="popup-bg"></div>

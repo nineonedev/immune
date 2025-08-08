@@ -134,7 +134,7 @@
                             </div>
 
                             <ul class="heal-list neuro no-mg-32--t">
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">대상포진 검진</h3>
 
@@ -151,7 +151,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">항바이러스/신경염 수액</h3>
 
@@ -166,7 +166,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">통증조절 및 수포관리</h3>
 
@@ -181,7 +181,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">무통증 신호요법</h3>
 
@@ -196,7 +196,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">신경회복 도수치료</h3>
 
@@ -211,7 +211,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">신경회복 주사요법</h3>
 
@@ -226,7 +226,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">면역플러스/개인맞춤한약</h3>
 
@@ -242,7 +242,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">고압산소챔버</h3>
 
@@ -594,12 +594,13 @@
                         <section class="no-pd-48--y">
                             <div class="no-container-sm">
                                 <hgroup class="--tac fade-up no-mg-32--b">
-                                    <h2 class="no-heading-sl">면력한방병원<br>
-                                        대상포진 치료의 특별함</h2>
+                                    <h2 class="no-heading-sl">대상포진 완치 이야기</h2>
                                 </hgroup>
 
-                                <a href="https://www.youtube.com/watch?v=-R7D6sOehVQ" class="fade-up" target="_blank">
-                                    <img src="/resource/images/neuro-story.jpg" class="no-radius-sm">
+                                <img src="/resource/images/neuro-story.jpg" class="no-radius-sm fade-up">
+
+                                <a href="https://www.youtube.com/watch?v=-R7D6sOehVQ" target="_blank" class="basic-btn no-body-lg fw600 no-mg-16--t fade-up">
+                                    후기 영상 보러가기
                                 </a>
                             </div>
                         </section>
@@ -640,7 +641,7 @@
                                         <div class="answer">
                                             <span class="blue no-body-lg fw600">답변</span>
                                             <p class="no-body-lg fw300 no-mg-4--t">
-                                                대상포진 급성기에는 보통 3일~7일 기준으로입원 집중치료 기간을 잡게 되는데요. 환자상태에 따라서,입원연장이 필요 할 수 있습니다.
+                                                대상포진 급성기에는 보통 3일~7일 기준으로 입원 집중치료 기간을 잡게 되는데요. 환자상태에 따라서,입원연장이 필요 할 수 있습니다.
                                             </p>
                                         </div>
                                     </li>
@@ -674,8 +675,8 @@
                                         <div class="answer">
                                             <span class="blue no-body-lg fw600">답변</span>
                                             <p class="no-body-lg fw300 no-mg-4--t">
-                                                한방 약침 치료는 신경통 신경염 완화 및 면역증진에도움을 줄 수 있습니다. 물리치료, 침 치료,추나 치료 등은 기혈 순환 개선과 신경기능 회복에도움을 줍니다.
-                                                환자분께 꼭 맞는 다양한 제형의 한방 처방으로빠른 증상의 호전뿐만 아니라 면역력이 저하된원인에 따른 근본 치료가 가능합니다.
+                                                한방 약침 치료는 신경통 신경염 완화 및 면역증진에 도움을 줄 수 있습니다. 물리치료, 침 치료,추나 치료 등은 기혈 순환 개선과 신경기능 회복에 도움을 줍니다.
+                                                환자분께 꼭 맞는 다양한 제형의 한방 처방으로 빠른 증상의 호전뿐만 아니라 면역력이 저하된 원인에 따른 근본 치료가 가능합니다.
                                             </p>
                                         </div>
                                     </li>
@@ -709,7 +710,7 @@
                                         <div class="answer">
                                             <span class="blue no-body-lg fw600">답변</span>
                                             <p class="no-body-lg fw300 no-mg-4--t">
-                                                개인의 면역 상태와 치료 반응에 따라 다르며,초기 발병기에 적극적인 양방 한방 협진 치료를 병행하여호전 속도를 높일 수 있습니다.
+                                                개인의 면역 상태와 치료 반응에 따라 다르며, 초기 발병기에 적극적인 양방 한방 협진 치료를 병행하여 호전 속도를 높일 수 있습니다.
                                             </p>
                                         </div>
                                     </li>

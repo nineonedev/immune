@@ -1,7 +1,7 @@
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/inc/lib/base.class.php'; ?>
 
 <?php
-    $inquiry_type_key = $_GET['inquiry_type'] ?? 1;
+$inquiry_type_key = $_GET['inquiry_type'] ?? 1;
 ?>
 
 <!-- dev -->
@@ -28,34 +28,25 @@
 
             <div class="visual-wrap">
 
-                <?php include_once $STATIC_ROOT . '/inc/shared/pc-info.php'; ?>
+                <!-- 공진단 상담신청 -->
+
+                <?php include_once $STATIC_ROOT . '/inc/shared/product-inquiry.php'; ?>
 
 
 
-                <div class="mobile-visual-wrap">
+                <!-- 개인맞춤한약 예진표 -->
+
+                <?php include_once $STATIC_ROOT . '/inc/shared/customized-inquiry.php'; ?>
+
+                <div class="mobile-visual-wrap herb vh">
 
                     <?php include_once $STATIC_ROOT . '/inc/layouts/herb-header.php'; ?>
 
 
 
                     <div class="no-rehab-sub no-herb">
-
-
-
-                        <!-- 관절고 상담신청 -->
-
-                        <?php include_once $STATIC_ROOT . '/inc/shared/product-inquiry.php'; ?>
-
-
-
-
-                        <!-- 개인맞춤한약 예진표 -->
-
-                        <?php include_once $STATIC_ROOT . '/inc/shared/customized-inquiry.php'; ?>
-
-
-
                         <section class="no-cancer-visual hospital first herb">
+
 
                             <nav class="herb-nav">
 
@@ -189,11 +180,9 @@
 
                     <?php include_once $STATIC_ROOT . '/inc/layouts/footer-herb.php'; ?>
 
-
-
-                    <?php include_once $STATIC_ROOT . '/inc/layouts/floating-inquiry.php'; ?>
-
                 </div>
+
+                <?php include_once $STATIC_ROOT . '/inc/layouts/floating-inquiry.php'; ?>
 
             </div>
 

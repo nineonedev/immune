@@ -75,7 +75,7 @@
                             </div>
                         </section>
 
-                        <section class="no-cancer-process gyn no-pd-48--y">
+                        <section class="no-cancer-process gyn no-pd-48--y bg">
                             <div class="no-container-sm">
                                 <hgroup class="--tac fade-up">
                                     <p class="no-body-lg fw300">당신은 누구보다 소중한 분입니다</p>
@@ -90,7 +90,7 @@
                                             <div class="line"></div>
                                         </div>
 
-                                        <div class="box no-mg-24--b no-radius-md no-pd-24 bg">
+                                        <div class="box no-mg-24--b no-radius-md no-pd-24 wh">
                                             <span class="pink no-body-md fw60">수술 이후</span>
                                             <h3 class="no-body-xxl fw600 no-mg-4--t">퇴원 당일날 바로 입원 가능</h3>
                                         </div>
@@ -116,7 +116,7 @@
                                             <div class="line"></div>
                                         </div>
 
-                                        <div class="box no-radius-md no-pd-24 bg">
+                                        <div class="box no-radius-md no-pd-24 wh">
                                             <h3 class="no-body-xxl fw600">일상복귀</h3>
                                         </div>
                                     </li>
@@ -124,7 +124,7 @@
                             </div>
                         </section>
 
-                        <section class="no-rehab-sub-gyn-doctor no-pd-48--y">
+                        <!-- <section class="no-rehab-sub-gyn-doctor no-pd-48--y">
                             <div class="no-container-sm">
                                 <hgroup class="--tac fade-up">
                                     <h2 class="no-heading-sl"><b class="coral">산부인과 전문의</b>가<br>
@@ -138,7 +138,7 @@
                                     <h3 class="no-body-lg fw600 --tac">이우석 원장산부인과 전문의</h3>
                                 </div>
                             </div>
-                        </section>
+                        </section> -->
 
                         <section class="no-cancer-sub-test gyn no-pd-48--y">
                             <div class="no-container-sm">
@@ -449,7 +449,7 @@
                             </div>
 
                             <ul class="disease-list">
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600 coral">복부통증(가스통증)</h3>
 
@@ -466,7 +466,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600 coral">배뇨 배변장애</h3>
 
@@ -481,7 +481,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600 coral">발열</h3>
 
@@ -496,7 +496,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600 coral">호르몬 변화</h3>
 
@@ -511,7 +511,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600 coral">림프부종</h3>
 
@@ -548,7 +548,7 @@
                             </div>
 
                             <ul class="disease-list heal-list no-mg-32--t">
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600 coral">영양 (Nutrition)</h3>
 
@@ -558,7 +558,7 @@
                                         <div class="no-cancer-sub-food">
                                             <h2 class="no-heading-sm --tac fade-up">부인과 수술 후 치료식이</h2>
 
-                                            <figure class="no-mg-32--y fade-up">
+                                            <figure class="no-mg-32--y v2 fade-up">
                                                 <img src="/resource/images/cancer-food.jpg">
                                             </figure>
 
@@ -695,7 +695,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600 coral">순환 (Circulation)</h3>
 
@@ -715,7 +715,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">면역 (Immunity)</h3>
 
@@ -750,7 +750,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">체온 (Temperature)</h3>
 
@@ -758,7 +758,7 @@
                                     </a>
                                     <div class="content">
                                         <figure class="no-mg-16--b">
-                                            <img src="/resource/images/cancer-heal3.jpg">
+                                            <img src="/resource/images/gyn-heal3.jpg">
                                         </figure>
 
                                         <span class="no-body-md fw600 coral">중심체온상승</span>
@@ -774,7 +774,7 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
+                                <li class="updown-content on">
                                     <a href="#" onclick="return false">
                                         <h3 class="no-body-lg fw600">저항성 (Resistibility)</h3>
 

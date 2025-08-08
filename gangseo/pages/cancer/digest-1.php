@@ -274,8 +274,8 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">정서적 문제</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>
@@ -493,8 +493,8 @@
                             </div>
 
                             <ul class="heal-list no-mg-32--t">
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">영양 (Nutrition)</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>
@@ -505,10 +505,10 @@
 
                                             <ul class="grid-wrap no-mg-16--t">
                                                 <li>
-                                                    <img src="/resource/images/cancer-heal6-1.jpg">
+                                                    <img src="/resource/images/cancer-heal6-1-v2.jpg">
                                                 </li>
                                                 <li>
-                                                    <img src="/resource/images/cancer-heal6-2.jpg">
+                                                    <img src="/resource/images/cancer-heal6-2-v2.jpg">
                                                 </li>
                                             </ul>
                                         </div>

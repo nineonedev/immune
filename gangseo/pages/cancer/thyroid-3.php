@@ -597,8 +597,8 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">영양 (Nutrition)</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>
@@ -613,7 +613,7 @@
                                                     <img src="/resource/images/cancer-heal6-1.jpg">
                                                 </li>
                                                 <li>
-                                                    <img src="/resource/images/cancer-heal6-2-w.jpg">
+                                                    <img src="/resource/images/cancer-heal6-2-w-v3.jpg">
                                                 </li>
                                             </ul>
                                         </div>
@@ -659,24 +659,31 @@
                         </section>
 
                         <section class="no-cancer-sub-essential no-pd-80--y">
+
                             <div class="no-container-sm">
+
                                 <h2 class="no-heading-sl --tac fade-up">겨울을 건너면,<br>
+
                                     봄은 반드시 옵니다.</h2>
 
+
+
                                 <div class="focus no-pd-64--t fade-up">
+
                                     <img src="/resource/images/icon/quotes-open.svg">
+
                                     <strong class="font-kr blur-js no-body-xxl fw300 --tac">
-                                        지금의 고통도 언젠가<br>
-                                        희망이 될 것입니다.
+
+                                        <b>당신의 봄을 면력이<br> 함께 맞이하겠습니다.</b>
+
                                     </strong>
 
-                                    <strong class="font-kr blur-js no-body-xxl fw300 --tac no-mg-16--t">
-                                        <b>당신의 계절을<br>
-                                            면력이 함께 건너겠습니다.</b>
-                                    </strong>
                                     <img src="/resource/images/icon/quotes-close.svg">
+
                                 </div>
+
                             </div>
+
                         </section>
 
                         <?php include_once $STATIC_ROOT . '/inc/layouts/integrate-link.php'; ?>

@@ -19,8 +19,6 @@ $popup_types = [
     2 => '암면역센터',
     3 => '신경면역센터',
     4 => '재활센터',
-    5 => '시설안내',
-    6 => '면력채널',
 ];
 
 $banner_rollingtimes = [
@@ -90,12 +88,12 @@ $branchList = [
 
 // FAQ 카테고리
 $faq_categories = [
-  1 => '입원/퇴원/외출',
-  2 => '진료/처방/본원치료',
-  3 => '입원생활',
-  4 => '식이/영양',
-  5 => '상담/문의/후기',
-  6 => '기타',
+    1 => '입원/퇴원/외출',
+    2 => '진료/처방/본원치료',
+    3 => '입원생활',
+    4 => '식이/영양',
+    5 => '상담/문의/후기',
+    6 => '기타',
 ];
 
 // 비급여 카테고리 1차
@@ -119,7 +117,7 @@ $nonpay_secondary_categories = [
         2 => '투약료',
         3 => '첩약료',
     ],
-   
+
 ];
 
 // ACTIVE 공통
@@ -278,5 +276,3 @@ $menstrual_status_options = [
 $board_file_allow = ['jpg', 'jpeg', 'png', 'gif', 'zip', 'xls', 'xlsx', 'ppt', 'pptx', 'doc', 'docx', 'pdf', 'hwp', 'mp4', 'mov', 'avi', 'txt', 'webp'];
 $employment_file_allow = ['zip', 'xls', 'xlsx', 'ppt', 'pptx', 'doc', 'docx', 'pdf', 'hwp'];
 $admission_file_allow = ['jpg', 'jpeg', 'png', 'gif'];
-
-?>

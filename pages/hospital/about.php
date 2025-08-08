@@ -100,7 +100,7 @@
                                                 면역 강화 치료로 회복력을 높입니다.</p>
                                         </div>
 
-                                        <img src="/resource/images/accident-special1.jpg"
+                                        <img src="/resource/images/hospital-program1.jpg"
                                             class="no-radius-sm no-mg-16--t">
                                     </li>
 
@@ -112,7 +112,7 @@
                                             </p>
                                         </div>
 
-                                        <img src="/resource/images/cancer-food.jpg" class="no-radius-sm no-mg-16--t">
+                                        <img src="/resource/images/hospital-program2.jpg" class="no-radius-sm no-mg-16--t">
                                     </li>
 
                                     <li class="fade-up no-mg-48--t">
@@ -123,7 +123,7 @@
                                                 위한 재활 프로그램을 제공합니다.</p>
                                         </div>
 
-                                        <img src="/resource/images/hospital-program.jpg"
+                                        <img src="/resource/images/hospital-program3.jpg"
                                             class="no-radius-sm no-mg-16--t">
                                     </li>
 
@@ -135,7 +135,7 @@
                                                 스트레스 관리 & 심신 안정 프로그램 운영.</p>
                                         </div>
 
-                                        <img src="/resource/images/cancer-program4.jpg"
+                                        <img src="/resource/images/hospital-program4.jpg"
                                             class="no-radius-sm no-mg-16--t">
                                     </li>
                                 </ul>
@@ -261,7 +261,7 @@
 
                                 <div class="pd-group no-pd-8--x fade-up no-mg-48--t">
                                     <h3 class="no-body-xxl fw600 blue">호텔 수준의 환자 케어</h3>
-                                    <p class="no-body-md fw300 gray no-mg-16--t"><b class="black">호텔 객실팀장 출신 컨시어지가
+                                    <p class="no-body-md fw300 gray no-mg-16--t"><b class="black">호텔 수준의 컨시어지가
                                             상주</b>하며,<br> 편안한 환경과 세심한 서비스를 제공합니다.
                                     </p>
                                 </div>

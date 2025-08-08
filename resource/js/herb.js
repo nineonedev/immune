@@ -5,24 +5,26 @@ import {
 } from "./helper.js";
 
 $(document).ready(function () {
-  $(".floating-bottom.inquiry").on("click", function (e) {
+ $(".floating-bottom.inquiry").on("click", function (e) {
     e.preventDefault();
-
     $(".herb-form.product-inquiry").addClass("active");
+    $("html, body").css("overflow", "hidden");
   });
 
-  $(".herb-form .close").on("click", function () {
+  $(".herb-form.product-inquiry .close").on("click", function () {
     $(".herb-form.product-inquiry").removeClass("active");
+    $("html, body").css("overflow", "");
   });
 
   $(".simple-inquiry-btn").on("click", function (e) {
     e.preventDefault();
-
     $(".herb-form.customized-inquiry").addClass("active");
+    $("html, body").css("overflow", "hidden");
   });
 
-  $(".herb-form .close").on("click", function () {
+  $(".herb-form.customized-inquiry .close").on("click", function () {
     $(".herb-form.customized-inquiry").removeClass("active");
+    $("html, body").css("overflow", "");
   });
 
   $('input[name="first_visit"]').on("change", function () {

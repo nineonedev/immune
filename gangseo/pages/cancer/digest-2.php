@@ -140,23 +140,22 @@
                             </div>
 
                             <ul class="heal-list no-mg-32--t">
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">영양 (Nutrition)</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>
                                     </a>
                                     <div class="content v2 v3">
                                         <div class="group">
-                                            <span class="no-body-md fw600">치료식이</span>
-                                            <p class="no-body-md fw300">적절한 영양을 제공하여 치료 기간 동안 부작용을 줄이고 항암 치료로 손상된 조직을 회복하며, 영양 상태와 적정 체중을 유지할 수 있도록 돕는 식사를 제공합니다.</p>
+                                            <span class="no-body-md fw600">저잔사 치료식이</span>
 
                                             <ul class="grid-wrap no-mg-16--t">
                                                 <li>
-                                                    <img src="/resource/images/cancer-heal6-1.jpg">
+                                                    <img src="/resource/images/cancer-heal6-1-v2.jpg">
                                                 </li>
                                                 <li>
-                                                    <img src="/resource/images/cancer-heal6-2-w.jpg">
+                                                    <img src="/resource/images/cancer-heal6-2-w-v2.jpg">
                                                 </li>
                                             </ul>
                                         </div>
@@ -515,6 +514,7 @@
                                         <div class="wrap no-pd-16--b no-mg-16--t">
                                             <h3 class="no-body-lg fw600">주요부작용</h3>
                                             <ul class="list no-mg-4--t">
+                                                <li class="no-body-md fw300">고혈압</li>
                                                 <li class="no-body-md fw300">단백뇨<span class="no-body-xs">(베바시주맙)</span>출혈</li>
                                                 <li class="no-body-md fw300">혈전증 위험 증가<span class="no-body-xs">(베바시주맙)</span></li>
                                                 <li class="no-body-md fw300">피부발진, 가려움증</li>

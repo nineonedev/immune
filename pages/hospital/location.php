@@ -106,7 +106,7 @@
                                         </a>
                                     </li>
 
-                                    <li>
+                                    <li class="hide-on-web">
                                         <a href="https://www.tmap.co.kr/my_tmap/my_map_tip/map_tip.do#" target="_blank">
                                             <div class="group">
                                                 <img src="/resource/images/icon/map_tmap.jpg">
@@ -116,6 +116,15 @@
                                             <i class="fa-regular fa-arrow-right i-30"></i>
                                         </a>
                                     </li>
+
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                                            if (!isMobile) {
+                                                document.querySelector('.hide-on-web')?.remove();
+                                            }
+                                        });
+                                    </script>
                                 </ul>
                             </div>
                         </section>
@@ -136,14 +145,32 @@
                                     <h2 class="no-body-xxl fw600 no-mg-32--t">본원 거리 안내</h2>
 
                                     <ul class="list no-mg-8--y">
-                                        <li class="bullet no-body-xl fw300">이대서울병원: <b class="fw700">약 10분</b></li>
-                                        <li class="bullet no-body-xl fw300">목동이대병원: <b class="fw700">약 15분</b></li>
+                                        <h3 class="no-body-xxl fw600 no-mg-20--t no-mg-4--b">강서</h3>
+                                        <li class="bullet no-body-xl fw300">이대서울병원: <b class="fw700">약 1분</b></li>
+                                        <li class="bullet no-body-xl fw300">이대목동병원: <b class="fw700">약 15분</b></li>
                                         <li class="bullet no-body-xl fw300">일산국립암센터: <b class="fw700">약 25분</b></li>
                                         <li class="bullet no-body-xl fw300">일산차병원: <b class="fw700">약 25분</b></li>
                                         <li class="bullet no-body-xl fw300">신촌세브란스병원: <b class="fw700">약 25분</b></li>
                                         <li class="bullet no-body-xl fw300">중앙대학교병원: <b class="fw700">약 25분</b></li>
-                                        <li class="bullet no-body-xl fw300">서울대학교병원: <b class="fw700">약 35분</b></li>
-                                        <li class="bullet no-body-xl fw300">서울아산병원: <b class="fw700">약 45분</b></li>
+                                    </ul>
+
+                                    <ul class="list no-mg-8--y">
+                                        <h3 class="no-body-xxl fw600 no-mg-20--t no-mg-4--y">광명</h3>
+                                        <li class="bullet no-body-xl fw300">고대구로병원: <b class="fw700">약 10분</b></li>
+                                        <li class="bullet no-body-xl fw300">이대목동병원: <b class="fw700">약 15분</b></li>
+                                        <li class="bullet no-body-xl fw300">중대광명병원: <b class="fw700">약 15분</b></li>
+                                        <li class="bullet no-body-xl fw300">대림성모병원: <b class="fw700">약 20분</b></li>
+                                        <li class="bullet no-body-xl fw300">강남성심병원: <b class="fw700">약 20분</b></li>
+                                        <li class="bullet no-body-xl fw300">인천성모병원: <b class="fw700">약 30분</b></li>
+                                    </ul>
+
+                                    <ul class="list no-mg-8--y">
+                                        <h3 class="no-body-xxl fw600 no-mg-20--t no-mg-4--y">신촌</h3>
+                                        <li class="bullet no-body-xl fw300">신촌세브란스: <b class="fw700">약 2분</b></li>
+                                        <li class="bullet no-body-xl fw300">강북삼성병원: <b class="fw700">약 15분</b></li>
+                                        <li class="bullet no-body-xl fw300">여의도성모병원: <b class="fw700">약 15분</b></li>
+                                        <li class="bullet no-body-xl fw300">서울대병원: <b class="fw700">약 25분</b></li>
+                                        <li class="bullet no-body-xl fw300">중앙대병원: <b class="fw700">약 25분</b></li>
                                     </ul>
                                 </div>
                             </div>

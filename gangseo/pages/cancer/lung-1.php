@@ -218,8 +218,6 @@
                                         </figure>
 
                                         <span class="no-body-md fw600">관리법</span>
-                                        <p class="bullet no-body-md fw300">폐활량 운동 : 풍선 불기, 스피로미터 사용</p>
-                                        <p class="bullet no-body-md fw300">심호흡 훈련 : 코로 깊게 들이마시고 입으로 천천히 내쉬기</p>
                                         <p class="bullet no-body-md fw300">수분 섭취 증가 (하루 1.5)</p>
                                         <p class="bullet no-body-md fw300">따뜻한 수건 찜질 (흉통 완화)</p>
 
@@ -282,8 +280,8 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">정서적 문제</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>
@@ -710,8 +708,8 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">영양 (Nutrition)</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>

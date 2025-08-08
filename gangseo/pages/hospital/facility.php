@@ -7,19 +7,32 @@ $banner = $banners[0] ?? null;
 
 // 강서 지점 시설 정보 - 카테고리별
 $facilities1 = getFacilities('gangseo', 1);
-$facilities2 = getFacilities('gangseo', 2); 
-$facilities3 = getFacilities('gangseo', 3); 
-$facilities4 = getFacilities('gangseo', 4); 
+$facilities2 = getFacilities('gangseo', 2);
+$facilities3 = getFacilities('gangseo', 3);
+$facilities4 = getFacilities('gangseo', 4);
 
 ?>
 
 
 <?php include_once $STATIC_ROOT . '/inc/layouts/head.php'; ?>
+<script src="<?= $ROOT ?>/resource/js/sub.js" <?= date('YmdHis') ?> defer></script>
 
 <!-- css, js  -->
 
 <!-- contents -->
 <main>
+
+    <?php
+    $banners = getBannersByBranch('gangseo', 5);
+    $sql = "SELECT banner_rolling_times FROM nb_etcs LIMIT 1";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    // 6000 (6초)
+    $rollingTime = isset($result['banner_rolling_times']) ? (int)$result['banner_rolling_times'] * 1000 : 5000; // ms로 변환
+
+    // swiper div에 data-rolling=<?=$rollingTime.. 이거넣고 js에서 상수 등록 후 autoplay delay에 해당 값을 넣으세요.
+    ?>
     <section class="no-cetner-visual">
         <div class="no-container-pc">
             <div class="visual-wrap">
@@ -31,15 +44,37 @@ $facilities4 = getFacilities('gangseo', 4);
 
                     <div class="no-cancer no-neuro no-rehab no-facility">
 
-                        <?php if ($banner): ?>
-                        <section class="no-cancer-visual">
-                            <?php $imageUrl = '/uploads/banners/' . $banner['banner_image']; ?>
-                            <h2 class="no-heading-sm fw300 --tac fade-up">
-                                <?= $banner['description'] ?>
-                            </h2>
-                            <img src="<?= htmlspecialchars($imageUrl) ?>" alt="시설 안내 배너">
+                        <section class="no-cancer-visual visual-slider" data-rolling="<?= $rollingTime ?>">
+                            <div class="swiper-wrapper">
+                                <?php if (!empty($banners)): ?>
+                                    <?php foreach ($banners as $banner): ?>
+                                        <div class="swiper-slide">
+                                            <?php
+                                            $imgSrc = '/uploads/banners/' . $banner['banner_image'];
+                                            $alt = htmlspecialchars($banner['title']);
+                                            $imgTag = "<img src=\"{$imgSrc}\" alt=\"{$alt}\">";
+
+                                            if ($banner['has_link'] == 1 && !empty($banner['link_url'])) {
+                                                $href = htmlspecialchars($banner['link_url']);
+                                                $target = ((int)$banner['is_target'] === 1) ? '_blank' : '_self';
+                                                echo "<a href=\"{$href}\" target=\"{$target}\">{$imgTag}</a>";
+                                            } else {
+                                                echo $imgTag;
+                                            }
+                                            ?>
+                                            <h2 class="no-heading-sm fw400 --tac black"><?= $banner['description'] ?></h2>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="swiper-pagination-bar">
+                                <div class="progress-bar">
+                                    <div class="progress-fill"></div>
+                                </div>
+                                <button class="swiper-control play" title="Play"></button>
+                                <button class="swiper-control pause" title="Pause"></button>
+                            </div>
                         </section>
-                        <?php endif; ?>
 
                         <!-- VIP 입원실 -->
                         <section class="no-cancer-sub-thyroid-guide facility no-pd-48--y">
@@ -47,16 +82,16 @@ $facilities4 = getFacilities('gangseo', 4);
                                 <div class="left-slider" <?= $aos_left_slow ?>>
                                     <h3 class="no-heading-sm no-mg-20--b">VIP 입원실</h3>
                                     <ul class="swiper-wrapper facility-list">
-                                        <?php foreach ($facilities1 as $v): 
+                                        <?php foreach ($facilities1 as $v):
                                             $title = $v['title'];
                                             $imgSrc = !empty($v['thumb_image']) ? '/uploads/facilities/' . $v['thumb_image'] : '';
                                         ?>
-                                        <li class="swiper-slide">
-                                            <figure>
-                                                <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($title) ?>">
-                                                <figcaption><?= htmlspecialchars($title) ?></figcaption>
-                                            </figure>
-                                        </li>
+                                            <li class="swiper-slide">
+                                                <figure>
+                                                    <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($title) ?>">
+                                                    <figcaption><?= htmlspecialchars($title) ?></figcaption>
+                                                </figure>
+                                            </li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>
@@ -108,16 +143,16 @@ $facilities4 = getFacilities('gangseo', 4);
                                 <div class="left-slider" <?= $aos_left_slow ?>>
                                     <h3 class="no-heading-sm no-mg-20--b">다인입원실</h3>
                                     <ul class="swiper-wrapper facility-list">
-                                        <?php foreach ($facilities2 as $v): 
+                                        <?php foreach ($facilities2 as $v):
                                             $title = $v['title'];
                                             $imgSrc = !empty($v['thumb_image']) ? '/uploads/facilities/' . $v['thumb_image'] : '';
                                         ?>
-                                        <li class="swiper-slide">
-                                            <figure>
-                                                <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($title) ?>">
-                                                <figcaption><?= htmlspecialchars($title) ?></figcaption>
-                                            </figure>
-                                        </li>
+                                            <li class="swiper-slide">
+                                                <figure>
+                                                    <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($title) ?>">
+                                                    <figcaption><?= htmlspecialchars($title) ?></figcaption>
+                                                </figure>
+                                            </li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>
@@ -169,16 +204,16 @@ $facilities4 = getFacilities('gangseo', 4);
                                 <div class="left-slider" <?= $aos_left_slow ?>>
                                     <h3 class="no-heading-sm no-mg-20--b">회복을 끌어 올리는 다양한 치료공간</h3>
                                     <ul class="swiper-wrapper facility-list">
-                                        <?php foreach ($facilities3 as $v): 
+                                        <?php foreach ($facilities3 as $v):
                                             $title = $v['title'];
                                             $imgSrc = !empty($v['thumb_image']) ? '/uploads/facilities/' . $v['thumb_image'] : '';
                                         ?>
-                                        <li class="swiper-slide">
-                                            <figure>
-                                                <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($title) ?>">
-                                                <figcaption><?= htmlspecialchars($title) ?></figcaption>
-                                            </figure>
-                                        </li>
+                                            <li class="swiper-slide">
+                                                <figure>
+                                                    <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($title) ?>">
+                                                    <figcaption><?= htmlspecialchars($title) ?></figcaption>
+                                                </figure>
+                                            </li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>
@@ -199,16 +234,16 @@ $facilities4 = getFacilities('gangseo', 4);
                                 <div class="left-slider" <?= $aos_left_slow ?>>
                                     <h3 class="no-heading-sm no-mg-20--b">회복을 끌어 올리는 다양한 치료공간</h3>
                                     <ul class="swiper-wrapper facility-list">
-                                        <?php foreach ($facilities4 as $v): 
+                                        <?php foreach ($facilities4 as $v):
                                             $title = $v['title'];
                                             $imgSrc = !empty($v['thumb_image']) ? '/uploads/facilities/' . $v['thumb_image'] : '';
                                         ?>
-                                        <li class="swiper-slide">
-                                            <figure>
-                                                <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($title) ?>">
-                                                <figcaption><?= htmlspecialchars($title) ?></figcaption>
-                                            </figure>
-                                        </li>
+                                            <li class="swiper-slide">
+                                                <figure>
+                                                    <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($title) ?>">
+                                                    <figcaption><?= htmlspecialchars($title) ?></figcaption>
+                                                </figure>
+                                            </li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>

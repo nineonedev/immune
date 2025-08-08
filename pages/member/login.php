@@ -98,8 +98,8 @@
 
                                 </form>
 
-                                <a href="<?=$LOGIN_URL?>" class="submit no-body-lg fw600 no-mg-16--t">
-                                    카카오톡 로그인
+                                <a href="<?= $LOGIN_URL ?>" class="submit no-body-lg fw600 no-mg-16--t kakao-login">
+                                    <img src="/resource/images/icon/b-kakao.svg">카카오톡 로그인
                                 </a>
 
 
@@ -146,60 +146,60 @@
 </main>
 
 <script>
-const form = document.getElementById('loginForm');
-const API_URL = '/module/ajax/login.php';
+    const form = document.getElementById('loginForm');
+    const API_URL = '/module/ajax/login.php';
 
-const validate = () => {
-    // 입력값 가져오기
-    const user_id = document.getElementById('user_id');
-    const user_pwd = document.getElementById('password');
+    const validate = () => {
+        // 입력값 가져오기
+        const user_id = document.getElementById('user_id');
+        const user_pwd = document.getElementById('password');
 
-    console.log(user_id, user_pwd);
+        console.log(user_id, user_pwd);
 
-    if (!user_id.value.trim()) {
-        alert('아이디를 입력해주세요.');
-        user_id.focus();
-        return false;
-    }
-
-    if (!user_pwd.value.trim()) {
-        alert('비밀번호를 입력해주세요.');
-        user_pwd.focus();
-        return false;
-    }
-
-    return true;
-};
-
-const handleSubmit = async (e) => {
-    e.preventDefault(); // 기본 폼 제출 방지
-
-    // 입력값 검증
-    if (!validate()) {
-        return;
-    }
-
-    // 로그인 데이터 생성
-    const formData = new FormData(form);
-
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
-
-        alert(result.message); // 서버에서 받은 메시지 출력
-
-        if (result.success) {
-            window.location.href = "/"; // 로그인 성공 시 메인 페이지로 이동 (필요시 변경 가능)
+        if (!user_id.value.trim()) {
+            alert('아이디를 입력해주세요.');
+            user_id.focus();
+            return false;
         }
-    } catch (error) {
-        alert('로그인 처리 중 오류가 발생했습니다.');
-        console.error(error);
-    }
-};
 
-form.addEventListener('submit', handleSubmit);
+        if (!user_pwd.value.trim()) {
+            alert('비밀번호를 입력해주세요.');
+            user_pwd.focus();
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // 기본 폼 제출 방지
+
+        // 입력값 검증
+        if (!validate()) {
+            return;
+        }
+
+        // 로그인 데이터 생성
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            alert(result.message); // 서버에서 받은 메시지 출력
+
+            if (result.success) {
+                window.location.href = "/"; // 로그인 성공 시 메인 페이지로 이동 (필요시 변경 가능)
+            }
+        } catch (error) {
+            alert('로그인 처리 중 오류가 발생했습니다.');
+            console.error(error);
+        }
+    };
+
+    form.addEventListener('submit', handleSubmit);
 </script>

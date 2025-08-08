@@ -336,8 +336,8 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">영양 (Nutrition)</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>
@@ -403,7 +403,7 @@
                                     <h2 class="no-heading-sm">내가 받는 항암치료</h2>
                                     <p class="no-body-lg fw300 no-mg-8--y">내가 받는 항암치료 제대로 알아야<br>
                                         제대로 회복할 수 있습니다.</p>
-                                    <h6 class="--tac no-body-md fw300" style="color:#ABABAB">간암 화학항암치료</h6>
+                                    <h6 class="--tac no-body-md fw300" style="color:#ABABAB">폐암 화학항암치료</h6>
                                 </hgroup>
 
                                 <ul class="sideeffect-btn tab no-mg-32--y v2 v3">

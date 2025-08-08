@@ -8,7 +8,7 @@
 <!-- 팝업입니다============================================== -->
 <?php
 $branchId = 2;
-// var.php에서 poppu_type 확인
+// var.php에서 popup_type 확인
 $popupType = 1;
 include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
 ?>
@@ -28,7 +28,6 @@ include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
     // swiper div에 data-rolling=<?=$rollingTime.. 이거넣고 js에서 상수 등록 후 autoplay delay에 해당 값을 넣으세요.
     ?>
 
-
     <section class="no-cetner-visual">
         <div class="no-container-pc">
             <div class="visual-wrap">
@@ -38,24 +37,35 @@ include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
                     <?php include_once $STATIC_ROOT . '/inc/layouts/header.php'; ?>
 
                     <div class="no-main">
-                        <section class="no-main-visual">
-                            <?php if (!empty($banners)): ?>
-                                <?php foreach ($banners as $banner): ?>
-                                    <?php
-                                    $imgSrc = '/uploads/banners/' . $banner['banner_image'];
-                                    $alt = htmlspecialchars($banner['title']);
-                                    $imgTag = "<img src=\"{$imgSrc}\" alt=\"{$alt}\">";
+                        <section class="no-main-visual visual-slider" data-rolling="<?= $rollingTime ?>">
+                            <div class="swiper-wrapper">
+                                <?php if (!empty($banners)): ?>
+                                    <?php foreach ($banners as $banner): ?>
+                                        <div class="swiper-slide">
+                                            <?php
+                                            $imgSrc = '/uploads/banners/' . $banner['banner_image'];
+                                            $alt = htmlspecialchars($banner['title']);
+                                            $imgTag = "<img src=\"{$imgSrc}\" alt=\"{$alt}\">";
 
-                                    if ($banner['has_link'] == 1 && !empty($banner['link_url'])) {
-                                        $href = htmlspecialchars($banner['link_url']);
-                                        $target = ((int)$banner['is_target'] === 1) ? '_blank' : '_self';
-                                        echo "<a href=\"{$href}\" target=\"{$target}\">{$imgTag}</a>";
-                                    } else {
-                                        echo $imgTag;
-                                    }
-                                    ?>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                            if ($banner['has_link'] == 1 && !empty($banner['link_url'])) {
+                                                $href = htmlspecialchars($banner['link_url']);
+                                                $target = ((int)$banner['is_target'] === 1) ? '_blank' : '_self';
+                                                echo "<a href=\"{$href}\" target=\"{$target}\">{$imgTag}</a>";
+                                            } else {
+                                                echo $imgTag;
+                                            }
+                                            ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="swiper-pagination-bar">
+                                <div class="progress-bar">
+                                    <div class="progress-fill"></div>
+                                </div>
+                                <button class="swiper-control play" title="Play"></button>
+                                <button class="swiper-control pause" title="Pause"></button>
+                            </div>
                         </section>
 
 
@@ -120,13 +130,13 @@ include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
 
                                             <ul class="dept2">
                                                 <li>
-                                                    <a href="#" class="no-body-md">
+                                                    <a href="/gangseo/pages/neuro/shingles-1.php" class="no-body-md">
                                                         대상포진
                                                     </a>
                                                 </li>
 
                                                 <li>
-                                                    <a href="#" class="no-body-md">
+                                                    <a href="/gangseo/pages/neuro/facial.php" class="no-body-md">
                                                         안면마비
                                                     </a>
                                                 </li>
@@ -143,19 +153,19 @@ include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
 
                                             <ul class="dept2">
                                                 <li>
-                                                    <a href="#" class="no-body-md">
+                                                    <a href="/gangseo/pages/rehab/gyn.php" class="no-body-md">
                                                         부인과 수술 후 회복
                                                     </a>
                                                 </li>
 
                                                 <li>
-                                                    <a href="#" class="no-body-md">
+                                                    <a href="/gangseo/pages/rehab/accident.php" class="no-body-md">
                                                         교통사고 후유증
                                                     </a>
                                                 </li>
 
                                                 <li>
-                                                    <a href="#" class="no-body-md">
+                                                    <a href="/gangseo/pages/rehab/postop.php" class="no-body-md">
                                                         수술 후 재활
                                                     </a>
                                                 </li>
@@ -314,7 +324,7 @@ include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
                                     <p class="no-body-lg fw300">작은 부분까지 배려한 공간에서<br>온전한 회복을 경험하세요.</p>
                                 </hgroup>
 
-                                <div class="basic-slider" <?= $aos_left_slow ?>>
+                                <!--<div class="basic-slider" <?= $aos_left_slow ?>>
                                     <ul class="swiper-wrapper facility-list">
                                         <?php foreach ($facilities as $facility): ?>
                                             <?php if (!empty($facility['thumb_image'])): ?>
@@ -326,6 +336,28 @@ include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
                                                 </li>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
+                                    </ul>
+                                </div>-->
+
+                                <div class="basic-slider" <?= $aos_left_slow ?>>
+                                    <ul class="swiper-wrapper facility-list">
+                                        <li class="swiper-slide">
+                                            <figure>
+                                                <img src="/resource/images/new-facility1.jpg">
+                                            </figure>
+                                        </li>
+
+                                        <li class="swiper-slide">
+                                            <figure>
+                                                <img src="/resource/images/new-facility2.jpg">
+                                            </figure>
+                                        </li>
+
+                                        <li class="swiper-slide">
+                                            <figure>
+                                                <img src="/resource/images/new-facility3.jpg">
+                                            </figure>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -361,7 +393,7 @@ include_once $STATIC_ROOT . '/inc/lib/popup.new.php';
                             </script>
 
                             <div class="no-container-sm">
-                                <a href="#" class="basic-btn no-body-lg fw600 no-mg-24--t">
+                                <a href="https://map.kakao.com/?urlX=464150.0000000003&urlY=1127976.9999999995&itemId=326513764&q=%EB%A9%B4%EB%A0%A5%ED%95%9C%EB%B0%A9%EB%B3%91%EC%9B%90&srcid=326513764&map_type=TYPE_MAP&from=roughmap" target="_blank" class="basic-btn no-body-lg fw600 no-mg-24--t">
                                     오시는 길
                                 </a>
                             </div>

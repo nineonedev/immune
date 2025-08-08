@@ -38,7 +38,7 @@
                                 <ul class="system-list no-mg-32--t">
                                     <li class="fade-up">
                                         <div class="aos-wrap f-wrap" <?= $aos_right_slow ?>>
-                                            <img src="/resource/images/doctor-illust1.svg">
+                                            <img src="/resource/images/doctor-illust1.png">
                                             <div class="txt">
                                                 <p class="no-body-md fw300">의료진</p>
                                                 <h class="no-body-lg fw600">정확한 건강 진단</h>
@@ -48,7 +48,7 @@
 
                                     <li class="fade-up">
                                         <div class="aos-wrap f-wrap" <?= $aos_right_slow ?>>
-                                            <img src="/resource/images/doctor-illust2.svg">
+                                            <img src="/resource/images/doctor-illust2.png">
                                             <div class="txt">
                                                 <p class="no-body-md fw300">임상영양사</p>
                                                 <h class="no-body-lg fw600">영양상태, 식습관 분석</h>
@@ -58,7 +58,7 @@
 
                                     <li class="fade-up">
                                         <div class="aos-wrap f-wrap" <?= $aos_right_slow ?>>
-                                            <img src="/resource/images/doctor-illust3.svg">
+                                            <img src="/resource/images/doctor-illust3.png">
                                             <div class="txt">
                                                 <p class="no-body-md fw300">치료식 셰프</p>
                                                 <h class="no-body-lg fw600">프리미엄 요리제공</h>
@@ -170,7 +170,7 @@
 
                         <section class="no-cancer-sub-food no-pd-48--y">
                             <div class="no-container-sm">
-                                <h2 class="no-heading-sm --tac fade-up">유방/자궁/난소암 치료식이</h2>
+                                <h2 class="no-heading-sm --tac fade-up">간암/담도암/췌장암 치료식이</h2>
 
                                 <figure class="no-mg-32--y fade-up">
                                     <img src="/resource/images/cancer-food.jpg">
@@ -383,7 +383,7 @@
 
                                 <p class="no-body-lg fw600 --tac no-mg-24--y fade-up">호텔 출신 셰프와 임상 영양사가 고심하여<br> 맛과 영양을 잡은 항암에 도움이 되는<br> 특선 요리를 라이브로 제공합니다.</p>
 
-                                <a href="/pages/board/board.list.php?board_no=12" class="basic-btn cancer no-body-lg fw600 no-mg-16--t">
+                                <a hhref="https://www.youtube.com/watch?v=6nImsfP2zew" target="_blank" class="basic-btn cancer no-body-lg fw600 no-mg-16--t">
                                     셰프특식 바로가기
                                 </a>
                             </div>

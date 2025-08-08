@@ -123,10 +123,6 @@
                                                     <p class="no-body-lg fw300 bullet">환자가 만 17세 미만으로 주민등록증 발급 안 된 경우 제외</p>
                                                     <p class="no-body-lg fw300 bullet">환자가 만 14세 미만으로 동의서, 위임장을 부모가 작성했을 경우 부모의 신분증 사본 첨부</p>
                                                 </div>
-                                                <div class="documents-download">
-                                                    <a href='#' download class="no-body-xs fw300">HWP 동의서 다운로드</a>
-                                                    <a href='#' download class="no-body-xs fw300">DOC 동의서 다운로드</a>
-                                                </div>
                                             </li>
 
                                             <!--  -->
@@ -143,10 +139,38 @@
                                                     <p class="no-body-lg fw300 bullet">보건복지가족부에서 배포한 별지 9-2의 환자가 자필로 서명한 동의서(단 만 14세 미만의 미성년자인 경우 제외)</p>
                                                     <p class="no-body-lg fw300 bullet">환자본인의 신분증 사본(단, 환자가 만 17세 미만으로 주민등록증 발급이 안 된 경우 제외)</p>
                                                 </div>
-                                                <div class="documents-download">
+                                                <div class="documents-download no-pd-16--b">
                                                     <p class="no-body-xs fw300 --tal no-mg-4--b">※ 형제자매, 사위, 며느리는 직계가족의 범위에 들어가지 않습니다.<br> 이점 유의하시기 바랍니다.</p>
-                                                    <a href='#' download class="no-body-xs fw300">HWP 동의서 다운로드</a>
-                                                    <a href='#' download class="no-body-xs fw300">DOC 동의서 다운로드</a>
+
+                                                    <div class="download-list no-mg-24--t">
+                                                        <p class="no-body-sm fw600">동의서 다운로드</p>
+                                                        <ul class="no-mg-8--t">
+                                                            <li>
+                                                                <a href='/resource/file/동의서.hwp' download class="no-body-xs fw300">HWP</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href='/resource/file/동의서.docx' download class="no-body-xs fw300">DOC</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href='/resource/file/동의서.pdf' download class="no-body-xs fw300">PDF</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="download-list no-mg-16--t">
+                                                        <p class="no-body-sm fw600">위임장 다운로드</p>
+                                                        <ul class="no-mg-8--t">
+                                                            <li>
+                                                                <a href='/resource/file/위임장.hwp' download class="no-body-xs fw300">HWP</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href='/resource/file/위임장.docx' download class="no-body-xs fw300">DOC</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href='/resource/file/위임장.pdf' download class="no-body-xs fw300">PDF</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
@@ -232,13 +256,24 @@
                                             <li class="v2">
                                                 <h4 class="no-body-lg fw600">구비서류</h4>
                                                 <div class="group no-mg-8--t">
-                                                    <p class="no-body-lg fw300 bullet">상기 규정 이외의 상황으로 환자의 형제 · 자매가 요청하는 경우에는 환자의 배우자 및 직계 존속 · 비속, 배우자의 직계</p>
-                                                    <p class="no-body-lg fw300 bullet">존속이 모두 없음을 증명하는 확인서와 병원 직원이 상황을 인식할 수 있는 자료를 함께 제출하여야 한다.(2017.3.7 개정)</p>
+                                                    <p class="no-body-lg fw300 bullet">상기 규정 이외의 상황으로 환자의 형제 · 자매가 요청하는 경우에는 환자의 배우자 및 직계 존속 · 비속, 배우자의 직계존속이 모두 없음을 증명하는 확인서와 병원 직원이 상황을 인식할 수 있는 자료를 함께 제출하여야 한다.(2017.3.7 개정)</p>
                                                     <p class="no-body-lg fw300 bullet">가족관계증명서, 주민등록표 등본 등 친족관계를 확인할 수 있는 서류</p>
                                                 </div>
                                                 <div class="documents-download">
-                                                    <a href='#' download class="no-body-xs fw300">HWP 동의서 다운로드</a>
-                                                    <a href='#' download class="no-body-xs fw300">DOC 동의서 다운로드</a>
+                                                    <div class="download-list no-mg-16--t">
+                                                        <p class="no-body-sm fw600">확인서 다운로드</p>
+                                                        <ul class="no-mg-8--t">
+                                                            <li>
+                                                                <a href='/resource/file/확인서.hwp' download class="no-body-xs fw300">HWP</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href='/resource/file/확인서.docx' download class="no-body-xs fw300">DOC</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href='/resource/file/확인서.pdf' download class="no-body-xs fw300">PDF</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>

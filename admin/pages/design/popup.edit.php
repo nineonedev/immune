@@ -6,7 +6,7 @@ $depthnum = 3;
 $pagenum = 2;
 
 try {
-    $db = DB::getInstance(); 
+    $db = DB::getInstance();
     $stmt = $db->query("SELECT * FROM nb_branches WHERE id IN (2,3,4) ORDER BY id ASC");
     $branches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -24,7 +24,6 @@ try {
         echo "해당 팝업을 찾을 수 없습니다.";
         exit;
     }
-
 } catch (Exception $e) {
     echo "DB 오류: " . $e->getMessage();
     exit;
@@ -75,12 +74,11 @@ include_once "../../inc/admin.js.php";
                                     <h3 class="no-admin-title"><label for="branch_id">지점</label></h3>
                                     <div class="no-admin-content">
                                         <select name="branch_id" id="branch_id">
-                                            <option value="">공통</option>
                                             <?php foreach ($branches as $branch): ?>
-                                            <option value="<?= $branch['id'] ?>"
-                                                <?= $popup['branch_id'] == $branch['id'] ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($branch['name_kr']) ?>
-                                            </option>
+                                                <option value="<?= $branch['id'] ?>"
+                                                    <?= $popup['branch_id'] == $branch['id'] ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($branch['name_kr']) ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -93,10 +91,10 @@ include_once "../../inc/admin.js.php";
                                         <select name="popup_type" id="popup_type" required>
                                             <option value="">선택</option>
                                             <?php foreach ($popup_types as $key => $label): ?>
-                                            <option value="<?= $key ?>"
-                                                <?= $popup['popup_type'] == $key ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($label) ?>
-                                            </option>
+                                                <option value="<?= $key ?>"
+                                                    <?= $popup['popup_type'] == $key ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($label) ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -107,18 +105,18 @@ include_once "../../inc/admin.js.php";
                                     <h3 class="no-admin-title">노출 설정</h3>
                                     <div class="no-admin-content">
                                         <div class="no-radio-form no-list">
-                                            <?php foreach ($is_unlimited as $val => $label): 
+                                            <?php foreach ($is_unlimited as $val => $label):
                                                 $id = "unlimited_$val";
                                                 $checked = ((int)($popup['is_unlimited'] ?? 1) === $val) ? 'checked' : '';
                                             ?>
-                                            <label for="<?= $id ?>">
-                                                <div class="no-radio-box">
-                                                    <input type="radio" name="is_unlimited" id="<?= $id ?>"
-                                                        value="<?= $val ?>" <?= $checked ?>>
-                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
-                                                </div>
-                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
-                                            </label>
+                                                <label for="<?= $id ?>">
+                                                    <div class="no-radio-box">
+                                                        <input type="radio" name="is_unlimited" id="<?= $id ?>"
+                                                            value="<?= $val ?>" <?= $checked ?>>
+                                                        <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                    </div>
+                                                    <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                                </label>
                                             <?php endforeach; ?>
                                         </div>
                                     </div>
@@ -159,18 +157,18 @@ include_once "../../inc/admin.js.php";
                                     <h3 class="no-admin-title">링크 여부</h3>
                                     <div class="no-admin-content">
                                         <div class="no-radio-form no-list">
-                                            <?php foreach ($has_link as $val => $label): 
+                                            <?php foreach ($has_link as $val => $label):
                                                 $id = "link_$val";
                                                 $checked = ((int)$popup['has_link'] === $val) ? 'checked' : '';
                                             ?>
-                                            <label for="<?= $id ?>">
-                                                <div class="no-radio-box">
-                                                    <input type="radio" name="has_link" id="<?= $id ?>"
-                                                        value="<?= $val ?>" <?= $checked ?>>
-                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
-                                                </div>
-                                                <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
-                                            </label>
+                                                <label for="<?= $id ?>">
+                                                    <div class="no-radio-box">
+                                                        <input type="radio" name="has_link" id="<?= $id ?>"
+                                                            value="<?= $val ?>" <?= $checked ?>>
+                                                        <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                    </div>
+                                                    <span class="no-radio-text"><?= htmlspecialchars($label) ?></span>
+                                                </label>
                                             <?php endforeach; ?>
                                         </div>
                                     </div>
@@ -181,21 +179,21 @@ include_once "../../inc/admin.js.php";
                                     <div class="no-admin-content">
                                         <div class="no-radio-form no-list">
                                             <?php
-                                                $current_target = isset($popup['is_target']) ? (int)$popup['is_target'] : 1;
+                                            $current_target = isset($popup['is_target']) ? (int)$popup['is_target'] : 1;
 
-                                                foreach ($link_targets as $val => $info):
-                                                    $id = "link_target_$val";
-                                                    $checked = ($current_target === $val) ? 'checked' : '';
-                                                ?>
-                                            <label for="<?= $id ?>">
-                                                <div class="no-radio-box">
-                                                    <input type="radio" name="is_target" id="<?= $id ?>"
-                                                        value="<?= $val ?>" <?= $checked ?>>
-                                                    <span><i class="bx bx-radio-circle-marked"></i></span>
-                                                </div>
-                                                <span
-                                                    class="no-radio-text"><?= htmlspecialchars($info['label']) ?></span>
-                                            </label>
+                                            foreach ($link_targets as $val => $info):
+                                                $id = "link_target_$val";
+                                                $checked = ($current_target === $val) ? 'checked' : '';
+                                            ?>
+                                                <label for="<?= $id ?>">
+                                                    <div class="no-radio-box">
+                                                        <input type="radio" name="is_target" id="<?= $id ?>"
+                                                            value="<?= $val ?>" <?= $checked ?>>
+                                                        <span><i class="bx bx-radio-circle-marked"></i></span>
+                                                    </div>
+                                                    <span
+                                                        class="no-radio-text"><?= htmlspecialchars($info['label']) ?></span>
+                                                </label>
                                             <?php endforeach; ?>
                                         </div>
                                     </div>
@@ -227,15 +225,15 @@ include_once "../../inc/admin.js.php";
                                         </div>
 
                                         <?php if (!empty($popup['popup_image'])): ?>
-                                        <div class="no-image-preview">
-                                            <img id="popupPreview" src="/uploads/popups/<?= $popup['popup_image'] ?>"
-                                                alt="팝업 미리보기" style="max-width:150px; margin-top:10px;">
-                                        </div>
+                                            <div class="no-image-preview">
+                                                <img id="popupPreview" src="/uploads/popups/<?= $popup['popup_image'] ?>"
+                                                    alt="팝업 미리보기" style="max-width:150px; margin-top:10px;">
+                                            </div>
                                         <?php else: ?>
-                                        <div class="no-image-preview">
-                                            <img id="popupPreview" src="" alt="팝업 미리보기"
-                                                style="display:none; max-width:150px; margin-top:10px;">
-                                        </div>
+                                            <div class="no-image-preview">
+                                                <img id="popupPreview" src="" alt="팝업 미리보기"
+                                                    style="display:none; max-width:150px; margin-top:10px;">
+                                            </div>
                                         <?php endif; ?>
 
                                         <span class="no-admin-info"><i class="bx bxs-info-circle"></i>팝업에 사용되는
@@ -255,10 +253,10 @@ include_once "../../inc/admin.js.php";
                                 <!-- 버튼 -->
                                 <div class="no-items-center center">
                                     <a href="./popup.list.php" class="no-btn no-btn--big no-btn--normal">목록</a>
-                                    <?php if($role->canDelete()) : ?>
-                                    <button type="submit" class="no-btn no-btn--big no-btn--main"
-                                        id="editBtn">수정</button>
-                                    <?php endif ;?>
+                                    <?php if ($role->canDelete()) : ?>
+                                        <button type="submit" class="no-btn no-btn--big no-btn--main"
+                                            id="editBtn">수정</button>
+                                    <?php endif; ?>
                                 </div>
 
                             </div>

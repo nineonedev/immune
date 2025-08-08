@@ -337,8 +337,8 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">정서적 문제</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>
@@ -753,23 +753,23 @@
                                     </div>
                                 </li>
 
-                                <li class="updown-content">
-                                    <a href="#" onclick="return false">
+                                <li class="updown-content on">
+                                    <a href="#" onclick="return false" class="active">
                                         <h3 class="no-body-lg fw600">영양 (Nutrition)</h3>
 
                                         <i class="fa-regular fa-angle-up i-24"></i>
                                     </a>
                                     <div class="content v2 v3">
                                         <div class="group">
-                                            <span class="no-body-md fw600">치료식이</span>
+                                            <span class="no-body-md fw600">치료식이(저요오드식)</span>
                                             <p class="no-body-md fw300">적절한 영양을 제공하여 치료 기간 동안 부작용을 줄이고 항암 치료로 손상된 조직을 회복하며, 영양 상태와 적정 체중을 유지할 수 있도록 돕는 식사를 제공합니다.</p>
 
                                             <ul class="grid-wrap no-mg-16--t">
                                                 <li>
-                                                    <img src="/resource/images/cancer-heal6-1.jpg">
+                                                    <img src="/resource/images/cancer-heal6-1-v3.jpg">
                                                 </li>
                                                 <li>
-                                                    <img src="/resource/images/cancer-heal6-2.jpg">
+                                                    <img src="/resource/images/cancer-heal6-2-v3.jpg">
                                                 </li>
                                             </ul>
                                         </div>
@@ -889,7 +889,7 @@
                                 </hgroup>
 
                                 <a href="/gangseo/pages/cancer/thyroid-2.php" class="basic-btn cancer no-body-lg fw600 no-mg-32--t">
-                                    항암방사선 이어서 보기
+                                    방사성치료 이어서 보기
 
                                     <i class="fa-regular fa-arrow-right i-24"></i>
                                 </a>

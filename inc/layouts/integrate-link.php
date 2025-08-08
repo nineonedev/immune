@@ -8,7 +8,7 @@
 
             <ul class="link-list fade-up no-mg-32--t no-mg-48--b">
                 <li>
-                    <a href="/gangseo/pages/hospital/inquiry.php">
+                    <a href="tel:<?= $SITEINFO_FOOTER_PHONE ?>">
                         <h3 class="no-body-xl fw600">면력 입원상담</h3>
                         <p class="no-body-lg fw300">전화상담</p>
 
